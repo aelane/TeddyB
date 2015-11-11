@@ -82,17 +82,21 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
     public void processFinish(Vocab output){
         //Here we will receive the result from our async class
         //of onPostExecute(result) method.
-
-        switch (languageStr) {
-            case "French":
-                transBox.setText(output.getFrench());
-                break;
-            case "Spanish":
-                transBox.setText(output.getSpanish());
-                break;
-            case "Greek":
-                transBox.setText(output.getGreek());
-                break;
+        if (output != null) {
+            switch (languageStr) {
+                case "French":
+                    transBox.setText(output.getFrench());
+                    break;
+                case "Spanish":
+                    transBox.setText(output.getSpanish());
+                    break;
+                case "Greek":
+                    transBox.setText(output.getGreek());
+                    break;
+            }
+        }
+        else{
+            transBox.setText("N/A");
         }
 
     }
