@@ -50,6 +50,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Translate!"
+        android:onClick="translateClick"
         android:id="@+id/transButton"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true" />
@@ -66,5 +67,16 @@
         android:inputType="textFilter"
         android:layout_alignRight="@+id/transButton"
         android:layout_alignEnd="@+id/transButton" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Go to login"
+        android:onClick="viewClick"
+        android:id="@+id/loginViewButton"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="49dp" />
 
 </RelativeLayout>

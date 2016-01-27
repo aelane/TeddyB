@@ -1,4 +1,4 @@
-package AWS_Classes;
+package AWS_Classes.Dynamo;
 
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBAttribute;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBHashKey;

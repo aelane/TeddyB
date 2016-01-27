@@ -1,7 +1,6 @@
-package AWS_Classes;
+package AWS_Classes.Dynamo;
 
 import android.os.AsyncTask;
-import android.util.Log;
 
 import com.amazonaws.auth.CognitoCachingCredentialsProvider;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBMapper;
@@ -14,19 +13,14 @@ import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
 public class runMapper extends AsyncTask<String, Void, Vocab> {
 
     protected CognitoCachingCredentialsProvider credentialsProvider;
-    public Vocab word;
     public AsyncResponse delegate = null;
 
-    public runMapper(){}
     public runMapper(CognitoCachingCredentialsProvider credentials){
-        credentialsProvider = credentials;
-    }
-    public void setCredentials(CognitoCachingCredentialsProvider credentials){
         credentialsProvider = credentials;
     }
 
     @Override
-    public Vocab doInBackground(String... args) {
+    protected Vocab doInBackground(String... args) {
         //Set up our credentials and pass it to our db client.
 
         AmazonDynamoDB ddbClient = new AmazonDynamoDBClient(credentialsProvider);

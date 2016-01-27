@@ -1,7 +1,7 @@
 package group15.deliverable1;
 
 import android.content.Context;
-import android.graphics.Color;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -10,25 +10,21 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.util.Log;
-import android.app.Activity;
 
 import com.amazonaws.auth.CognitoCachingCredentialsProvider;
 import com.amazonaws.regions.Regions;
 
-import AWS_Classes.AsyncResponse;
-import AWS_Classes.Metrics;
-import AWS_Classes.runMapper;
-import AWS_Classes.Vocab;
+import AWS_Classes.Dynamo.AsyncResponse;
+import AWS_Classes.Dynamo.runMapper;
+import AWS_Classes.Dynamo.Vocab;
 
-public class MainActivity extends AppCompatActivity implements AsyncResponse {
+public class MainActivity extends AppCompatActivity implements AsyncResponse{
 
     private Spinner spinner1, spinner2;
-    private Button btnSubmit;
+    private Button btnSubmit, changeView;
     EditText transBox;
 
     AsyncResponse myContext;
@@ -39,46 +35,47 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         spinner1 = (Spinner) findViewById(R.id.langSpinn);
         spinner2 = (Spinner) findViewById(R.id.wordSpinn);
         btnSubmit = (Button) findViewById(R.id.transButton);
+        changeView = (Button) findViewById(R.id.loginViewButton);
         transBox = (EditText) findViewById(R.id.translated);
 
         myContext = this;
 
-        btnSubmit.setOnClickListener(new OnClickListener() {
-
-
-            @Override
-            public void onClick(View v) {
-
-                languageStr = spinner1.getSelectedItem().toString();
-                String wordStr = spinner2.getSelectedItem().toString();
-
-                //Check if we are connected to wifi
-                if (isNetworkAvailable()) {
-                    //Get our credentials in order to talk to our AWS database
-                    CognitoCachingCredentialsProvider credentialsProvider = new CognitoCachingCredentialsProvider(
-                            getApplicationContext(),
-                            "us-east-1:b0b7a95e-1afe-41d6-9465-1f40d1494014", // Identity Pool ID
-                            Regions.US_EAST_1 // Region
-                    );
-
-                    //Create a new Async since it can only be used once.
-                    runMapper myMapper = new runMapper(credentialsProvider);
-                    myMapper.delegate = myContext;
-                    myMapper.execute(wordStr, languageStr);
-                }
-                else{
-                    transBox.setText("N/A");
-                }
-            }
-        });
 
     }
 
+    public void translateClick(View v) {
+
+        languageStr = spinner1.getSelectedItem().toString();
+        String wordStr = spinner2.getSelectedItem().toString();
+            //Check if we are connected to wifi
+        if (isNetworkAvailable()) {
+            //Get our credentials in order to talk to our AWS database
+            CognitoCachingCredentialsProvider credentialsProvider = new CognitoCachingCredentialsProvider(
+                    getApplicationContext(),
+                    "us-east-1:b0b7a95e-1afe-41d6-9465-1f40d1494014", // Identity Pool ID
+                    Regions.US_EAST_1 // Region
+            );
+
+            //Create a new Async since it can only be used once.
+            runMapper myMapper = new runMapper(credentialsProvider);
+            myMapper.delegate = myContext;
+            myMapper.execute(wordStr, languageStr);
+        } else {
+            transBox.setText("N/A");
+        }
+
+
+    }
+    public void viewClick(View v){
+        Intent i = new Intent(getApplicationContext(), LoginActivity.class);
+        startActivity(i);
+    }
     public void processFinish(Vocab output){
         //Here we will receive the result from our async class
         //of onPostExecute(result) method.
@@ -100,7 +97,7 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
         }
 
     }
-    @Override
+
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
