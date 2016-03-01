@@ -6,6 +6,7 @@ import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBTable;
 
 /**
  * Created by Niko on 11/10/2015.
+ * Updated by Paige on 2/29/2016
  */
 @DynamoDBTable(tableName = "Metrics")
 public class Metrics {
@@ -31,10 +32,7 @@ public class Metrics {
     }
 
     @DynamoDBAttribute(attributeName = "Topic")
-    public String getTopic(){
-        return Topic;
-    }
-    public void setTopic(String s){
-        this.Topic = s;
-    }
+    public String getTopic() { return Topic; }
+    public void setTopic(String s) {this.Topic = s; }
+
 }

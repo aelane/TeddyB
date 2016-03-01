@@ -10,36 +10,29 @@ import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
 /**
  * Created by Niko on 11/8/2015.
  */
-public class runMapper extends AsyncTask<String, Void, Vocab> {
+public class BearStateUpdate extends AsyncTask<String, Void, Metrics> {
 
     protected CognitoCachingCredentialsProvider credentialsProvider;
     public AsyncResponse delegate = null;
 
-    public runMapper(CognitoCachingCredentialsProvider credentials){
+    public BearStateUpdate(CognitoCachingCredentialsProvider credentials){
         credentialsProvider = credentials;
     }
 
     @Override
-    protected Vocab doInBackground(String... args) {
+    protected Metrics doInBackground(String... args) {
         //Set up our credentials and pass it to our db client.
 
         AmazonDynamoDB ddbClient = new AmazonDynamoDBClient(credentialsProvider);
         DynamoDBMapper mapper = new DynamoDBMapper(ddbClient);
 
-        Metrics stuff = new Metrics();
-        stuff.UserID = "001";
-        stuff.Language = "Spanish";
-        stuff.Topic = args[0];
-        mapper.save(stuff);
+        Metrics userData = mapper.load(Metrics.class, "001");
 
-        //Vocab selectedWord = mapper.load(Vocab.class, args[0].toLowerCase());
-
-        Vocab blank = new Vocab();
-        return blank;
+        return userData;
     }
 
     @Override
-    protected void onPostExecute(Vocab result) {
+    protected void onPostExecute(Metrics result) {
         delegate.processFinish(result);
     }
 }

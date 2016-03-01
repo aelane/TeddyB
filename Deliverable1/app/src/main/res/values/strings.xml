@@ -6,9 +6,13 @@
         <item>Spanish</item>
         <item>Greek</item>
     </string-array>
-    <string-array name="words">
-        <item>Apple</item>
-        <item>Dog</item>
-        <item>Cat</item>
+    <string-array name="Topics">
+        <item>Numbers</item>
+        <item>Food</item>
+        <item>Body</item>
+        <item>People</item>
+        <item>Items</item>
+        <item>Animals</item>
     </string-array>
+    <string name="title_activity_login2">LoginActivity2</string>
 </resources>

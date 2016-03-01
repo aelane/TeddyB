@@ -12,61 +12,31 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="English To:"
-        android:id="@+id/englishTo"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
-
-    <Spinner
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/langSpinn"
-        android:layout_marginTop="42dp"
-        android:spinnerMode="dropdown"
-        android:entries="@array/languages"
-        android:layout_below="@+id/englishTo"
-        android:layout_alignLeft="@+id/transButton"
-        android:layout_alignStart="@+id/transButton" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Word:"
+        android:text="Topic Select:"
         android:id="@+id/word"
-        android:layout_below="@+id/langSpinn"
-        android:layout_centerHorizontal="true" />
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="61dp" />
 
     <Spinner
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/wordSpinn"
         android:spinnerMode="dropdown"
-        android:entries="@array/words"
-        android:layout_above="@+id/transButton"
+        android:entries="@array/Topics"
+        android:layout_below="@+id/word"
         android:layout_alignLeft="@+id/transButton"
         android:layout_alignStart="@+id/transButton" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Translate!"
+        android:text="Change Topic"
         android:onClick="translateClick"
         android:id="@+id/transButton"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/translated"
-        android:layout_below="@+id/transButton"
-        android:layout_alignLeft="@+id/transButton"
-        android:layout_alignStart="@+id/transButton"
-        android:layout_marginTop="28dp"
-        android:focusable="false"
-        android:inputType="textFilter"
-        android:layout_alignRight="@+id/transButton"
-        android:layout_alignEnd="@+id/transButton" />
+        android:layout_below="@+id/wordSpinn"
+        android:layout_alignRight="@+id/word"
+        android:layout_alignEnd="@+id/word" />
 
     <Button
         android:layout_width="wrap_content"

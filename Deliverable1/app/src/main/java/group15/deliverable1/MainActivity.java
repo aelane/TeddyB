@@ -38,7 +38,6 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse{
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        spinner1 = (Spinner) findViewById(R.id.langSpinn);
         spinner2 = (Spinner) findViewById(R.id.wordSpinn);
         btnSubmit = (Button) findViewById(R.id.transButton);
         changeView = (Button) findViewById(R.id.loginViewButton);
@@ -51,8 +50,7 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse{
 
     public void translateClick(View v) {
 
-        languageStr = spinner1.getSelectedItem().toString();
-        String wordStr = spinner2.getSelectedItem().toString();
+        String topicStr = spinner2.getSelectedItem().toString();
             //Check if we are connected to wifi
         if (isNetworkAvailable()) {
             //Get our credentials in order to talk to our AWS database
@@ -65,7 +63,7 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse{
             //Create a new Async since it can only be used once.
             runMapper myMapper = new runMapper(credentialsProvider);
             myMapper.delegate = myContext;
-            myMapper.execute(wordStr, languageStr);
+            myMapper.execute(topicStr);
         } else {
             transBox.setText("N/A");
         }
@@ -79,6 +77,7 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse{
     public void processFinish(Vocab output){
         //Here we will receive the result from our async class
         //of onPostExecute(result) method.
+        /*
         if (output != null) {
             switch (languageStr) {
                 case "French":
@@ -95,7 +94,7 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse{
         else{
             transBox.setText("N/A");
         }
-
+        */
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
