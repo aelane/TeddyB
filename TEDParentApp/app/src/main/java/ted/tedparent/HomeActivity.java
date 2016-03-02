@@ -6,14 +6,10 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
-import android.widget.EditText;
+import android.widget.TextView;
 
 import com.amazonaws.auth.CognitoCachingCredentialsProvider;
-import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBMapper;
 import com.amazonaws.regions.Regions;
-import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
-import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
 
 import AWS_Classes.Dynamo.AsyncResponse;
 import AWS_Classes.Dynamo.BearStateUpdate;
@@ -22,8 +18,8 @@ import AWS_Classes.Dynamo.Metrics;
 
 public class HomeActivity extends AppCompatActivity implements AsyncResponse {
 
-    EditText topicBox;
-    EditText languageBox;
+    TextView topicBox;
+    TextView languageBox;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,8 +28,8 @@ public class HomeActivity extends AppCompatActivity implements AsyncResponse {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        topicBox = (EditText) findViewById(R.id.CurrTopic);
-        languageBox = (EditText) findViewById(R.id.CurrLang);
+        topicBox = (TextView) findViewById(R.id.CurrTopic);
+        languageBox = (TextView) findViewById(R.id.CurrLang);
 
         updateFields();
     }
@@ -61,8 +57,8 @@ public class HomeActivity extends AppCompatActivity implements AsyncResponse {
 
     public void processFinish(Metrics output){
 
-        topicBox.setText(output.getTopic());
-        languageBox.setText(output.getLanguage());
+        topicBox.append(output.getTopic());
+        languageBox.append(output.getLanguage());
 
     }
 

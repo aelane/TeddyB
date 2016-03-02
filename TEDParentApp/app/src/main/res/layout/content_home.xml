@@ -9,33 +9,29 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:showIn="@layout/activity_home" tools:context=".HomeActivity">
 
-    <EditText
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="Child: "
         android:id="@+id/CurrChild"
-        android:layout_marginTop="69dp"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:editable="false"/>
+        android:layout_centerHorizontal="true" />
 
-    <EditText
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/CurrTopic"
-        android:layout_below="@+id/CurrLang"
-        android:layout_alignLeft="@+id/CurrChild"
-        android:layout_alignStart="@+id/CurrChild"
-        android:layout_marginTop="104dp"
-        android:editable="false"/>
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:text="Language: "
         android:id="@+id/CurrLang"
         android:layout_below="@+id/CurrChild"
-        android:layout_alignLeft="@+id/CurrChild"
-        android:layout_alignStart="@+id/CurrChild"
-        android:layout_marginTop="88dp"
-        android:editable="false"/>
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="70dp" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Topic: "
+        android:id="@+id/CurrTopic"
+        android:layout_below="@+id/CurrLang"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="46dp" />
 </RelativeLayout>
