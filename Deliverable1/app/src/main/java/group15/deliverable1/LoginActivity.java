@@ -69,6 +69,7 @@ public class LoginActivity extends AppCompatActivity implements LambdaResponse, 
                     "us-east-1:b0b7a95e-1afe-41d6-9465-1f40d1494014", // Identity Pool ID
                     Regions.US_EAST_1 // Region
             );
+            //blah
             //Create the lambda factory
             LambdaInvokerFactory factory = new LambdaInvokerFactory(
                     getApplicationContext(),
