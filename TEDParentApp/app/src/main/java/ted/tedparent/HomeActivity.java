@@ -16,12 +16,12 @@ import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
 
 import AWS_Classes.Dynamo.AsyncResponse;
+import AWS_Classes.Dynamo.BearStateUpdate;
+import AWS_Classes.Dynamo.Metrics;
 
 
+public class HomeActivity extends AppCompatActivity implements AsyncResponse {
 
-public abstract class Home extends AppCompatActivity implements AsyncResponse {
-
-    AsyncResponse myContext;
     EditText topicBox;
     EditText languageBox;
 
@@ -29,15 +29,17 @@ public abstract class Home extends AppCompatActivity implements AsyncResponse {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         topicBox = (EditText) findViewById(R.id.CurrTopic);
         languageBox = (EditText) findViewById(R.id.CurrLang);
 
-        myContext = this;
+        updateFields();
     }
 
-    public void updateFields(View v) {
+    public void updateFields() {
+
         // Check if we are connected to wifi
         if (isNetworkAvailable()) {
             //Get our credentials in order to talk to our AWS database
@@ -48,11 +50,20 @@ public abstract class Home extends AppCompatActivity implements AsyncResponse {
             );
 
 
-            AmazonDynamoDB ddbClient = new AmazonDynamoDBClient(credentialsProvider);
-            DynamoDBMapper mapper = new DynamoDBMapper(ddbClient);
-            topicBox.setText((mapper.load(AWS_Classes.Dynamo.Metrics.class, "001").getTopic()));
-            languageBox.setText((mapper.load(AWS_Classes.Dynamo.Metrics.class, "001").getLanguage()));
+
+            BearStateUpdate myMapper = new BearStateUpdate(credentialsProvider);
+            myMapper.delegate = this;
+            myMapper.execute();
+
         }
+
+    }
+
+    public void processFinish(Metrics output){
+
+        topicBox.setText(output.getTopic());
+        languageBox.setText(output.getLanguage());
+
     }
 
     private boolean isNetworkAvailable() {
