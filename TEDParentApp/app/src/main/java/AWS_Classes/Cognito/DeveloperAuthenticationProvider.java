@@ -1,33 +1,30 @@
 package AWS_Classes.Cognito;
 
-import android.content.Context;
-
+import com.TED.Account.TEDAccountAPIClient;
+import com.TED.Account.model.LoginResponse;
+import com.TED.Account.model.UserData;
 import com.amazonaws.auth.AWSAbstractCognitoDeveloperIdentityProvider;
+import com.amazonaws.mobileconnectors.apigateway.ApiClientFactory;
 import com.amazonaws.regions.Regions;
-
-import AWS_Classes.Lambda.LambdaInterface;
-import AWS_Classes.Lambda.LambdaResponse;
-import AWS_Classes.LoginResponse;
-import AWS_Classes.UserData;
 
 /**
  * Created by Niko on 1/10/2016.
  */
-public class DeveloperAuthenticationProvider extends AWSAbstractCognitoDeveloperIdentityProvider implements LambdaResponse {
+public class DeveloperAuthenticationProvider extends AWSAbstractCognitoDeveloperIdentityProvider {
 
     private static final String developerProvider = "login.TED.TEDapp";
-    private LoginResponse AuthData = null;
-    protected LambdaInterface myInterface;
     private UserData Data;
+    private String cachedID = null;
 
-    public DeveloperAuthenticationProvider(String accountId,
-                                           String identityPoolId, Context context, Regions region)  {
+    public DeveloperAuthenticationProvider(String accountId, String identityPoolId, Regions region, UserData newData) {
         super(accountId, identityPoolId, region);
+        Data = newData;
         // Initialize any other objects needed here.
+
     }
 
     // Return the developer provider name which you choose while setting up the
-    // identity pool in the Amazon Cognito Console
+    // identity pool in the &COG; Console
 
     @Override
     public String getProviderName() {
@@ -46,12 +43,22 @@ public class DeveloperAuthenticationProvider extends AWSAbstractCognitoDeveloper
         // Get the identityId and token by making a call to your backend
         // (Call to your backend)
 
-            // Call the update method with updated identityId and token to make sure
-            // these are ready to be used from Credentials Provider.
-            update(AuthData.getID(), AuthData.getToken());
-            return AuthData.getToken();
+        ApiClientFactory factory = new ApiClientFactory().endpoint("https://hbq5qawvri.execute-api.us-east-1.amazonaws.com/Account");
+        // Create a client.
+        final TEDAccountAPIClient client = factory.build(TEDAccountAPIClient.class);
+
+        // Invoke your parentPath1Get method.
+
+        LoginResponse Response = client.loginresourcePost(Data);
+
+        // Call the update method with updated identityId and token to make sure
+        // these are ready to be used from Credentials Provider.
 
 
+        update(Response.getID(), Response.getToken());
+        //update(identityId, token);
+        cachedID = Response.getID();
+        return Response.getToken();
 
     }
 
@@ -62,28 +69,19 @@ public class DeveloperAuthenticationProvider extends AWSAbstractCognitoDeveloper
     public String getIdentityId() {
 
         // Load the identityId from the cache
-        identityId = AuthData.getID();
+        identityId = cachedID;
 
         if (identityId == null) {
-            // Call to your backend
-            return identityId;
+            ApiClientFactory factory = new ApiClientFactory().endpoint("https://hbq5qawvri.execute-api.us-east-1.amazonaws.com/Account");
+            // Create a client.
+            final TEDAccountAPIClient client = factory.build(TEDAccountAPIClient.class);
+
+            // Invoke your parentPath1Get method.
+            LoginResponse Response = client.loginresourcePost(Data);
+            return Response.getID();
         } else {
             return identityId;
         }
 
-    }
-
-    public void setUserData(UserData newData){
-        Data = newData;
-    }
-    public void setMyInterface(LambdaInterface newInterface){
-        myInterface = newInterface;
-    }
-    public void setAuthData(LoginResponse data){
-        AuthData = data;
-    }
-    public void lambdaFinish(LoginResponse output){
-        //stuff
-        AuthData = output;
     }
 }
