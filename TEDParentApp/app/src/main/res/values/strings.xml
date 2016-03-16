@@ -1,10 +1,7 @@
 <resources>
     <string name="app_name">TEDParent</string>
     <string name="title_activity_home">Home</string>
-<<<<<<< HEAD
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
-=======
     <string name="title_activity_login">LoginActivity</string>
->>>>>>> origin/master
 </resources>

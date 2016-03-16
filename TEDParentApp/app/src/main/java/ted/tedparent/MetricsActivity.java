@@ -9,26 +9,14 @@ import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 
-import com.amazonaws.auth.CognitoCachingCredentialsProvider;
-import com.amazonaws.regions.Regions;
+public class MetricsActivity extends AppCompatActivity {
 
-import AWS_Classes.Dynamo.AsyncResponse;
-import AWS_Classes.Dynamo.BearStateUpdate;
-import AWS_Classes.Dynamo.Metrics;
-
-
-public class HomeActivity extends AppCompatActivity implements AsyncResponse {
-
-    TextView topicBox;
-    TextView languageBox;
 
     // Navigation Drawer Variables
     private ListView mDrawerList;
@@ -40,15 +28,7 @@ public class HomeActivity extends AppCompatActivity implements AsyncResponse {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
-
-        // Populate topic and language boxes
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        topicBox = (TextView) findViewById(R.id.CurrTopic);
-        languageBox = (TextView) findViewById(R.id.CurrLang);
-        updateFields();
-
+        setContentView(R.layout.activity_metrics);
 
         // Navigation Drawer Setup
         mDrawerList = (ListView)findViewById(R.id.navList);
@@ -60,36 +40,10 @@ public class HomeActivity extends AppCompatActivity implements AsyncResponse {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
-
-    }
-
-    public void updateFields() {
-
-        // Check if we are connected to wifi
-        if (isNetworkAvailable()) {
-            //Get our credentials in order to talk to our AWS database
-            CognitoCachingCredentialsProvider credentialsProvider = new CognitoCachingCredentialsProvider(
-                    getApplicationContext(),
-                    "us-east-1:b0b7a95e-1afe-41d6-9465-1f40d1494014", // Identity Pool ID
-                    Regions.US_EAST_1 // Region
-            );
-
-            BearStateUpdate myMapper = new BearStateUpdate(credentialsProvider);
-            myMapper.delegate = this;
-            myMapper.execute();
-
-        }
-    }
-
-
-    public void processFinish(Metrics output){
-        topicBox.append(output.getTopic());
-        languageBox.append(output.getLanguage());
-
     }
 
     private void addDrawerItems() {
-        String[] osArray = { "Home", "Metrics", "Accounts", "Settings", "Log Out" };
+        String[] osArray = { "Home", "Metrics", "Accounts", "Settings", "Sign Out" };
         mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, osArray);
         mDrawerList.setAdapter(mAdapter);
 
@@ -105,11 +59,11 @@ public class HomeActivity extends AppCompatActivity implements AsyncResponse {
     public void changeActivity(int position) {
         switch (position) {
             case 0:
-                startActivity(new Intent(HomeActivity.this, HomeActivity.class));
+                startActivity(new Intent(MetricsActivity.this, HomeActivity.class));
             case 1:
-                startActivity(new Intent(HomeActivity.this, MetricsActivity.class));
+                startActivity(new Intent(MetricsActivity.this, MetricsActivity.class));
             case 4:
-                startActivity(new Intent(HomeActivity.this, LoginActivity.class));
+                startActivity(new Intent(MetricsActivity.this, LoginActivity.class));
             default:
                 break;
         }
@@ -174,7 +128,4 @@ public class HomeActivity extends AppCompatActivity implements AsyncResponse {
         mDrawerToggle.onConfigurationChanged(newConfig);
     }
 
-
 }
-
-
