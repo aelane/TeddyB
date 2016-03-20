@@ -18,68 +18,7 @@
 #include <bluetooth/sdp_lib.h>
 #include <bluetooth/rfcomm.h>
 
-
-
-int split (const char *str, char c, char ***arr)
-{
-  int count = 1;
-  int token_len = 1;
-  int i = 0;
-  char *p;
-  char *t;
-
-  p = str;
-  while (*p != '\0')
-    {
-      if (*p == c)
-        count++;
-      p++;
-    }
-
-  *arr = (char**) malloc(sizeof(char*) * count);
-  if (*arr == NULL)
-    exit(1);
-
-  p = str;
-  while (*p != '\0')
-    {
-      if (*p == c)
-      {
-        (*arr)[i] = (char*) malloc( sizeof(char) * token_len );
-        if ((*arr)[i] == NULL)
-          exit(1);
-
-        token_len = 0;
-        i++;
-      }
-      p++;
-      token_len++;
-    }
-  (*arr)[i] = (char*) malloc( sizeof(char) * token_len );
-  if ((*arr)[i] == NULL)
-    exit(1);
-
-  i = 0;
-  p = str;
-  t = ((*arr)[i]);
-  while (*p != '\0')
-    {
-      if (*p != c && *p != '\0')
-      {
-        *t = *p;
-        t++;
-      }
-      else
-      {
-        *t = '\0';
-        i++;
-        t = ((*arr)[i]);
-      }
-      p++;
-    }
-
-  return count;
-}
+#include "Lessons.h"
 
 int str2uuid( const char *uuid_str, uuid_t *uuid ) 
 {
@@ -138,8 +77,7 @@ int main(void) {
 	int i, j, err, sock, dev_id = -1;
 	struct hci_dev_info dev_info;
 	inquiry_info *info = NULL;
-	int num_rsp, length, flags;
-	bdaddr_t ba;
+	bdaddr_t target;
 	char addr[19] = { 0 };
 	char name[248] = { 0 };
 	uuid_t uuid = { 0 };
@@ -187,39 +125,27 @@ int main(void) {
 		perror("Invalid UUID");
 		free(info);
 		exit(1);
-  }
+	}
 
 	do {
 		printf("Scanning ...\n");
-		info = NULL;
-		num_rsp = 0;
-		flags = 0;
-		length = 8; /* ~10 seconds */
-		num_rsp = hci_inquiry(dev_id, length, num_rsp, NULL, &info, flags);
-		if (num_rsp < 0) {
-			perror("Inquiry failed");
-			exit(1);
-		}
-
-		printf("No of resp %d\n",num_rsp);
-
-		for (i = 0; i < num_rsp; i++) {
-			//22:22:8E:FB:B2:85
+		
+			//22:22:8E:FB:B2:85 <- Address of the Tablet(Add to header file later?
 			sdp_session_t *session;
 			int retries;
 			int foundit, responses;
-			str2ba("22:22:8E:FB:B2:85",&(info+i)->bdaddr); 
-			ba2str(&(info+i)->bdaddr, addr);
+			str2ba("22:22:8E:FB:B2:85",&target); 
 			memset(name, 0, sizeof(name));
-			if (hci_read_remote_name(sock, &(info+i)->bdaddr, sizeof(name), 
-					name, 0) < 0)
-			strcpy(name, "[unknown]");
+			if (hci_read_remote_name(sock, &target, sizeof(name), name, 0) < 0){
+				strcpy(name, "[unknown]");
+			}
+			
 			printf("Found %s  %s, searching for the the desired service on it now\n", addr, name);
 			// connect to the SDP server running on the remote machine
 sdpconnect:
 			session = 0; retries = 0;
 			while(!session) {
-				session = sdp_connect( BDADDR_ANY, &(info+i)->bdaddr, SDP_RETRY_IF_BUSY );
+				session = sdp_connect( BDADDR_ANY, &target, SDP_RETRY_IF_BUSY );
 				if(session) break;
 				if(errno == EALREADY && retries < 5) {
 					perror("Retrying");
@@ -231,7 +157,6 @@ sdpconnect:
 			}
 			if ( session == NULL ) {
 				perror("Can't open session with the device");
-				free(info);
 				continue;
 			}
 			search_list = sdp_list_append( 0, &uuid );
@@ -244,48 +169,48 @@ sdpconnect:
 			foundit = 0;
 			responses = 0;
 			for (; r; r = r->next ) {
-					responses++;
-					rec = (sdp_record_t*) r->data;
-					sdp_list_t *proto_list;
+				responses++;
+				rec = (sdp_record_t*) r->data;
+				sdp_list_t *proto_list;
 					
-					// get a list of the protocol sequences
-					if( sdp_get_access_protos( rec, &proto_list ) == 0 ) {
-					sdp_list_t *p = proto_list;
+				// get a list of the protocol sequences
+				if( sdp_get_access_protos( rec, &proto_list ) == 0 ) {
+				sdp_list_t *p = proto_list;
 
-						// go through each protocol sequence
-						for( ; p ; p = p->next ) {
-								sdp_list_t *pds = (sdp_list_t*)p->data;
+					// go through each protocol sequence
+					for( ; p ; p = p->next ) {
+						sdp_list_t *pds = (sdp_list_t*)p->data;
 
-								// go through each protocol list of the protocol sequence
-								for( ; pds ; pds = pds->next ) {
+						// go through each protocol list of the protocol sequence
+						for( ; pds ; pds = pds->next ) {
 
-										// check the protocol attributes
-										sdp_data_t *d = (sdp_data_t*)pds->data;
-										int proto = 0;
-										for( ; d; d = d->next ) {
-												switch( d->dtd ) { 
-														case SDP_UUID16:
-														case SDP_UUID32:
-														case SDP_UUID128:
-																proto = sdp_uuid_to_proto( &d->val.uuid );
-																break;
-														case SDP_UINT8:
-																if( proto == RFCOMM_UUID ) {
-																		printf("rfcomm channel: %d\n",d->val.int8);
-																		loco_channel = d->val.int8;
-																		foundit = 1;
-																}
-																break;
-												}
+							// check the protocol attributes
+							sdp_data_t *d = (sdp_data_t*)pds->data;
+							int proto = 0;
+							for( ; d; d = d->next ) {
+								switch( d->dtd ) { 
+									case SDP_UUID16:
+									case SDP_UUID32:
+									case SDP_UUID128:
+											proto = sdp_uuid_to_proto( &d->val.uuid );
+											break;
+									case SDP_UINT8:
+										if( proto == RFCOMM_UUID ) {
+												printf("rfcomm channel: %d\n",d->val.int8);
+												loco_channel = d->val.int8;
+												foundit = 1;
 										}
+										break;
 								}
-								sdp_list_free( (sdp_list_t*)p->data, 0 );
+							}
 						}
-						sdp_list_free( proto_list, 0 );
-
+						sdp_list_free( (sdp_list_t*)p->data, 0 );
 					}
-					if (loco_channel > 0)
-						break;
+					sdp_list_free( proto_list, 0 );
+
+				}
+				if (loco_channel > 0)
+					break;
 
 			}
 			printf("No of Responses %d\n", responses);
@@ -294,7 +219,7 @@ sdpconnect:
 				s = socket(AF_BLUETOOTH, SOCK_STREAM, BTPROTO_RFCOMM);
 				loc_addr.rc_family = AF_BLUETOOTH;
 				loc_addr.rc_channel = loco_channel;
-				loc_addr.rc_bdaddr = *(&(info+i)->bdaddr);
+				loc_addr.rc_bdaddr = *(&target);
 				status = connect(s, (struct sockaddr *)&loc_addr, sizeof(loc_addr));
 				if( status < 0 ) {
 					perror("uh oh");
@@ -302,7 +227,6 @@ sdpconnect:
 				
 				//////////////////////////Start of teaching stuff//////////////////////////////////////////
 				do {
-					attempts = 0;
 					
 					if(changeTopic_flag){
 						system("/AWS/SDK/sample_apps/subscribe_publish_sample/subscribe_publish_sample");
@@ -310,106 +234,13 @@ sdpconnect:
 						sleep(2);
 					}
 					
-					fp_Topic = fopen("/Curriculum/TopicData.txt", "r");
-					printf("Opening Topic Data\n");
-					if (fp_Topic == NULL){	
-						printf("HMMMMMM");
-						fprintf(stderr, "Unable to open Topic file\n");
-						return -1;
-					}
-					//Format is: img, sound, sound based on mode, sound
-					//status = write(s, "apple,repeat_after_me,apple", 64);
-					//status = write(s, "bear,bear,in_english_is,bear",64);
-					//status = write(s, "banana,banana,in_spanish_is,platano",64);
+					status = repeat_after_me_english(s);
 					
-					while(fgets (line, 16, fp_Topic)!=NULL){
-						line[strlen(line)-1] = 0;
-						if(!strcmp(line, "Translation")){
-							break;
-						}
-						//repeat_underscore_me
-						else if(strcmp(line, "English")){
-							printf ("Read %s\n", line);
-							sprintf(message_Buffer,"%s,%s,in_english_is,%s,repeat_after_me,%s",line,line,line,line);
-							printf("The Buffer is:%s\n",message_Buffer);
-							status = write(s,message_Buffer,128);
-							//status = write(s, "banana,banana,in_spanish_is,platano",64);
-							printf ("Wrote %d bytes\n", status);
-							sleep(7);
-						}
-						if(status > 0){
-							/////////////////Wait for sphinx to do its thing////////////////////////
-							WRONG:
-							do{
-							continue_flag = 0;
-							//fp_Status
-							fp_Status = fopen("/Curriculum/Bluetooth/Status.txt", "r");
-							if (fp_Status == NULL){	
-								fprintf(stderr, "Unable to open Status file\n");
-								return -1;
-							}
-							fgets (status_chk, 16, fp_Status);
-							//line[strlen(line)-1] = 0;
-							printf("Waiting for Continue and got: %s\n",status_chk);
-							if(!strcmp(status_chk, "Continue")){
-								printf("Ready to Continue\n");
-								//status_chk = NULL;
-								continue_flag = 1;
-								fclose(fp_Status);
-								fp_Status = fopen("/Curriculum/Bluetooth/Status.txt", "w");
-								fprintf(fp_Status, "Blah");
-								fclose(fp_Status);
-							}
-							else{
-								fclose(fp_Status);
-								sleep(5);
-							}
-							}while(continue_flag != 1);
-							////////////////////////////////////////////////////////////////////////
-							
-							/////////////////////////Read in what sphinx has done///////////////////
-							
-							sphinx_count = 0;
-							
-							fp_Sphinx = fopen("/sphinx/response.txt","r");
-							if (fp_Sphinx == NULL){	
-							
-								fprintf(stderr, "Unable to open sphinx response file\n");
-								return -1;
-							}
-							fgets (sphinx_arr, 64, fp_Sphinx);
-							//printf("Attempting to split file\n");
-							//sphinx_count = split(sphinx_arr, ' ', &arr);
-							/*
-							for (i = 0; i < sphinx_count; i++){
-								 printf("string #%d: %s\n", i, arr[i]);
-							}
-							*/
-							attempts++;
-							printf("Checking against: %s\n", sphinx_arr);
-							if(!strcmp(sphinx_arr, line)){
-								status = write(s,"check,good_job",64);
-							}
-							else if(attempts < 4){
-								sprintf(message_Buffer,"xmark,try_again,%s",line);
-								status = write(s,message_Buffer,64);
-								fclose(fp_Sphinx);
-								goto WRONG;
-							}
-							else{
-								attempts = 0;
-							}
-							fclose(fp_Sphinx);
-							sleep(3);
-							
-							/////////////////////////////////////////////////////////////////////////
-							
-						}
-						
-					}
-					fclose(fp_Topic);
 					changeTopic_flag = 1;
+					printf("Changing Topic");
+					sleep(10);
 				} while (status > 0);
+				printf("CHAOS REIGNS");
 				close(s);
 				sdp_record_free( rec );
 			}
@@ -419,7 +250,7 @@ sdpconnect:
 				goto sdpconnect;
 				//break;
 			}
-		}
+		sleep(1);
 	} while (1);
 
 	printf("Exiting...\n");
