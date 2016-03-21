@@ -62,8 +62,8 @@ public class MetricsActivity extends AppCompatActivity {
                 startActivity(new Intent(MetricsActivity.this, HomeActivity.class));
             case 1:
                 startActivity(new Intent(MetricsActivity.this, MetricsActivity.class));
-            case 4:
-                startActivity(new Intent(MetricsActivity.this, LoginActivity.class));
+//            case 4:
+//                startActivity(new Intent(MetricsActivity.this, LoginActivity.class));
             default:
                 break;
         }

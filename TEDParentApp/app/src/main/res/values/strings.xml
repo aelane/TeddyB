@@ -4,4 +4,19 @@
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
     <string name="title_activity_login">LoginActivity</string>
+    <string-array name="Languages">
+        <item>French</item>
+        <item>Spanish</item>
+        <item>Greek</item>
+        <item>English</item>
+        <item>Persian</item>
+    </string-array>
+    <string-array name="Topics">
+        <item>Numbers</item>
+        <item>Food</item>
+        <item>Body</item>
+        <item>People</item>
+        <item>Items</item>
+        <item>Animals</item>
+    </string-array>
 </resources>

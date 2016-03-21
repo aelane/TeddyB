@@ -5,11 +5,8 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -20,7 +17,6 @@ import com.amazonaws.auth.CognitoCachingCredentialsProvider;
 import com.amazonaws.regions.Regions;
 
 import AWS_Classes.Cognito.*;
-import AWS_Classes.Dynamo.Vocab;
 
 public class LoginActivity extends AppCompatActivity implements RegTaskResponse, LoginTaskResponse {
 

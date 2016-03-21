@@ -2,13 +2,11 @@ package AWS_Classes.Dynamo;
 
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBAttribute;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBHashKey;
-import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBTable;
 
 /**
- * Created by Niko on 11/6/2015.
+ * Created by pwdarby on 3/21/16.
  */
-@DynamoDBTable(tableName = "Vocabulary")
-public class Vocab {
+public class Language {
     private String English;
     private String Farsi;
     private String French;
@@ -54,8 +52,5 @@ public class Vocab {
     public void setSpanish(String s){
         this.Spanish = s;
     }
-
-
-
 
 }

@@ -79,6 +79,9 @@ public class HomeActivity extends AppCompatActivity implements AsyncResponse {
             myMapper.execute();
 
         }
+        else {
+
+        }
     }
 
 
@@ -108,8 +111,10 @@ public class HomeActivity extends AppCompatActivity implements AsyncResponse {
                 startActivity(new Intent(HomeActivity.this, HomeActivity.class));
             case 1:
                 startActivity(new Intent(HomeActivity.this, MetricsActivity.class));
-            case 4:
-                startActivity(new Intent(HomeActivity.this, LoginActivity.class));
+            case 3:
+                startActivity(new Intent(HomeActivity.this, SettingsActivity.class));
+//            case 4:
+//                startActivity(new Intent(HomeActivity.this, LoginActivity.class));
             default:
                 break;
         }

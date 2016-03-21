@@ -27,9 +27,7 @@ public class Metrics {
     public String getLanguage(){
         return Language;
     }
-    public void setLanguage(String s){
-        this.Language = s;
-    }
+    public void setLanguage(String s){this.Language = s;}
 
     @DynamoDBAttribute(attributeName = "Topic")
     public String getTopic() { return Topic; }
