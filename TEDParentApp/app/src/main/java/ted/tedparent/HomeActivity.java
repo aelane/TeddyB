@@ -80,7 +80,7 @@ public class HomeActivity extends AppCompatActivity implements AsyncResponse {
 
         }
         else {
-
+            // add toast
         }
     }
 
