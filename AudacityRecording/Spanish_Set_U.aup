@@ -1,6 +1,6 @@
 <?xml version="1.0" standalone="no" ?>
 <!DOCTYPE project PUBLIC "-//audacityproject-1.3.0//DTD//EN" "http://audacity.sourceforge.net/xml/audacityproject-1.3.0.dtd" >
-<project xmlns="http://audacity.sourceforge.net/xml/" projname="Spanish_Set_U_data" version="1.3.0" audacityversion="2.1.2" sel0="31.6226757370" sel1="31.6226757370" vpos="0" h="53.2752834467" zoom="344.5312500000" rate="16000.0" snapto="off" selectionformat="hh:mm:ss + milliseconds" frequencyformat="Hz" bandwidthformat="octaves">
+<project xmlns="http://audacity.sourceforge.net/xml/" projname="Spanish_Set_U_data" version="1.3.0" audacityversion="2.1.2" sel0="0.0812698413" sel1="0.0812698413" vpos="512" h="106.1384126984" zoom="86.1328125000" rate="16000.0" snapto="off" selectionformat="hh:mm:ss + milliseconds" frequencyformat="Hz" bandwidthformat="octaves">
 	<tags/>
 	<wavetrack name="Steven 2 Spanish" channel="2" linked="0" mute="1" solo="0" height="150" minimized="0" isSelected="0" rate="16000" gain="1.0" pan="0.0">
 		<waveclip offset="-0.04873016">
@@ -30,7 +30,7 @@
 			<envelope numpoints="0"/>
 		</waveclip>
 	</wavetrack>
-	<labeltrack name="English Label" numlabels="53" height="74" minimized="0" isSelected="1">
+	<labeltrack name="English Label" numlabels="56" height="74" minimized="0" isSelected="0">
 		<label t="0.0812698413" t1="0.0812698413" title="one"/>
 		<label t="1.9707936508" t1="1.9707936508" title="two"/>
 		<label t="4.0054421769" t1="4.0054421769" title="three"/>
@@ -83,7 +83,10 @@
 		<label t="99.6716553288" t1="99.6716553288" title="chair"/>
 		<label t="101.6337414966" t1="101.6337414966" title="table"/>
 		<label t="104.0370068027" t1="104.0370068027" title="television"/>
-		<label t="106.1384126984" t1="106.1384126984" title="Garbage"/>
+		<label t="106.9975510204" t1="106.9975510204" title="yes"/>
+		<label t="109.0060770975" t1="109.0060770975" title="no"/>
+		<label t="111.0146031746" t1="111.0146031746" title="hello"/>
+		<label t="112.9882993197" t1="112.9882993197" title="goodbye"/>
 	</labeltrack>
 	<wavetrack name="Caitie Spanish" channel="2" linked="0" mute="1" solo="0" height="150" minimized="0" isSelected="0" rate="16000" gain="1.0" pan="0.0">
 		<waveclip offset="-0.04873016">
@@ -141,7 +144,7 @@
 			<envelope numpoints="0"/>
 		</waveclip>
 	</wavetrack>
-	<wavetrack name="Nick Spanish" channel="2" linked="0" mute="0" solo="0" height="150" minimized="0" isSelected="0" rate="16000" gain="1.0" pan="0.0">
+	<wavetrack name="Nick Spanish" channel="2" linked="0" mute="1" solo="0" height="150" minimized="0" isSelected="0" rate="16000" gain="1.0" pan="0.0">
 		<waveclip offset="-0.04873016">
 			<sequence maxsamples="262144" sampleformat="262159" numsamples="1736752">
 				<waveblock start="0">
@@ -197,7 +200,7 @@
 			<envelope numpoints="0"/>
 		</waveclip>
 	</wavetrack>
-	<labeltrack name="Spanish Label" numlabels="51" height="64" minimized="0" isSelected="0">
+	<labeltrack name="Spanish Label" numlabels="55" height="64" minimized="0" isSelected="1">
 		<label t="0.0812698413" t1="0.0812698413" title="uno"/>
 		<label t="1.9736961451" t1="1.9736961451" title="dos"/>
 		<label t="4.0054421769" t1="4.0054421769" title="tres"/>
@@ -249,5 +252,40 @@
 		<label t="100.0547845805" t1="100.0547845805" title="silla"/>
 		<label t="102.0633106576" t1="102.1097505669" title="mesa"/>
 		<label t="104.0370068027" t1="104.0370068027" title="television"/>
+		<label t="106.9975510204" t1="106.9975510204" title="si"/>
+		<label t="109.0060770975" t1="109.0060770975" title="no"/>
+		<label t="111.0146031746" t1="111.0146031746" title="hola"/>
+		<label t="112.9882993197" t1="112.9882993197" title="adios"/>
 	</labeltrack>
+	<wavetrack name="Zack Spanish" channel="2" linked="0" mute="0" solo="0" height="150" minimized="0" isSelected="0" rate="16000" gain="1.0" pan="0.0">
+		<waveclip offset="-0.04873016">
+			<sequence maxsamples="262144" sampleformat="262159" numsamples="1854952">
+				<waveblock start="0">
+					<simpleblockfile filename="e00007ba.au" len="262144" min="-0.165962" max="0.15487" rms="0.008723"/>
+				</waveblock>
+				<waveblock start="262144">
+					<simpleblockfile filename="e0000f50.au" len="262144" min="-0.183797" max="0.158263" rms="0.009049"/>
+				</waveblock>
+				<waveblock start="524288">
+					<simpleblockfile filename="e00009cd.au" len="262144" min="-0.192613" max="0.14943" rms="0.008472"/>
+				</waveblock>
+				<waveblock start="786432">
+					<simpleblockfile filename="e0000933.au" len="262144" min="-0.219118" max="0.164966" rms="0.009283"/>
+				</waveblock>
+				<waveblock start="1048576">
+					<simpleblockfile filename="e0000dc5.au" len="262144" min="-0.149957" max="0.150986" rms="0.008361"/>
+				</waveblock>
+				<waveblock start="1310720">
+					<simpleblockfile filename="e00001d4.au" len="262144" min="-0.247945" max="0.17856" rms="0.012245"/>
+				</waveblock>
+				<waveblock start="1572864">
+					<simpleblockfile filename="e000016f.au" len="262144" min="-0.185514" max="0.180292" rms="0.010263"/>
+				</waveblock>
+				<waveblock start="1835008">
+					<simpleblockfile filename="e00007b9.au" len="19944" min="-0.004335" max="0.005407" rms="0.000475"/>
+				</waveblock>
+			</sequence>
+			<envelope numpoints="0"/>
+		</waveclip>
+	</wavetrack>
 </project>
