@@ -165,7 +165,7 @@ int repeat_after_me_english(int s){
 		printf("Getting new word");
 		line[strlen(line)-1] = 0;
 		printf("Line: %s\n", line);
-		/*
+		
 		//repeat_underscore_me
 		if(strcmp(line, "English")){
 			printf ("Read %s\n", line);
@@ -239,7 +239,6 @@ int repeat_after_me_english(int s){
 				
 			}
 		}
-	*/	
 	}
 	
 	printf("About to exit teaching");
