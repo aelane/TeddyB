@@ -89,9 +89,9 @@ int main(void) {
 	struct sockaddr_rc loc_addr = { 0 };
 	
 	int continue_flag = 0,changeTopic_flag = 1, sphinx_count = 0, attempts;
-	FILE *fp_Topic, *fp_Status, *fp_Sphinx;
+	FILE *fp_Topic, *fp_Status, *fp_Sphinx, *fp_Setting;
 	char message_Buffer[64];
-	char line[16];
+	char line[16], mode[16], language[16];
 	char status_chk[16] = "";
 	char sphinx_arr[64];
 	size_t len = 16;
@@ -224,17 +224,26 @@ sdpconnect:
 				if( status < 0 ) {
 					perror("uh oh");
 				}
-				
 				//////////////////////////Start of teaching stuff//////////////////////////////////////////
 				do {
 					
 					if(changeTopic_flag){
-						system("/AWS/SDK/sample_apps/subscribe_publish_sample/subscribe_publish_sample");
+						system("/Curriculum/AWS/AWS_MQTT");
 						changeTopic_flag = 0;
 						sleep(2);
 					}
 					
+					
+					fp_Setting = fopen("/Curriculum/BearSettings.txt", "r");
+					fgets(language, 16, fp_Setting);
+					fgets(mode, 16, fp_Setting);
+					language[strlen(language)-1] = 0;
+					mode[strlen(mode)-1] = 0;
+					fclose(fp_Setting);
+					
+					//status = english_to_other(s, language);
 					status = repeat_after_me_english(s);
+					
 					
 					changeTopic_flag = 1;
 					printf("Changing Topic");
