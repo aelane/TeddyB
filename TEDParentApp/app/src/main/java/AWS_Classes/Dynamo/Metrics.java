@@ -8,19 +8,20 @@ import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBTable;
  * Created by Niko on 11/10/2015.
  * Updated by Paige on 2/29/2016
  */
-@DynamoDBTable(tableName = "Metrics")
+@DynamoDBTable(tableName = "BearData")
 public class Metrics {
 
-    String UserID;
+    String BearID;
     String Language;
     String Topic;
+    String TeachingMode;
 
-    @DynamoDBHashKey(attributeName = "UserID")
-    public String getUserID() {
-        return UserID;
+    @DynamoDBHashKey(attributeName = "BearID")
+    public String getBearID() {
+        return BearID;
     }
-    public void setUserID(String s){
-        this.UserID = s;
+    public void setBearID(String s){
+        this.BearID = s;
     }
 
     @DynamoDBAttribute(attributeName = "Language")
@@ -32,5 +33,9 @@ public class Metrics {
     @DynamoDBAttribute(attributeName = "Topic")
     public String getTopic() { return Topic; }
     public void setTopic(String s) {this.Topic = s; }
+
+    @DynamoDBAttribute(attributeName = "TeachingMode")
+    public String getTeachingMode() { return Topic; }
+    public void setTeachingMode(String s) {this.Topic = s; }
 
 }
