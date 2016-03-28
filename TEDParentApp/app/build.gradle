@@ -28,9 +28,9 @@ dependencies {
     compile files('lib/aws-android-sdk-core-2.2.13.jar')
     compile files('lib/gson-2.2.4.jar')
     compile files('lib/TED-ParentAPP-1.0.0.jar')
-}
+    compile files('lib/GraphView-4.0.1.jar')
 
-dependencies {
+
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile fileTree(include: ['*.jar'], dir: 'app/libs')
     compile 'com.android.support:appcompat-v7:23.1.0'

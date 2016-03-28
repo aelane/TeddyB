@@ -105,7 +105,7 @@ public class SettingsActivity extends AppCompatActivity implements AsyncResponse
             case 0:
                 startActivity(new Intent(SettingsActivity.this, HomeActivity.class));
             case 1:
-                startActivity(new Intent(SettingsActivity.this, MetricsActivity.class));
+                startActivity(new Intent(SettingsActivity.this, MetricsTestActivity.class));
             case 3:
                 startActivity(new Intent(SettingsActivity.this, SettingsActivity.class));
 //            case 4:
