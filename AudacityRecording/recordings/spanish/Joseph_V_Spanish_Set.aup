@@ -1,0 +1,181 @@
+<?xml version="1.0" standalone="no" ?>
+<!DOCTYPE project PUBLIC "-//audacityproject-1.3.0//DTD//EN" "http://audacity.sourceforge.net/xml/audacityproject-1.3.0.dtd" >
+<project xmlns="http://audacity.sourceforge.net/xml/" projname="Joseph_V_Spanish_Set_data" version="1.3.0" audacityversion="2.1.2" sel0="0.2089795918" sel1="0.2089795918" vpos="0" h="0.0000000000" zoom="43.0664062500" rate="16000.0" snapto="off" selectionformat="hh:mm:ss + milliseconds" frequencyformat="Hz" bandwidthformat="octaves">
+	<tags/>
+	<labeltrack name="English Label" numlabels="55" height="74" minimized="0" isSelected="0">
+		<label t="0.0812698400" t1="0.0812698400" title="one"/>
+		<label t="1.9707936500" t1="1.9707936500" title="two"/>
+		<label t="4.0054421800" t1="4.0054421800" title="three"/>
+		<label t="5.8165986400" t1="5.8165986400" title="four"/>
+		<label t="7.7032199500" t1="7.7032199500" title="five"/>
+		<label t="9.8336507900" t1="9.8336507900" title="six"/>
+		<label t="11.7609070300" t1="11.7609070300" title="seven"/>
+		<label t="13.9145578200" t1="13.9145578200" title="eight"/>
+		<label t="15.5515646300" t1="15.5515646300" title="nine"/>
+		<label t="17.8039002300" t1="17.8039002300" title="ten"/>
+		<label t="21.3333333300" t1="21.3333333300" title="apple"/>
+		<label t="23.7133786800" t1="23.7133786800" title="banana"/>
+		<label t="26.0179591800" t1="26.0179591800" title="bread"/>
+		<label t="27.9684353700" t1="27.9684353700" title="cake"/>
+		<label t="29.5880272100" t1="29.5880272100" title="carrot"/>
+		<label t="31.9274376400" t1="31.9274376400" title="cookie"/>
+		<label t="34.0752834500" t1="34.0752834500" title="grapes"/>
+		<label t="35.7587301600" t1="35.7587301600" title="milk"/>
+		<label t="37.6859863900" t1="37.6859863900" title="juice"/>
+		<label t="39.5029478500" t1="39.5029478500" title="water"/>
+		<label t="43.0497959200" t1="43.0497959200" title="bear"/>
+		<label t="44.9480272100" t1="44.9480272100" title="bird"/>
+		<label t="46.6663038500" t1="46.6663038500" title="cat"/>
+		<label t="48.9418594100" t1="48.9418594100" title="dog"/>
+		<label t="50.7994557800" t1="50.7994557800" title="elephant"/>
+		<label t="53.3768707500" t1="53.3768707500" title="giraffe"/>
+		<label t="54.9674376400" t1="54.9674376400" title="horse"/>
+		<label t="56.7785941000" t1="56.7785941000" title="monkey"/>
+		<label t="58.6187755100" t1="58.6187755100" title="pig"/>
+		<label t="60.5286167800" t1="60.5286167800" title="cow"/>
+		<label t="62.5371428600" t1="62.5371428600" title="head"/>
+		<label t="65.6137868500" t1="65.6137868500" title="arm"/>
+		<label t="68.0228571400" t1="68.0228571400" title="leg"/>
+		<label t="69.8165986400" t1="69.8165986400" title="foot"/>
+		<label t="71.3839455800" t1="71.3839455800" title="hand"/>
+		<label t="73.5608163300" t1="73.5608163300" title="eye"/>
+		<label t="75.5170975100" t1="75.5170975100" title="ear"/>
+		<label t="78.0074376400" t1="78.0074376400" title="nose"/>
+		<label t="80.0043537400" t1="80.0043537400" title="mouth"/>
+		<label t="81.8793650800" t1="81.8793650800" title="stomach"/>
+		<label t="83.9285260800" t1="83.9285260800" title="family"/>
+		<label t="85.7977324300" t1="85.7977324300" title="mom"/>
+		<label t="87.8178684800" t1="87.8178684800" title="dad"/>
+		<label t="89.7973696100" t1="89.7973696100" title="brother"/>
+		<label t="91.7536507900" t1="91.7536507900" title="sister"/>
+		<label t="93.6228571400" t1="93.6228571400" title="grandma"/>
+		<label t="95.6778231300" t1="95.6778231300" title="grandpa"/>
+		<label t="97.6341043100" t1="97.6341043100" title="bed"/>
+		<label t="99.6716553300" t1="99.6716553300" title="chair"/>
+		<label t="101.6337415000" t1="101.6337415000" title="table"/>
+		<label t="104.0370068000" t1="104.0370068000" title="television"/>
+		<label t="106.9975510200" t1="106.9975510200" title="yes"/>
+		<label t="109.0060771000" t1="109.0060771000" title="no"/>
+		<label t="111.0146031700" t1="111.0146031700" title="hello"/>
+		<label t="112.9882993200" t1="112.9882993200" title="goodbye"/>
+	</labeltrack>
+	<labeltrack name="Spanish Label" numlabels="55" height="64" minimized="0" isSelected="0">
+		<label t="0.0812698400" t1="0.0812698400" title="uno"/>
+		<label t="1.9736961500" t1="1.9736961500" title="dos"/>
+		<label t="4.0054421800" t1="4.0054421800" title="tres"/>
+		<label t="6.0023582800" t1="6.0023582800" title="cuatro"/>
+		<label t="8.0108843500" t1="8.0108843500" title="cinco"/>
+		<label t="10.0890702900" t1="10.0890702900" title="seis"/>
+		<label t="11.9698866200" t1="11.9698866200" title="siete"/>
+		<label t="14.0248526100" t1="14.0248526100" title="ocho"/>
+		<label t="16.0101587300" t1="16.0101587300" title="nueve"/>
+		<label t="17.9722449000" t1="17.9722449000" title="diez"/>
+		<label t="22.0241269800" t1="22.0241269800" title="manzana"/>
+		<label t="24.0442630400" t1="24.0442630400" title="platano"/>
+		<label t="26.0643990900" t1="26.0643990900" title="pan"/>
+		<label t="28.0613151900" t1="28.0613151900" title="pastel"/>
+		<label t="30.0234013600" t1="30.0234013600" title="zanahoria"/>
+		<label t="31.9303401400" t1="31.9303401400" title="galleta"/>
+		<label t="34.0288435400" t1="34.0288435400" title="uva"/>
+		<label t="36.0257596400" t1="36.0257596400" title="leche"/>
+		<label t="38.0575056700" t1="38.0575056700" title="jugo"/>
+		<label t="40.0195918400" t1="40.0195918400" title="agua"/>
+		<label t="43.0497959200" t1="43.0497959200" title="oso"/>
+		<label t="45.0118820900" t1="45.0118820900" title="pajaro"/>
+		<label t="46.7649886600" t1="46.7649886600" title="gato"/>
+		<label t="49.0173242600" t1="49.0173242600" title="perro"/>
+		<label t="51.0490702900" t1="51.0490702900" title="elefante"/>
+		<label t="53.7454875300" t1="53.7454875300" title="jirafa"/>
+		<label t="55.3012244900" t1="55.3012244900" title="caballo"/>
+		<label t="57.1588208600" t1="57.1588208600" title="mono"/>
+		<label t="59.0193197300" t1="59.0280272100" title="cerdo"/>
+		<label t="61.0452607700" t1="61.0452607700" title="vaca"/>
+		<label t="62.8186848100" t1="62.8186848100" title="cabeza"/>
+		<label t="65.9243537400" t1="65.9243537400" title="brazo"/>
+		<label t="68.0228571400" t1="68.0228571400" title="pierna"/>
+		<label t="70.0081632700" t1="70.0081632700" title="pie"/>
+		<label t="71.6132426300" t1="71.6132426300" title="mano"/>
+		<label t="73.9352381000" t1="73.9352381000" title="ojo"/>
+		<label t="76.0337415000" t1="76.0337415000" title="oreja"/>
+		<label t="78.0074376400" t1="78.0074376400" title="nariz"/>
+		<label t="80.0275737000" t1="80.0275737000" title="boca"/>
+		<label t="82.0477097500" t1="82.0477097500" title="estomago"/>
+		<label t="84.0185034000" t1="84.0185034000" title="familia"/>
+		<label t="86.0299319700" t1="86.0299319700" title="mama"/>
+		<label t="88.0500680300" t1="88.0500680300" title="papa"/>
+		<label t="90.0237641700" t1="90.0237641700" title="hermano"/>
+		<label t="92.0206802700" t1="92.0293877600" title="hermana"/>
+		<label t="94.0292063500" t1="94.0292063500" title="abuela"/>
+		<label t="95.9854875300" t1="95.9854875300" title="abuelo"/>
+		<label t="98.0114285700" t1="98.0114285700" title="cama"/>
+		<label t="100.0547845800" t1="100.0547845800" title="silla"/>
+		<label t="102.0633106600" t1="102.1097505700" title="mesa"/>
+		<label t="104.0370068000" t1="104.0370068000" title="television"/>
+		<label t="106.9975510200" t1="106.9975510200" title="si"/>
+		<label t="109.0060771000" t1="109.0060771000" title="no"/>
+		<label t="111.0146031700" t1="111.0146031700" title="hola"/>
+		<label t="112.9882993200" t1="112.9882993200" title="adios"/>
+	</labeltrack>
+	<wavetrack name="Audio Track" channel="0" linked="1" mute="0" solo="0" height="150" minimized="0" isSelected="1" rate="16000" gain="1.0" pan="0.0">
+		<waveclip offset="0.08126984">
+			<sequence maxsamples="262144" sampleformat="262159" numsamples="1860960">
+				<waveblock start="0">
+					<simpleblockfile filename="e00009a0.au" len="262144" min="-0.097168" max="0.095184" rms="0.008512"/>
+				</waveblock>
+				<waveblock start="262144">
+					<simpleblockfile filename="e00002a8.au" len="262144" min="-0.153839" max="0.136688" rms="0.010533"/>
+				</waveblock>
+				<waveblock start="524288">
+					<simpleblockfile filename="e0000736.au" len="262144" min="-0.130035" max="0.216431" rms="0.012397"/>
+				</waveblock>
+				<waveblock start="786432">
+					<simpleblockfile filename="e00000e9.au" len="262144" min="-0.129456" max="0.115356" rms="0.011987"/>
+				</waveblock>
+				<waveblock start="1048576">
+					<simpleblockfile filename="e0000c88.au" len="262144" min="-0.190765" max="0.183136" rms="0.011727"/>
+				</waveblock>
+				<waveblock start="1310720">
+					<simpleblockfile filename="e0000851.au" len="262144" min="-0.12262" max="0.136902" rms="0.0135"/>
+				</waveblock>
+				<waveblock start="1572864">
+					<simpleblockfile filename="e0000e03.au" len="262144" min="-0.095337" max="0.103912" rms="0.009215"/>
+				</waveblock>
+				<waveblock start="1835008">
+					<simpleblockfile filename="e00001c5.au" len="25952" min="-0.001831" max="0.001892" rms="0.000209"/>
+				</waveblock>
+			</sequence>
+			<envelope numpoints="0"/>
+		</waveclip>
+	</wavetrack>
+	<wavetrack name="Audio Track" channel="1" linked="0" mute="0" solo="0" height="150" minimized="0" isSelected="1" rate="16000" gain="1.0" pan="0.0">
+		<waveclip offset="0.08126984">
+			<sequence maxsamples="262144" sampleformat="262159" numsamples="1860960">
+				<waveblock start="0">
+					<simpleblockfile filename="e00009b6.au" len="262144" min="-0.097168" max="0.095154" rms="0.008512"/>
+				</waveblock>
+				<waveblock start="262144">
+					<simpleblockfile filename="e0000a9b.au" len="262144" min="-0.153809" max="0.136688" rms="0.010533"/>
+				</waveblock>
+				<waveblock start="524288">
+					<simpleblockfile filename="e00005a2.au" len="262144" min="-0.130035" max="0.2164" rms="0.012397"/>
+				</waveblock>
+				<waveblock start="786432">
+					<simpleblockfile filename="e00009b9.au" len="262144" min="-0.129456" max="0.115356" rms="0.011987"/>
+				</waveblock>
+				<waveblock start="1048576">
+					<simpleblockfile filename="e0000cd7.au" len="262144" min="-0.190735" max="0.183105" rms="0.011727"/>
+				</waveblock>
+				<waveblock start="1310720">
+					<simpleblockfile filename="e00004d4.au" len="262144" min="-0.12265" max="0.136902" rms="0.0135"/>
+				</waveblock>
+				<waveblock start="1572864">
+					<simpleblockfile filename="e0000ba0.au" len="262144" min="-0.095306" max="0.103851" rms="0.009215"/>
+				</waveblock>
+				<waveblock start="1835008">
+					<simpleblockfile filename="e0000825.au" len="25952" min="-0.001801" max="0.001862" rms="0.000209"/>
+				</waveblock>
+			</sequence>
+			<envelope numpoints="0"/>
+		</waveclip>
+	</wavetrack>
+</project>
