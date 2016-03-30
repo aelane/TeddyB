@@ -19,6 +19,9 @@
 #include <bluetooth/rfcomm.h>
 
 #include "Lessons.h"
+#include "AWS.h"
+#include "Sphinx.h"
+#include "aws_iot_config.h"
 
 int str2uuid( const char *uuid_str, uuid_t *uuid ) 
 {
@@ -97,9 +100,77 @@ int main(void) {
 	size_t len = 16;
 	ssize_t read;
 	char **arr = NULL;
-					
 	(void) signal(SIGINT, SIG_DFL);
+	
+//////////////////////AWS///////////////////////////////////	
+	IoT_Error_t rc = NONE_ERROR;
+	char HostAddress[255] = AWS_IOT_MQTT_HOST;
+	char certDirectory[PATH_MAX + 1] = "/AWS/SDK/certs/";
+	uint32_t port = AWS_IOT_MQTT_PORT;
+	
+	MQTTMessageParams Msg = MQTTMessageParamsDefault;
+	Msg.qos = QOS_0;
+	char cPayload[100];
+	Msg.pPayload = (void *) cPayload;
+	
+	char rootCA[PATH_MAX + 1];
+	char clientCRT[PATH_MAX + 1];
+	char clientKey[PATH_MAX + 1];
+	
+	char cafileName[] = AWS_IOT_ROOT_CA_FILENAME;
+	char clientCRTName[] = AWS_IOT_CERTIFICATE_FILENAME;
+	char clientKeyName[] = AWS_IOT_PRIVATE_KEY_FILENAME;
+	
+	sprintf(rootCA, "/%s/%s", certDirectory, cafileName);
+	sprintf(clientCRT, "/%s/%s", certDirectory, clientCRTName);
+	sprintf(clientKey, "/%s/%s", certDirectory, clientKeyName);
+	
+	MQTTConnectParams connectParams = MQTTConnectParamsDefault;
 
+	connectParams.KeepAliveInterval_sec = 10;
+	connectParams.isCleansession = true;
+	connectParams.MQTTVersion = MQTT_3_1_1;
+	connectParams.pClientID = "CSDK-test-device";
+	connectParams.pHostURL = HostAddress;
+	connectParams.port = port;
+	connectParams.isWillMsgPresent = false;
+	connectParams.pRootCALocation = rootCA;
+	connectParams.pDeviceCertLocation = clientCRT;
+	connectParams.pDevicePrivateKeyLocation = clientKey;
+	connectParams.mqttCommandTimeout_ms = 2000;
+	connectParams.tlsHandshakeTimeout_ms = 5000;
+	connectParams.isSSLHostnameVerify = true;// ensure this is set to true for production
+	connectParams.disconnectHandler = disconnectCallbackHandler;
+	
+	INFO("Connecting...");
+	rc = aws_iot_mqtt_connect(&connectParams);
+	if (NONE_ERROR != rc) {
+		ERROR("Error(%d) connecting to %s:%d", rc, connectParams.pHostURL, connectParams.port);
+	}
+	
+	MQTTSubscribeParams subParams = MQTTSubscribeParamsDefault;
+	subParams.mHandler = MQTTcallbackHandler;
+	subParams.pTopic = "Bear/Curriculum/Response";
+	subParams.qos = QOS_0;
+
+	if (NONE_ERROR == rc) {
+		INFO("Subscribing...");
+		rc = aws_iot_mqtt_subscribe(&subParams);
+		if (NONE_ERROR != rc) {
+			ERROR("Error subscribing");
+		}
+	}
+	
+	MQTTPublishParams CurriculumParams = MQTTPublishParamsDefault;
+	CurriculumParams.pTopic = "Bear/Curriculum/Request";
+	
+	MQTTPublishParams MetricsParams = MQTTPublishParamsDefault;
+	MetricsParams.pTopic = "Bear/Curriculum/Metrics";
+	sprintf(cPayload, "{ \"BearID\":\"001\", \"Message\":\"Hello From Mother Russia\"}");
+	Msg.PayloadLen = strlen(cPayload) + 1;
+	MetricsParams.MessageParams = Msg;
+	rc = aws_iot_mqtt_publish(&MetricsParams);
+///////////////////////////////////////////////////////////////////////////////////////
 	dev_id = hci_get_route(NULL);
 	if (dev_id < 0) {
 		perror("No Bluetooth Adapter Available");
@@ -228,6 +299,11 @@ sdpconnect:
 				do {
 					
 					if(changeTopic_flag){
+					
+						sprintf(cPayload, "{ \"BearID\":\"001\" }");
+						Msg.PayloadLen = strlen(cPayload) + 1;
+						CurriculumParams.MessageParams = Msg;
+						//still need to do the reading will make loop later.
 						system("/Curriculum/AWS/AWS_MQTT");
 						changeTopic_flag = 0;
 						sleep(2);
