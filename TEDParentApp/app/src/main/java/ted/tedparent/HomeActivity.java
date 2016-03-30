@@ -16,7 +16,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.amazonaws.auth.CognitoCachingCredentialsProvider;
 import com.amazonaws.regions.Regions;
@@ -43,8 +42,6 @@ public class HomeActivity extends AppCompatActivity implements AsyncResponse {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        // Test to see if authentication string is being sent
-        Toast.makeText(HomeActivity.this, mySingleton.getInstance().getMystring(), Toast.LENGTH_LONG).show();
 
         // Populate topic and language boxes
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -77,6 +74,9 @@ public class HomeActivity extends AppCompatActivity implements AsyncResponse {
                     "us-east-1:b0b7a95e-1afe-41d6-9465-1f40d1494014", // Identity Pool ID
                     Regions.US_EAST_1 // Region
             );
+
+            //Credentials for specific accounts
+            //CognitoCachingCredentialsProvider credentialsProvider = mySingleton.getInstance().getCredentials()
 
             BearStateUpdate myMapper = new BearStateUpdate(credentialsProvider);
             myMapper.delegate = this;
@@ -113,10 +113,13 @@ public class HomeActivity extends AppCompatActivity implements AsyncResponse {
         switch (position) {
             case 0:
                 startActivity(new Intent(HomeActivity.this, HomeActivity.class));
+                break;
             case 1:
                 startActivity(new Intent(HomeActivity.this, MetricsTestActivity.class));
+                break;
             case 3:
                 startActivity(new Intent(HomeActivity.this, SettingsActivity.class));
+                break;
 //            case 4:
 //                startActivity(new Intent(HomeActivity.this, LoginActivity.class));
             default:

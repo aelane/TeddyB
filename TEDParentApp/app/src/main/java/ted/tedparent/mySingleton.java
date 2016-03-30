@@ -2,6 +2,8 @@ package ted.tedparent;
 
 import android.app.Application;
 
+import com.amazonaws.auth.CognitoCachingCredentialsProvider;
+
 /**
  * Created by pwdarby on 3/30/16.
  *
@@ -10,10 +12,13 @@ import android.app.Application;
 
 public class mySingleton extends Application {
     private volatile static mySingleton mInstance = null;
-    private String authString;
+
+    private String testString;
+    private CognitoCachingCredentialsProvider credentials;
 
     private mySingleton() {
-        authString = "TEST AUTHENTICATION"; //initialize your var here
+        testString = "TEST AUTHENTICATION"; //initialize your var here
+        credentials = null;
         //Add all the variables you need, here.
     }
     public static mySingleton getInstance(){  //Singleton's core
@@ -23,8 +28,12 @@ public class mySingleton extends Application {
         return mInstance;
     }
 
-    //Place Set and Get methods here
-    public String getMystring(){return this.authString;}
-    public void setMystring(String s){authString = s;}
-//Add get/setmethods for your other variables here
-} //Thats it
+    //Get and Set methods here
+    public String getMystring(){return this.testString;}
+    public CognitoCachingCredentialsProvider getCredentials() {return this.credentials;}
+
+    public void setMystring(String s){testString = s;}
+    public void setCredentials(CognitoCachingCredentialsProvider c){credentials = c;}
+
+
+}

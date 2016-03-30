@@ -85,6 +85,9 @@ public class LoginActivity extends AppCompatActivity implements RegTaskResponse,
                 output,
                 Regions.US_EAST_1);
 
+        // Store credentials in mySingleton class
+        mySingleton.getInstance().setCredentials(credentialsProvider);
+
 
 
     }

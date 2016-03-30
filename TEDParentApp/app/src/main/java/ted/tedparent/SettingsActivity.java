@@ -75,6 +75,11 @@ public class SettingsActivity extends AppCompatActivity implements AsyncResponse
                             "us-east-1:b0b7a95e-1afe-41d6-9465-1f40d1494014", // Identity Pool ID
                             Regions.US_EAST_1 // Region
                     );
+
+
+                    //Credentials for specific accounts
+                    //CognitoCachingCredentialsProvider credentialsProvider = mySingleton.getInstance().getCredentials()
+                    
                     SettingsUpdate myMapper = new SettingsUpdate(credentialsProvider);
                     myMapper.delegate = myContext;
                     myMapper.execute(languageStr, topicStr);
@@ -104,10 +109,13 @@ public class SettingsActivity extends AppCompatActivity implements AsyncResponse
         switch (position) {
             case 0:
                 startActivity(new Intent(SettingsActivity.this, HomeActivity.class));
+                break;
             case 1:
                 startActivity(new Intent(SettingsActivity.this, MetricsTestActivity.class));
+                break;
             case 3:
                 startActivity(new Intent(SettingsActivity.this, SettingsActivity.class));
+                break;
 //            case 4:
 //                startActivity(new Intent(HomeActivity.this, LoginActivity.class));
             default:

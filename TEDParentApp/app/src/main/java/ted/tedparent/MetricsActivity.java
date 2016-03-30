@@ -60,8 +60,10 @@ public class MetricsActivity extends AppCompatActivity {
         switch (position) {
             case 0:
                 startActivity(new Intent(MetricsActivity.this, HomeActivity.class));
+                break;
             case 1:
                 startActivity(new Intent(MetricsActivity.this, MetricsActivity.class));
+                break;
 //            case 4:
 //                startActivity(new Intent(MetricsActivity.this, LoginActivity.class));
             default:
