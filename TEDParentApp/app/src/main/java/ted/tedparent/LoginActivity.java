@@ -63,7 +63,7 @@ public class LoginActivity extends AppCompatActivity implements RegTaskResponse,
     }
 
     public void gotoMain(View v){
-        Intent i = new Intent(getApplicationContext(), MainActivity.class);
+        Intent i = new Intent(getApplicationContext(), HomeActivity.class);
         startActivity(i);
     }
 
