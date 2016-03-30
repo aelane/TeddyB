@@ -1,0 +1,11 @@
+    Words: 2266  Hyps: 2266 Refs: 2266
+    (T)otal tokens in reference: 18189
+    (M)atches: 18171  (S)ubstitutions: 12  (I)nsertions: 3  (D)eletions: 6
+    % Correct (M/T)           -- %99.90
+    % Token ER ((S+I+D)/T)    -- %0.12
+    % Accuracy 1.0-ER         -- %99.88
+
+    (S)equences: 2266  (C)orrect sequences: 2250  (E)rror sequences: 16
+    % Sequence ER (E/S)       -- %0.71
+    % Sequence Acc (1.0-E/S)  -- %99.29
+

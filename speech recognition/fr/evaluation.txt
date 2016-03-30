@@ -1,0 +1,11 @@
+    Words: 10500  Hyps: 10500 Refs: 10500
+    (T)otal tokens in reference: 70248
+    (M)atches: 68256  (S)ubstitutions: 1342  (I)nsertions: 549  (D)eletions: 650
+    % Correct (M/T)           -- %97.16
+    % Token ER ((S+I+D)/T)    -- %3.62
+    % Accuracy 1.0-ER         -- %96.38
+
+    (S)equences: 10500  (C)orrect sequences: 8902  (E)rror sequences: 1598
+    % Sequence ER (E/S)       -- %15.22
+    % Sequence Acc (1.0-E/S)  -- %84.78
+
