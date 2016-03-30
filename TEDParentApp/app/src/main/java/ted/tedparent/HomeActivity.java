@@ -16,6 +16,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.amazonaws.auth.CognitoCachingCredentialsProvider;
 import com.amazonaws.regions.Regions;
@@ -41,6 +42,9 @@ public class HomeActivity extends AppCompatActivity implements AsyncResponse {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        // Test to see if authentication string is being sent
+        Toast.makeText(HomeActivity.this, mySingleton.getInstance().getMystring(), Toast.LENGTH_LONG).show();
 
         // Populate topic and language boxes
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
