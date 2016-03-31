@@ -22,7 +22,7 @@ import com.amazonaws.regions.Regions;
 
 import AWS_Classes.Dynamo.AsyncResponse;
 import AWS_Classes.Dynamo.BearStateUpdate;
-import AWS_Classes.Dynamo.Metrics;
+import AWS_Classes.Dynamo.BearData;
 
 
 public class HomeActivity extends AppCompatActivity implements AsyncResponse {
@@ -89,7 +89,7 @@ public class HomeActivity extends AppCompatActivity implements AsyncResponse {
     }
 
 
-    public void processFinish(Metrics output){
+    public void processFinish(BearData output){
         topicBox.append(output.getTopic());
         languageBox.append(output.getLanguage());
 

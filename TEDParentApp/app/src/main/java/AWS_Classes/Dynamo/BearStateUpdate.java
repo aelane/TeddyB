@@ -10,7 +10,7 @@ import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
 /**
  * Created by Niko on 11/8/2015.
  */
-public class BearStateUpdate extends AsyncTask<String, Void, Metrics> {
+public class BearStateUpdate extends AsyncTask<String, Void, BearData> {
 
     protected CognitoCachingCredentialsProvider credentialsProvider;
     public AsyncResponse delegate = null;
@@ -20,19 +20,19 @@ public class BearStateUpdate extends AsyncTask<String, Void, Metrics> {
     }
 
     @Override
-    protected Metrics doInBackground(String... args) {
+    protected BearData doInBackground(String... args) {
         //Set up our credentials and pass it to our db client.
 
         AmazonDynamoDB ddbClient = new AmazonDynamoDBClient(credentialsProvider);
         DynamoDBMapper mapper = new DynamoDBMapper(ddbClient);
 
-        Metrics userData = mapper.load(Metrics.class, "001");
+        BearData userData = mapper.load(BearData.class, "001");
 
         return userData;
     }
 
     @Override
-    protected void onPostExecute(Metrics result) {
+    protected void onPostExecute(BearData result) {
         delegate.processFinish(result);
     }
 }

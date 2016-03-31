@@ -22,7 +22,7 @@ import com.amazonaws.auth.CognitoCachingCredentialsProvider;
 import com.amazonaws.regions.Regions;
 
 import AWS_Classes.Dynamo.AsyncResponse;
-import AWS_Classes.Dynamo.Metrics;
+import AWS_Classes.Dynamo.BearData;
 import AWS_Classes.Dynamo.SettingsUpdate;
 
 public class SettingsActivity extends AppCompatActivity implements AsyncResponse {
@@ -79,7 +79,7 @@ public class SettingsActivity extends AppCompatActivity implements AsyncResponse
 
                     //Credentials for specific accounts
                     //CognitoCachingCredentialsProvider credentialsProvider = mySingleton.getInstance().getCredentials()
-                    
+
                     SettingsUpdate myMapper = new SettingsUpdate(credentialsProvider);
                     myMapper.delegate = myContext;
                     myMapper.execute(languageStr, topicStr);
@@ -89,7 +89,7 @@ public class SettingsActivity extends AppCompatActivity implements AsyncResponse
 
     }
 
-    public void processFinish(Metrics output){}
+    public void processFinish(BearData output){}
 
     private void addDrawerItems() {
         String[] osArray = { "Home", "Metrics", "Accounts", "Settings", "Log Out" };

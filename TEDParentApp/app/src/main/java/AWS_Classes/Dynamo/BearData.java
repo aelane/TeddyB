@@ -9,7 +9,7 @@ import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBTable;
  * Updated by Paige on 2/29/2016
  */
 @DynamoDBTable(tableName = "BearData")
-public class Metrics {
+public class BearData {
 
     String BearID;
     String Language;
