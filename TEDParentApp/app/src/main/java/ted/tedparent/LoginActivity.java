@@ -17,6 +17,7 @@ import com.amazonaws.auth.CognitoCachingCredentialsProvider;
 import com.amazonaws.regions.Regions;
 
 import AWS_Classes.Cognito.*;
+import Helper_Classes.tedSingleton;
 
 public class LoginActivity extends AppCompatActivity implements RegTaskResponse, LoginTaskResponse {
 
@@ -86,9 +87,7 @@ public class LoginActivity extends AppCompatActivity implements RegTaskResponse,
                 Regions.US_EAST_1);
 
         // Store credentials in mySingleton class
-        mySingleton.getInstance().setCredentials(credentialsProvider);
-
-
+        tedSingleton.getInstance().setCredentials(credentialsProvider);
 
     }
 

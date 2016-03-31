@@ -1,4 +1,4 @@
-package ted.tedparent;
+package Helper_Classes;
 
 import android.app.Application;
 
@@ -10,20 +10,20 @@ import com.amazonaws.auth.CognitoCachingCredentialsProvider;
  * Works like a common storage box reachable by any activity for global variables and methods.
  */
 
-public class mySingleton extends Application {
-    private volatile static mySingleton mInstance = null;
+public class tedSingleton extends Application {
+    private volatile static tedSingleton mInstance = null;
 
     private String testString;
     private CognitoCachingCredentialsProvider credentials;
 
-    private mySingleton() {
+    private tedSingleton() {
         testString = "TEST AUTHENTICATION"; //initialize your var here
         credentials = null;
         //Add all the variables you need, here.
     }
-    public static mySingleton getInstance(){  //Singleton's core
+    public static tedSingleton getInstance(){  //Singleton's core
         if(mInstance == null){
-            mInstance = new mySingleton();
+            mInstance = new tedSingleton();
         }
         return mInstance;
     }
