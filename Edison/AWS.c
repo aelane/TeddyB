@@ -8,16 +8,10 @@
 #include <sys/time.h>
 #include <limits.h>
 
-#include "aws_iot_log.h"
-#include "aws_iot_version.h"
-#include "aws_iot_mqtt_interface.h"
-#include "aws_iot_config.h"
-
 #include "jsmn.h"
 #include "AWS.h"
 
-jsmn_parser parser;
-
+int changeTopic_flag = 1;
 
 int MQTTcallbackHandler(MQTTCallbackParams params) {
 
@@ -80,16 +74,16 @@ int MQTTcallbackHandler(MQTTCallbackParams params) {
 		if(tokens[i].type == JSMN_PRIMITIVE){
 			fclose(fp);
 			fclose(fp_trans);
+			changeTopic_flag = 0;
 			printf("Closing Topic File\n");
-			sleep(1);
-			exit(0);
+			return 0;
 		}
 		
 	}
 	fclose(fp);
+	fclose(fp_trans);
 	printf("Closing Topic File\n");
-	sleep(1);
-	exit(0);
+	return 0;
 }
 
 void disconnectCallbackHandler(void) {

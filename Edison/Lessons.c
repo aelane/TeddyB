@@ -18,18 +18,21 @@
 #include <bluetooth/sdp_lib.h>
 #include <bluetooth/rfcomm.h>
 
+#include "Lessons.h"
+#include "bear_info.h"
 
-int english_to_other(int s, char* language){
+int english_to_other(int s, char* language, MQTTPublishParams MetricsParams){
 
 	int continue_flag = 0,changeTopic_flag = 1, sphinx_count = 0, attempts;
 	int status = 1;
 	FILE *fp_Topic, *fp_Trans, *fp_Status, *fp_Sphinx;
-	char message_Buffer[64];
-	char line[16], line_trans[16];
-	char status_chk[16] = "";
-	char sphinx_arr[64];
-
+	char message_Buffer[128], line[16], line_trans[16], status_chk[16] = "", sphinx_arr[64];
 	
+	MQTTMessageParams Msg = MQTTMessageParamsDefault;
+	Msg.qos = QOS_0;
+	char cPayload[100];
+	Msg.pPayload = (void *) cPayload;
+
 	fp_Topic = fopen("/Curriculum/TopicData.txt", "r");
 	fp_Trans = fopen("/Curriculum/TopicDataTrans.txt", "r");
 	
@@ -41,9 +44,11 @@ int english_to_other(int s, char* language){
 	
 	while(fgets(line, 16, fp_Topic)!=NULL && fgets(line_trans, 16, fp_Trans)!=NULL){
 		attempts = 0;
-		printf("Getting new word");
+		printf("Getting new word\n");
 		line[strlen(line)-1] = 0;
 		line_trans[strlen(line_trans)-1] = 0;
+		printf("New Word: %s\n", line);
+		printf("New Translation: %s\n", line_trans);
 
 		//repeat_underscore_me
 		printf("Language setting is: %s\n", language);
@@ -113,12 +118,18 @@ int english_to_other(int s, char* language){
 				
 				attempts++;
 				printf("Checking against: %s\n", sphinx_arr);
-				if(!strcmp(sphinx_arr, line)){
-					status = write(s,"check,good_job",64);
+				
+				sprintf(cPayload, "{\"BearID\":\"%s\",\"CorrectWord\":\"%s\",\"WordSaid\":\"%s\",\"TeachingMode\":\"1\"}",BEARID, line_trans, sphinx_arr);
+				Msg.PayloadLen = strlen(cPayload) + 1;
+				MetricsParams.MessageParams = Msg;
+				aws_iot_mqtt_publish(&MetricsParams);
+				
+				if(!strcmp(sphinx_arr, line_trans)){
+					status = write(s,"check,good_job",128);
 				}
 				else if(attempts < 4){
-					sprintf(message_Buffer,"xmark,try_again,%s",line);
-					status = write(s,message_Buffer,64);
+					sprintf(message_Buffer,"xmark,try_again,%s",line_trans);
+					status = write(s,message_Buffer,128);
 					fclose(fp_Sphinx);
 					goto WRONG;
 				}
@@ -138,15 +149,17 @@ int english_to_other(int s, char* language){
 	return status;
 }
 
-int repeat_after_me_english(int s){
+int repeat_after_me_english(int s, MQTTPublishParams MetricsParams){
 
 	int continue_flag = 0,changeTopic_flag = 1, sphinx_count = 0, attempts;
 	int status = 1;
 	FILE *fp_Topic, *fp_Status, *fp_Sphinx;
-	char message_Buffer[64];
-	char line[16];
-	char status_chk[16] = "";
-	char sphinx_arr[64];
+	char message_Buffer[128], line[16], status_chk[16] = "", sphinx_arr[64];
+	
+	MQTTMessageParams Msg = MQTTMessageParamsDefault;
+	Msg.qos = QOS_0;
+	char cPayload[100];
+	Msg.pPayload = (void *) cPayload;
 
 	
 	fp_Topic = fopen("/Curriculum/TopicData.txt", "r");
@@ -156,23 +169,19 @@ int repeat_after_me_english(int s){
 		return -1;
 	}
 	//Format is: img, sound, sound based on mode, sound
-	//status = write(s, "apple,repeat_after_me,apple", 64);
-	//status = write(s, "bear,bear,in_english_is,bear",64);
-	//status = write(s, "banana,banana,in_spanish_is,platano",64);
+	
 	
 	while(fgets (line, 16, fp_Topic)!=NULL){
 		attempts = 0;
-		printf("Getting new word");
+		printf("Getting new word\n");
 		line[strlen(line)-1] = 0;
-		printf("Line: %s\n", line);
+		printf("New Word: %s\n", line);
 		
 		//repeat_underscore_me
 		if(strcmp(line, "English")){
-			printf ("Read %s\n", line);
 			sprintf(message_Buffer,"%s,%s,in_english_is,%s,repeat_after_me,%s",line,line,line,line);
-			printf("The Buffer is:%s\n",message_Buffer);
+			printf("Message sent was: %s\n",message_Buffer);
 			status = write(s,message_Buffer,128);
-			//status = write(s, "banana,banana,in_spanish_is,platano",64);
 			printf ("Wrote %d bytes\n", status);
 			sleep(7);
 		
@@ -190,7 +199,7 @@ int repeat_after_me_english(int s){
 				fgets (status_chk, 16, fp_Status);
 				//line[strlen(line)-1] = 0;
 				printf("Waiting for Continue and got: %s\n",status_chk);
-				if(!strcmp(status_chk, "Continue")){
+				if(!strcmp(status_chk, "Blank")){
 					printf("Ready to Continue\n");
 					//status_chk = NULL;
 					continue_flag = 1;
@@ -220,12 +229,18 @@ int repeat_after_me_english(int s){
 				
 				attempts++;
 				printf("Checking against: %s\n", sphinx_arr);
+				
+				sprintf(cPayload, "{\"BearID\":\"%s\",\"CorrectWord\":\"%s\",\"WordSaid\":\"%s\",\"TeachingMode\":\"1\"}",BEARID, line, sphinx_arr);
+				Msg.PayloadLen = strlen(cPayload) + 1;
+				MetricsParams.MessageParams = Msg;
+				aws_iot_mqtt_publish(&MetricsParams);
+				
 				if(!strcmp(sphinx_arr, line)){
-					status = write(s,"check,good_job",64);
+					status = write(s,"check,good_job",128);
 				}
 				else if(attempts < 4){
 					sprintf(message_Buffer,"xmark,try_again,%s",line);
-					status = write(s,message_Buffer,64);
+					status = write(s,message_Buffer,128);
 					fclose(fp_Sphinx);
 					goto WRONG;
 				}

@@ -22,6 +22,7 @@
 #include "AWS.h"
 #include "Sphinx.h"
 #include "aws_iot_config.h"
+#include "bear_info.h"
 
 int str2uuid( const char *uuid_str, uuid_t *uuid ) 
 {
@@ -91,7 +92,7 @@ int main(void) {
 	int s, loco_channel = -1, status;
 	struct sockaddr_rc loc_addr = { 0 };
 	
-	int continue_flag = 0,changeTopic_flag = 1, sphinx_count = 0, attempts;
+	int continue_flag = 0, sphinx_count = 0, attempts;
 	FILE *fp_Topic, *fp_Status, *fp_Sphinx, *fp_Setting;
 	char message_Buffer[64];
 	char line[16], mode[16], language[16];
@@ -102,6 +103,7 @@ int main(void) {
 	char **arr = NULL;
 	(void) signal(SIGINT, SIG_DFL);
 	
+	changeTopic_flag = 1;
 //////////////////////AWS///////////////////////////////////	
 	IoT_Error_t rc = NONE_ERROR;
 	char HostAddress[255] = AWS_IOT_MQTT_HOST;
@@ -127,7 +129,7 @@ int main(void) {
 	
 	MQTTConnectParams connectParams = MQTTConnectParamsDefault;
 
-	connectParams.KeepAliveInterval_sec = 10;
+	connectParams.KeepAliveInterval_sec = 500;
 	connectParams.isCleansession = true;
 	connectParams.MQTTVersion = MQTT_3_1_1;
 	connectParams.pClientID = "CSDK-test-device";
@@ -164,12 +166,10 @@ int main(void) {
 	MQTTPublishParams CurriculumParams = MQTTPublishParamsDefault;
 	CurriculumParams.pTopic = "Bear/Curriculum/Request";
 	
+	
 	MQTTPublishParams MetricsParams = MQTTPublishParamsDefault;
 	MetricsParams.pTopic = "Bear/Curriculum/Metrics";
-	sprintf(cPayload, "{ \"BearID\":\"001\", \"Message\":\"Hello From Mother Russia\"}");
-	Msg.PayloadLen = strlen(cPayload) + 1;
-	MetricsParams.MessageParams = Msg;
-	rc = aws_iot_mqtt_publish(&MetricsParams);
+
 ///////////////////////////////////////////////////////////////////////////////////////
 	dev_id = hci_get_route(NULL);
 	if (dev_id < 0) {
@@ -205,7 +205,7 @@ int main(void) {
 			sdp_session_t *session;
 			int retries;
 			int foundit, responses;
-			str2ba("22:22:8E:FB:B2:85",&target); 
+			str2ba(TABLET_ADDRESS,&target); 
 			memset(name, 0, sizeof(name));
 			if (hci_read_remote_name(sock, &target, sizeof(name), name, 0) < 0){
 				strcpy(name, "[unknown]");
@@ -300,13 +300,18 @@ sdpconnect:
 					
 					if(changeTopic_flag){
 					
-						sprintf(cPayload, "{ \"BearID\":\"001\" }");
+						sprintf(cPayload, "{\"BearID\":\"%s\"}",BEARID);
 						Msg.PayloadLen = strlen(cPayload) + 1;
 						CurriculumParams.MessageParams = Msg;
+						rc = aws_iot_mqtt_publish(&CurriculumParams);
+						while(rc == NONE_ERROR && changeTopic_flag){
+							rc = aws_iot_mqtt_yield(100);
+							INFO("-->sleep");
+							sleep(1);
+						}								
 						//still need to do the reading will make loop later.
-						system("/Curriculum/AWS/AWS_MQTT");
+						//system("/Curriculum/AWS/AWS_MQTT");
 						changeTopic_flag = 0;
-						sleep(2);
 					}
 					
 					
@@ -317,8 +322,8 @@ sdpconnect:
 					mode[strlen(mode)-1] = 0;
 					fclose(fp_Setting);
 					
-					//status = english_to_other(s, language);
-					status = repeat_after_me_english(s);
+					//status = english_to_other(s, language, MetricsParams);
+					status = repeat_after_me_english(s, MetricsParams);
 					
 					
 					changeTopic_flag = 1;

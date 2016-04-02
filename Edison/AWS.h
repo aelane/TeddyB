@@ -7,6 +7,8 @@
 #include "aws_iot_mqtt_interface.h"
 #include "aws_iot_config.h"
 
+extern int changeTopic_flag;
+
 int MQTTcallbackHandler(MQTTCallbackParams params);
 
 void disconnectCallbackHandler(void);
