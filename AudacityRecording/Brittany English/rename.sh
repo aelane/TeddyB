@@ -5,5 +5,5 @@ do
 	g=$(basename $f .wav)
 
 	#echo $g
-	mv $f $g\_sp_brittany.wav
+	mv $f $g\_en_brittany.wav
 done
