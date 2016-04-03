@@ -35,7 +35,7 @@ public class BearData {
     public void setTopic(String s) {this.Topic = s; }
 
     @DynamoDBAttribute(attributeName = "TeachingMode")
-    public String getTeachingMode() { return Topic; }
-    public void setTeachingMode(String s) {this.Topic = s; }
+    public String getTeachingMode() { return TeachingMode; }
+    public void setTeachingMode(String s) {this.TeachingMode = s; }
 
 }

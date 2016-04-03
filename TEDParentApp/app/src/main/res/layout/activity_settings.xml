@@ -40,27 +40,48 @@
             android:id="@+id/TopicSpinner"
             android:spinnerMode="dropdown"
             android:entries="@array/Topics"
-            android:layout_below="@+id/LangSpinner"
+            android:layout_alignBaseline="@+id/textView6"
+            android:layout_alignBottom="@+id/textView6"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_marginTop="60dp" />
+            android:layout_alignParentStart="true" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Topic"
-            android:layout_centerHorizontal="true"
-            android:layout_alignTop="@+id/TopicSpinner"
-            android:id="@+id/textView5" />
+            android:id="@+id/textView5"
+            android:layout_alignBaseline="@+id/TopicSpinner"
+            android:layout_alignBottom="@+id/TopicSpinner"
+            android:layout_centerHorizontal="true" />
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Update Settings"
             android:id="@+id/SettingsButton"
-            android:layout_below="@+id/TopicSpinner"
+            android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="63dp" />
+            android:layout_marginBottom="57dp" />
+
+        <Spinner
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/TeachingModeSpinner"
+            android:spinnerMode="dropdown"
+            android:entries="@array/TeachingModes"
+            android:layout_above="@+id/SettingsButton"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Teaching Mode"
+            android:id="@+id/textView6"
+            android:layout_below="@+id/LangSpinner"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="110dp" />
     </RelativeLayout>
 
     <!--Side Navigation Drawer UI -->

@@ -34,6 +34,15 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="46dp" />
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Teaching Mode: "
+            android:id="@+id/CurrTeachingMode"
+            android:layout_below="@+id/CurrTopic"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="45dp" />
+
     </RelativeLayout>
 
     <!--Side Navigation Drawer UI -->

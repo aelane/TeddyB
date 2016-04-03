@@ -29,6 +29,7 @@ public class HomeActivity extends AppCompatActivity implements AsyncResponse {
 
     TextView topicBox;
     TextView languageBox;
+    TextView teachingModeBox;
 
     // Navigation Drawer Variables
     private ListView mDrawerList;
@@ -48,6 +49,7 @@ public class HomeActivity extends AppCompatActivity implements AsyncResponse {
         setSupportActionBar(toolbar);
         topicBox = (TextView) findViewById(R.id.CurrTopic);
         languageBox = (TextView) findViewById(R.id.CurrLang);
+        teachingModeBox = (TextView) findViewById(R.id.CurrTeachingMode);
         updateFields();
 
 
@@ -92,6 +94,7 @@ public class HomeActivity extends AppCompatActivity implements AsyncResponse {
     public void processFinish(BearData output){
         topicBox.append(output.getTopic());
         languageBox.append(output.getLanguage());
+        teachingModeBox.append(output.getTeachingMode());
 
     }
 

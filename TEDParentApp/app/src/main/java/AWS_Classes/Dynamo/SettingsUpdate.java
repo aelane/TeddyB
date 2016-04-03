@@ -32,6 +32,7 @@ public class SettingsUpdate extends AsyncTask<String, Void, BearData> {
         BearData userData = mapper.load(BearData.class, "001");
         userData.Language = args[0];
         userData.Topic = args[1];
+        userData.TeachingMode = args[2];
         mapper.save(userData);
 
         BearData blank = new BearData();

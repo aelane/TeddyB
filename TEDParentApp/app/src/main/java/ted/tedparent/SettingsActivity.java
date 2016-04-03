@@ -23,12 +23,15 @@ import com.amazonaws.regions.Regions;
 
 import AWS_Classes.Dynamo.AsyncResponse;
 import AWS_Classes.Dynamo.BearData;
+import AWS_Classes.Dynamo.BearStateUpdate;
 import AWS_Classes.Dynamo.SettingsUpdate;
 
 public class SettingsActivity extends AppCompatActivity implements AsyncResponse {
 
-    private Spinner Language, Topic;
+    private Spinner LanguageSpinn, TopicSpinn, TeachingModeSpinn;
     private Button btnSubmit;
+
+    private String currLanguage, currTopic, currTeachingMode;
 
     // Navigation Drawer Variables
     private ListView mDrawerList;
@@ -44,8 +47,9 @@ public class SettingsActivity extends AppCompatActivity implements AsyncResponse
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
-        Language = (Spinner) findViewById(R.id.LangSpinner);
-        Topic = (Spinner) findViewById(R.id.TopicSpinner);
+        LanguageSpinn = (Spinner) findViewById(R.id.LangSpinner);
+        TopicSpinn = (Spinner) findViewById(R.id.TopicSpinner);
+        TeachingModeSpinn = (Spinner) findViewById(R.id.TeachingModeSpinner);
         btnSubmit = (Button) findViewById(R.id.SettingsButton);
 
         // Navigation Drawer Setup
@@ -61,12 +65,16 @@ public class SettingsActivity extends AppCompatActivity implements AsyncResponse
 
         myContext = this;
 
+        updateSpinners();
+
+
         btnSubmit.setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                String languageStr = Language.getSelectedItem().toString();
-                String topicStr = Topic.getSelectedItem().toString();
+                String languageStr = LanguageSpinn.getSelectedItem().toString();
+                String topicStr = TopicSpinn.getSelectedItem().toString();
+                String teachingModeStr = TeachingModeSpinn.getSelectedItem().toString();
                 //Check if we are connected to wifi
                 if (isNetworkAvailable()) {
                     //Get our credentials in order to talk to our AWS database
@@ -82,14 +90,60 @@ public class SettingsActivity extends AppCompatActivity implements AsyncResponse
 
                     SettingsUpdate myMapper = new SettingsUpdate(credentialsProvider);
                     myMapper.delegate = myContext;
-                    myMapper.execute(languageStr, topicStr);
+                    myMapper.execute(languageStr, topicStr, teachingModeStr);
                 }
             }
         });
 
     }
 
-    public void processFinish(BearData output){}
+    //public void processFinish(BearData output){}
+
+    public void updateSpinners() {
+
+        // Check if we are connected to wifi
+        if (isNetworkAvailable()) {
+            //Get our credentials in order to talk to our AWS database
+            CognitoCachingCredentialsProvider credentialsProvider = new CognitoCachingCredentialsProvider(
+                    getApplicationContext(),
+                    "us-east-1:b0b7a95e-1afe-41d6-9465-1f40d1494014", // Identity Pool ID
+                    Regions.US_EAST_1 // Region
+            );
+
+            //Credentials for specific accounts
+            //CognitoCachingCredentialsProvider credentialsProvider = mySingleton.getInstance().getCredentials()
+
+            BearStateUpdate myMapper = new BearStateUpdate(credentialsProvider);
+            myMapper.delegate = this;
+            myMapper.execute();
+
+        }
+        else {
+        }
+    }
+
+    public void processFinish(BearData output){
+
+        // Make the default values of each spinner the current values in AWS
+        currTopic = output.getTopic();
+        currLanguage = output.getLanguage();
+        currTeachingMode = output.getTeachingMode();
+
+        ArrayAdapter langAdap = (ArrayAdapter) LanguageSpinn.getAdapter(); //cast to an ArrayAdapter
+        int spinnerPosition = langAdap.getPosition(currLanguage);
+        //set the default according to value
+        LanguageSpinn.setSelection(spinnerPosition);
+
+        ArrayAdapter topicAdap = (ArrayAdapter) TopicSpinn.getAdapter(); //cast to an ArrayAdapter
+        int spinnerPosition2 = topicAdap.getPosition(currTopic);
+        //set the default according to value
+        TopicSpinn.setSelection(spinnerPosition2);
+
+        ArrayAdapter teachingModeAdap = (ArrayAdapter) TeachingModeSpinn.getAdapter(); //cast to an ArrayAdapter
+        int spinnerPosition3 = teachingModeAdap.getPosition(currTeachingMode);
+        //set the default according to value
+        TeachingModeSpinn.setSelection(spinnerPosition3);
+    }
 
     private void addDrawerItems() {
         String[] osArray = { "Home", "Metrics", "Accounts", "Settings", "Log Out" };
