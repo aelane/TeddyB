@@ -1,8 +1,8 @@
 <?xml version="1.0" standalone="no" ?>
 <!DOCTYPE project PUBLIC "-//audacityproject-1.3.0//DTD//EN" "http://audacity.sourceforge.net/xml/audacityproject-1.3.0.dtd" >
-<project xmlns="http://audacity.sourceforge.net/xml/" projname="Greek_data" version="1.3.0" audacityversion="2.1.2" sel0="115.1361451247" sel1="115.1361451247" vpos="0" h="0.0000000000" zoom="43.0664062500" rate="16000.0" snapto="off" selectionformat="hh:mm:ss + milliseconds" frequencyformat="Hz" bandwidthformat="octaves">
+<project xmlns="http://audacity.sourceforge.net/xml/" projname="Greek_data" version="1.3.0" audacityversion="2.1.2" sel0="55.6117913832" sel1="55.6117913832" vpos="0" h="91.6259410431" zoom="43.0664062500" rate="16000.0" snapto="off" selectionformat="hh:mm:ss + milliseconds" frequencyformat="Hz" bandwidthformat="octaves">
 	<tags/>
-	<wavetrack name="Sample Greek" channel="2" linked="0" mute="0" solo="0" height="150" minimized="0" isSelected="1" rate="16000" gain="1.0" pan="0.0">
+	<wavetrack name="Sample Greek" channel="2" linked="0" mute="0" solo="0" height="150" minimized="0" isSelected="0" rate="16000" gain="1.0" pan="0.0">
 		<waveclip offset="0.10219955">
 			<sequence maxsamples="262144" sampleformat="262159" numsamples="1883320">
 				<waveblock start="0">
@@ -33,119 +33,93 @@
 			<envelope numpoints="0"/>
 		</waveclip>
 	</wavetrack>
-	<labeltrack name="English Label" numlabels="55" height="74" minimized="0" isSelected="1">
-		<label t="0.0812698413" t1="0.0812698413" title="one"/>
-		<label t="2.0085260771" t1="2.0085260771" title="two"/>
-		<label t="4.0054421769" t1="4.0054421769" title="three"/>
-		<label t="5.9994557823" t1="5.9994557823" title="four"/>
-		<label t="8.0108843537" t1="8.0108843537" title="five"/>
-		<label t="10.0426303855" t1="10.0426303855" title="six"/>
-		<label t="11.9698866213" t1="11.9698866213" title="seven"/>
-		<label t="14.0277551020" t1="14.0277551020" title="eight"/>
-		<label t="16.0101587302" t1="16.0101587302" title="nine"/>
-		<label t="17.9722448980" t1="17.9722448980" title="ten"/>
-		<label t="22.0241269841" t1="22.0241269841" title="apple"/>
-		<label t="24.0442630385" t1="24.0442630385" title="banana"/>
-		<label t="26.0643990930" t1="26.0643990930" title="bread"/>
-		<label t="28.0613151927" t1="28.0613151927" title="cake"/>
-		<label t="30.0234013605" t1="30.0234013605" title="carrot"/>
-		<label t="32.0435374150" t1="32.0435374150" title="cookie"/>
-		<label t="34.0288435374" t1="34.0288435374" title="grapes"/>
-		<label t="36.0025396825" t1="36.0025396825" title="milk"/>
-		<label t="38.0575056689" t1="38.0575056689" title="juice"/>
-		<label t="40.0195918367" t1="40.0195918367" title="water"/>
-		<label t="42.5970068027" t1="42.5970068027" title="bear"/>
-		<label t="44.5474829932" t1="44.5474829932" title="bird"/>
-		<label t="46.7649886621" t1="46.7649886621" title="cat"/>
-		<label t="49.0173242630" t1="49.0173242630" title="dog"/>
-		<label t="50.9445804989" t1="50.9445804989" title="elephant"/>
-		<label t="53.0111564626" t1="53.0111564626" title="giraffe"/>
-		<label t="55.0429024943" t1="55.0429024943" title="horse"/>
-		<label t="57.0398185941" t1="57.0398185941" title="monkey"/>
-		<label t="59.0251247166" t1="59.0251247166" title="pig"/>
-		<label t="61.0452607710" t1="61.0452607710" title="cow"/>
-		<label t="63.0421768707" t1="63.0421768707" title="head"/>
-		<label t="66.0143310658" t1="66.0143310658" title="arm"/>
-		<label t="68.0228571429" t1="68.0228571429" title="leg"/>
-		<label t="70.0081632653" t1="70.0081632653" title="foot"/>
-		<label t="72.0166893424" t1="72.0166893424" title="hand"/>
-		<label t="74.0368253968" t1="74.0368253968" title="eye"/>
-		<label t="75.9756916100" t1="75.9756916100" title="ear"/>
-		<label t="78.0074376417" t1="78.0074376417" title="nose"/>
-		<label t="80.0275736961" t1="80.0275736961" title="mouth"/>
-		<label t="82.0477097506" t1="82.0477097506" title="stomach"/>
-		<label t="84.0214058957" t1="84.0214058957" title="family"/>
-		<label t="86.0299319728" t1="86.0299319728" title="mom"/>
-		<label t="87.6727437642" t1="87.6727437642" title="dad"/>
-		<label t="90.0237641723" t1="90.0237641723" title="brother"/>
-		<label t="92.0206802721" t1="92.0206802721" title="sister"/>
-		<label t="93.8666666667" t1="93.8666666667" title="grandma"/>
-		<label t="95.9854875283" t1="95.9854875283" title="grandpa"/>
-		<label t="98.0114285714" t1="98.0114285714" title="bed"/>
-		<label t="100.0547845805" t1="100.0547845805" title="chair"/>
-		<label t="102.0633106576" t1="102.0633106576" title="table"/>
-		<label t="104.0370068027" t1="104.0370068027" title="television"/>
-		<label t="107.0033560091" t1="107.0033560091" title="yes"/>
-		<label t="108.8493424036" t1="108.8493424036" title="no"/>
-		<label t="110.9391383220" t1="110.9391383220" title="hello"/>
-		<label t="112.9360544218" t1="112.9360544218" title="goodbye"/>
-	</labeltrack>
-	<labeltrack name="Greek Labels" numlabels="56" height="73" minimized="0" isSelected="0">
+	<labeltrack name="Greek Labels" numlabels="56" height="73" minimized="0" isSelected="1">
 		<label t="0.1160997732" t1="0.1160997732" title="ena"/>
-		<label t="2.0085260771" t1="2.0085260771" title="dyo"/>
-		<label t="3.9009523810" t1="3.9009523810" title="tria"/>
-		<label t="5.8978684807" t1="5.8978684807" title="tessera"/>
-		<label t="8.0108843537" t1="8.0108843537" title="pente"/>
-		<label t="10.0426303855" t1="10.0426303855" title="exi"/>
-		<label t="11.9698866213" t1="11.9698866213" title="epta"/>
-		<label t="14.0277551020" t1="14.0277551020" title="okto"/>
-		<label t="16.0101587302" t1="16.0101587302" title="ennea"/>
-		<label t="17.9722448980" t1="17.9722448980" title="deka"/>
+		<label t="2.3452154195" t1="2.3452154195" title="dyo"/>
+		<label t="4.9458503401" t1="4.9458503401" title="tria"/>
+		<label t="6.8963265306" t1="6.8963265306" title="tessera"/>
+		<label t="8.8468027211" t1="8.8468027211" title="pente"/>
+		<label t="10.7276190476" t1="10.7276190476" title="exi"/>
+		<label t="12.7013151927" t1="12.7013151927" title="epta"/>
+		<label t="14.6053514739" t1="14.6053514739" title="okto"/>
+		<label t="16.6022675737" t1="16.6022675737" title="ennea"/>
+		<label t="18.8546031746" t1="18.8546031746" title="deka"/>
 		<label t="22.0241269841" t1="22.0241269841" title="milo"/>
-		<label t="24.0442630385" t1="24.0442630385" title="banana"/>
-		<label t="26.0643990930" t1="26.0643990930" title="psomi"/>
-		<label t="28.0613151927" t1="28.0613151927" title="keik"/>
-		<label t="30.0234013605" t1="30.0234013605" title="karoto"/>
-		<label t="32.0435374150" t1="32.0435374150" title="koulouraki"/>
-		<label t="34.0288435374" t1="34.0288435374" title="stafylia"/>
-		<label t="36.0257596372" t1="36.0257596372" title="gala"/>
-		<label t="38.0575056689" t1="38.1503854875" title="chymos"/>
-		<label t="40.0195918367" t1="40.0195918367" title="nero"/>
-		<label t="43.0497959184" t1="43.0497959184" title="arkoudi"/>
-		<label t="45.0118820862" t1="45.0118820862" title="pouli"/>
-		<label t="46.7649886621" t1="46.7649886621" title="gata"/>
-		<label t="49.0173242630" t1="49.0173242630" title="skylos"/>
-		<label t="51.0490702948" t1="51.0490702948" title="elefantas"/>
-		<label t="53.0111564626" t1="53.0111564626" title="kamilopardali"/>
-		<label t="55.0400000000" t1="55.0429024943" title="alogo"/>
-		<label t="55.1009523810" t1="55.1009523810" title=""/>
-		<label t="57.0398185941" t1="57.0398185941" title="maimou"/>
-		<label t="59.0251247166" t1="59.0251247166" title="gourouni"/>
-		<label t="61.0452607710" t1="61.0452607710" title="agelada"/>
-		<label t="63.4833560091" t1="63.4833560091" title="kefali"/>
+		<label t="24.7292517007" t1="24.7292517007" title="banana"/>
+		<label t="27.1905668934" t1="27.1905668934" title="psomi"/>
+		<label t="29.6983219955" t1="29.6983219955" title="keik"/>
+		<label t="31.1843990930" t1="31.1843990930" title="karoto"/>
+		<label t="33.3206349206" t1="33.3206349206" title="koulouraki"/>
+		<label t="35.0621315193" t1="35.0621315193" title="stafylia"/>
+		<label t="36.9661678005" t1="36.9661678005" title="gala"/>
+		<label t="39.2417233560" t1="39.2417233560" title="chymos"/>
+		<label t="41.0296598639" t1="41.0296598639" title="nero"/>
+		<label t="43.6302947846" t1="43.6302947846" title="arkoudi"/>
+		<label t="46.0451700680" t1="46.0451700680" title="pouli"/>
+		<label t="47.5544671202" t1="47.5544671202" title="gata"/>
+		<label t="49.5746031746" t1="49.5746031746" title="skylos"/>
+		<label t="51.4321995465" t1="51.4321995465" title="elefantas"/>
+		<label t="54.2882539683" t1="54.2882539683" title="kamilopardali"/>
+		<label t="56.8163265306" t1="56.8192290249" title="alogo"/>
+		<label t="58.3517460317" t1="58.3517460317" title="maimou"/>
+		<label t="60.1164625850" t1="60.1164625850" title="gourouni"/>
+		<label t="62.2526984127" t1="62.2526984127" title="agelada"/>
+		<label t="64.1102947846" t1="64.1102947846" title="kefali"/>
 		<label t="66.0143310658" t1="66.0143310658" title="bratso"/>
-		<label t="68.0228571429" t1="68.0228571429" title="podi"/>
-		<label t="70.0081632653" t1="70.0081632653" title="podi"/>
-		<label t="72.0166893424" t1="72.0166893424" title="cheri"/>
-		<label t="74.0368253968" t1="74.0368253968" title="mati"/>
-		<label t="76.0337414966" t1="76.0337414966" title="afti"/>
-		<label t="78.0074376417" t1="78.0074376417" title="myti"/>
-		<label t="80.0275736961" t1="80.0275736961" title="stoma"/>
-		<label t="82.0477097506" t1="82.0477097506" title="stomachi"/>
-		<label t="84.0214058957" t1="84.0214058957" title="oikogeneia"/>
-		<label t="86.0299319728" t1="86.0299319728" title="mama"/>
-		<label t="88.0500680272" t1="88.0500680272" title="babas"/>
-		<label t="90.0237641723" t1="90.0237641723" title="adelfos"/>
-		<label t="92.0206802721" t1="92.0206802721" title="adelfi"/>
-		<label t="94.0292063492" t1="94.0292063492" title="giagia"/>
-		<label t="95.9854875283" t1="95.9854875283" title="pappous"/>
-		<label t="98.0114285714" t1="98.0114285714" title="krevati"/>
-		<label t="100.0547845805" t1="100.0547845805" title="karekla"/>
-		<label t="102.0633106576" t1="102.0633106576" title="trapezi"/>
-		<label t="104.0370068027" t1="104.0370068027" title="tileorasi"/>
-		<label t="107.0033560091" t1="107.0033560091" title="nai"/>
-		<label t="108.8783673469" t1="108.8783673469" title="ochi"/>
-		<label t="111.0029931973" t1="111.0029931973" title="chairete"/>
-		<label t="113.0347392290" t1="113.0347392290" title="yeia"/>
+		<label t="69.1025850340" t1="69.1025850340" title="podi"/>
+		<label t="70.9137414966" t1="70.9137414966" title="podi"/>
+		<label t="72.9338775510" t1="72.9338775510" title="cheri"/>
+		<label t="75.1629931973" t1="75.1629931973" title="mati"/>
+		<label t="76.9741496599" t1="76.9741496599" title="afti"/>
+		<label t="79.0871655329" t1="79.0871655329" title="myti"/>
+		<label t="81.1769614512" t1="81.1769614512" title="stoma"/>
+		<label t="83.2203174603" t1="83.2203174603" title="stomachi"/>
+		<label t="85.0779138322" t1="85.0779138322" title="oikogeneia"/>
+		<label t="87.1677097506" t1="87.1677097506" title="mama"/>
+		<label t="88.7698866213" t1="88.7698866213" title="babas"/>
+		<label t="90.7900226757" t1="90.7900226757" title="adelfos"/>
+		<label t="92.9726984127" t1="92.9726984127" title="adelfi"/>
+		<label t="94.8302947846" t1="94.8302947846" title="giagia"/>
+		<label t="96.7343310658" t1="96.7343310658" title="pappous"/>
+		<label t="99.0795464853" t1="99.0795464853" title="krevati"/>
+		<label t="100.8210430839" t1="100.8210430839" title="karekla"/>
+		<label t="102.9804988662" t1="102.9804988662" title="trapezi"/>
+		<label t="105.2792743764" t1="105.2792743764" title="tileorasi"/>
+		<label t="108.4139682540" t1="108.4139682540" title="nai"/>
+		<label t="109.6678458050" t1="109.6678458050" title="ochi"/>
+		<label t="111.4325623583" t1="111.4325623583" title="chairete"/>
+		<label t="113.7545578231" t1="113.7545578231" title="yeia"/>
+		<label t="115.3799546485" t1="115.3799546485" title=""/>
 	</labeltrack>
+	<wavetrack name="Paige Greek" channel="2" linked="0" mute="0" solo="0" height="150" minimized="0" isSelected="0" rate="16000" gain="1.0" pan="0.0">
+		<waveclip offset="-0.13000000">
+			<sequence maxsamples="262144" sampleformat="262159" numsamples="1843920">
+				<waveblock start="0">
+					<simpleblockfile filename="e0000441.au" len="262144" min="-0.177054" max="0.154003" rms="0.014691"/>
+				</waveblock>
+				<waveblock start="262144">
+					<simpleblockfile filename="e00008ea.au" len="262144" min="-0.143783" max="0.119417" rms="0.012768"/>
+				</waveblock>
+				<waveblock start="524288">
+					<simpleblockfile filename="e0000459.au" len="262144" min="-0.230396" max="0.208561" rms="0.017433"/>
+				</waveblock>
+				<waveblock start="786432">
+					<simpleblockfile filename="e000001f.au" len="262144" min="-0.184306" max="0.15297" rms="0.019596"/>
+				</waveblock>
+				<waveblock start="1048576">
+					<simpleblockfile filename="e00005cd.au" len="262144" min="-0.230504" max="0.181638" rms="0.013844"/>
+				</waveblock>
+				<waveblock start="1310720">
+					<simpleblockfile filename="e0000e89.au" len="262144" min="-0.200045" max="0.176536" rms="0.019196"/>
+				</waveblock>
+				<waveblock start="1572864">
+					<simpleblockfile filename="e00005f1.au" len="262144" min="-0.244868" max="0.222305" rms="0.01967"/>
+				</waveblock>
+				<waveblock start="1835008">
+					<simpleblockfile filename="e0000895.au" len="8912" min="-0.086579" max="0.090654" rms="0.002252"/>
+				</waveblock>
+			</sequence>
+			<envelope numpoints="0"/>
+		</waveclip>
+	</wavetrack>
 </project>
