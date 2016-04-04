@@ -4,8 +4,13 @@ import android.os.AsyncTask;
 
 import com.amazonaws.auth.CognitoCachingCredentialsProvider;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBMapper;
+import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBQueryExpression;
+import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.PaginatedQueryList;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
+import com.amazonaws.services.dynamodbv2.model.AttributeValue;
+import com.amazonaws.services.dynamodbv2.model.ComparisonOperator;
+import com.amazonaws.services.dynamodbv2.model.Condition;
 
 import AWS_Classes.Dynamo.Settings.AsyncResponse;
 
@@ -28,6 +33,21 @@ public class MetricsSearch extends AsyncTask<String, Void, Metrics> {
         AmazonDynamoDB ddbClient = new AmazonDynamoDBClient(credentialsProvider);
         DynamoDBMapper mapper = new DynamoDBMapper(ddbClient);
 
+        Metrics metricsToFind = new Metrics();
+        metricsToFind.setBearID("Charles Dickens");
+
+        String queryString = "Great";
+
+        Condition rangeKeyCondition = new Condition()
+                .withComparisonOperator(ComparisonOperator.BEGINS_WITH.toString())
+                .withAttributeValueList(new AttributeValue().withS(queryString.toString()));
+
+        DynamoDBQueryExpression queryExpression = new DynamoDBQueryExpression()
+                .withHashKeyValues(metricsToFind)
+                .withRangeKeyCondition("Title", rangeKeyCondition)
+                .withConsistentRead(false);
+
+        PaginatedQueryList<Metrics> result = mapper.query(Metrics.class, queryExpression);
 
         return null;
     }

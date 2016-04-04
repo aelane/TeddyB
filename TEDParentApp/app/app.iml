@@ -86,9 +86,9 @@
     </content>
     <orderEntry type="jdk" jdkName="Android API 23 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" exported="" name="aws-android-sdk-lambda-2.2.14" level="project" />
     <orderEntry type="library" exported="" name="gson-2.2.4" level="project" />
     <orderEntry type="library" exported="" name="1_gson-2.2.4" level="project" />
-    <orderEntry type="library" exported="" name="aws-android-sdk-lambda-2.2.14" level="project" />
     <orderEntry type="library" exported="" name="aws-android-sdk-s3-2.2.14" level="project" />
     <orderEntry type="library" exported="" name="aws-android-sdk-cognito-2.2.7" level="project" />
     <orderEntry type="library" exported="" name="GraphView-4.0.1" level="project" />
