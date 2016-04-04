@@ -16,7 +16,7 @@ public class Metrics {
     String CorrectWord;
     String TeachingMode;
     String WordSaid;
-    int Attempt;
+    Integer Attempt;
     Boolean Correct;
     String Topic;
 
@@ -57,10 +57,10 @@ public class Metrics {
     }
 
     @DynamoDBAttribute(attributeName = "Attempt")
-    public int getAttempt() {
+    public Integer getAttempt() {
         return Attempt;
     }
-    public void setAttempt(int s){
+    public void setAttempt(Integer s){
         this.Attempt = s;
     }
 

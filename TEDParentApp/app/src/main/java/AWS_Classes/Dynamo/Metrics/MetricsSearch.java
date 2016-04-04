@@ -17,7 +17,7 @@ import AWS_Classes.Dynamo.Settings.AsyncResponse;
 /**
  * Created by Niko on 4/3/2016.
  */
-public class MetricsSearch extends AsyncTask<String, Void, Metrics> {
+public class MetricsSearch extends AsyncTask<String, Void, PaginatedQueryList<Metrics>> {
 
     protected CognitoCachingCredentialsProvider credentialsProvider;
     public MetricsResponse delegate = null;
@@ -27,16 +27,17 @@ public class MetricsSearch extends AsyncTask<String, Void, Metrics> {
     }
 
     @Override
-    protected Metrics doInBackground(String... args) {
+    protected PaginatedQueryList<Metrics> doInBackground(String... args) {
         //Set up our credentials and pass it to our db client.
 
         AmazonDynamoDB ddbClient = new AmazonDynamoDBClient(credentialsProvider);
         DynamoDBMapper mapper = new DynamoDBMapper(ddbClient);
 
         Metrics metricsToFind = new Metrics();
-        metricsToFind.setBearID("Charles Dickens");
+        metricsToFind.setBearID("001");
 
-        String queryString = "Great";
+        String queryString = "04";
+        String filterString = "#Mode = :ModeVal";
 
         Condition rangeKeyCondition = new Condition()
                 .withComparisonOperator(ComparisonOperator.BEGINS_WITH.toString())
@@ -44,16 +45,18 @@ public class MetricsSearch extends AsyncTask<String, Void, Metrics> {
 
         DynamoDBQueryExpression queryExpression = new DynamoDBQueryExpression()
                 .withHashKeyValues(metricsToFind)
-                .withRangeKeyCondition("Title", rangeKeyCondition)
+                .withRangeKeyCondition("Date", rangeKeyCondition)
+                .withFilterExpression(filterString)
+                .addExpressionAttributeNamesEntry("#Mode", "TeachingMode")
+                .addExpressionAttributeValuesEntry(":ModeVal", new AttributeValue("Repeat After Me"))
                 .withConsistentRead(false);
 
         PaginatedQueryList<Metrics> result = mapper.query(Metrics.class, queryExpression);
-
-        return null;
+        return result;
     }
 
     @Override
-    protected void onPostExecute(Metrics result) {
+    protected void onPostExecute(PaginatedQueryList<Metrics> result) {
         delegate.metricsFinish(result);
     }
 

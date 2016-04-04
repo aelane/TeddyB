@@ -14,9 +14,19 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
-public class MetricsActivity extends AppCompatActivity {
+import com.amazonaws.auth.CognitoCachingCredentialsProvider;
+import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.PaginatedList;
+import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.PaginatedQueryList;
+import com.amazonaws.regions.Regions;
 
+import AWS_Classes.Dynamo.Metrics.Metrics;
+import AWS_Classes.Dynamo.Metrics.MetricsResponse;
+import AWS_Classes.Dynamo.Metrics.MetricsSearch;
+import AWS_Classes.Dynamo.Settings.SettingsUpdate;
+
+public class MetricsActivity extends AppCompatActivity implements MetricsResponse{
 
     // Navigation Drawer Variables
     private ListView mDrawerList;
@@ -40,6 +50,24 @@ public class MetricsActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
+
+
+        if (isNetworkAvailable()) {
+            //Get our credentials in order to talk to our AWS database
+            CognitoCachingCredentialsProvider credentialsProvider = new CognitoCachingCredentialsProvider(
+                    getApplicationContext(),
+                    "us-east-1:b0b7a95e-1afe-41d6-9465-1f40d1494014", // Identity Pool ID
+                    Regions.US_EAST_1 // Region
+            );
+
+
+            //Credentials for specific accounts
+            //CognitoCachingCredentialsProvider credentialsProvider = mySingleton.getInstance().getCredentials()
+
+            MetricsSearch myMapper = new MetricsSearch(credentialsProvider);
+            myMapper.delegate = this;
+            myMapper.execute();
+        }
     }
 
     private void addDrawerItems() {
@@ -91,6 +119,14 @@ public class MetricsActivity extends AppCompatActivity {
 
         mDrawerToggle.setDrawerIndicatorEnabled(true);
         mDrawerLayout.setDrawerListener(mDrawerToggle);
+
+    }
+
+    public void metricsFinish(PaginatedQueryList<Metrics> result){
+        for(Metrics item : result){
+            Toast toast = Toast.makeText(getApplicationContext(), item.getDate(), Toast.LENGTH_LONG);
+            toast.show();
+        }
 
     }
 
