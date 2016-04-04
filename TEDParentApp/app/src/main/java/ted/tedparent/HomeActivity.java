@@ -20,9 +20,9 @@ import android.widget.TextView;
 import com.amazonaws.auth.CognitoCachingCredentialsProvider;
 import com.amazonaws.regions.Regions;
 
-import AWS_Classes.Dynamo.AsyncResponse;
-import AWS_Classes.Dynamo.BearStateUpdate;
-import AWS_Classes.Dynamo.BearData;
+import AWS_Classes.Dynamo.Settings.AsyncResponse;
+import AWS_Classes.Dynamo.Settings.BearStateUpdate;
+import AWS_Classes.Dynamo.Settings.BearData;
 
 
 public class HomeActivity extends AppCompatActivity implements AsyncResponse {

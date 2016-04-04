@@ -1,4 +1,4 @@
-package AWS_Classes.Dynamo;
+package AWS_Classes.Dynamo.Settings;
 
 import android.os.AsyncTask;
 
@@ -7,18 +7,15 @@ import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
 
-
 /**
- * Created by pwdarby on 3/21/16.
- *
- * Updates the settings in the AWS database
+ * Created by Niko on 11/8/2015.
  */
+public class BearStateUpdate extends AsyncTask<String, Void, BearData> {
 
-public class SettingsUpdate extends AsyncTask<String, Void, BearData> {
     protected CognitoCachingCredentialsProvider credentialsProvider;
     public AsyncResponse delegate = null;
 
-    public SettingsUpdate(CognitoCachingCredentialsProvider credentials){
+    public BearStateUpdate(CognitoCachingCredentialsProvider credentials){
         credentialsProvider = credentials;
     }
 
@@ -30,13 +27,8 @@ public class SettingsUpdate extends AsyncTask<String, Void, BearData> {
         DynamoDBMapper mapper = new DynamoDBMapper(ddbClient);
 
         BearData userData = mapper.load(BearData.class, "001");
-        userData.Language = args[0];
-        userData.Topic = args[1];
-        userData.TeachingMode = args[2];
-        mapper.save(userData);
 
-        BearData blank = new BearData();
-        return blank;
+        return userData;
     }
 
     @Override
