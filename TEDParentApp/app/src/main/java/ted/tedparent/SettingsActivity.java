@@ -165,7 +165,7 @@ public class SettingsActivity extends AppCompatActivity implements AsyncResponse
                 startActivity(new Intent(SettingsActivity.this, HomeActivity.class));
                 break;
             case 1:
-                startActivity(new Intent(SettingsActivity.this, MetricsTestActivity.class));
+                startActivity(new Intent(SettingsActivity.this, MetricsActivity.class));
                 break;
             case 3:
                 startActivity(new Intent(SettingsActivity.this, SettingsActivity.class));
