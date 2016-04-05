@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="images">
+        <item>@drawable/apple</item>
+        <item>@drawable/arm</item>
+        <item>@drawable/banana</item>
+        <item>@drawable/bear</item>
+        <item>@drawable/bed</item>
+        <item>@drawable/bird</item>
+        <item>@drawable/bread</item>
+        <item>@drawable/brother</item>
+        <item>@drawable/cake</item>
+        <item>@drawable/carrot</item>
+        <item>@drawable/cat</item>
+        <item>@drawable/chair</item>
+        <item>@drawable/cookie</item>
+        <item>@drawable/cow</item>
+        <item>@drawable/dog</item>
+        <item>@drawable/ear</item>
+        <item>@drawable/eight</item>
+        <item>@drawable/elephant</item>
+        <item>@drawable/eye</item>
+        <item>@drawable/father</item>
+        <item>@drawable/five</item>
+        <item>@drawable/foot</item>
+        <item>@drawable/four</item>
+        <item>@drawable/giraffe</item>
+        <item>@drawable/grandfather</item>
+        <item>@drawable/grandmother</item>
+        <item>@drawable/grapes</item>
+        <item>@drawable/hand</item>
+        <item>@drawable/head</item>
+        <item>@drawable/horse</item>
+        <item>@drawable/juice</item>
+        <item>@drawable/leg</item>
+        <item>@drawable/milk</item>
+        <item>@drawable/monkey</item>
+        <item>@drawable/mother</item>
+        <item>@drawable/mouth</item>
+        <item>@drawable/nine</item>
+        <item>@drawable/nose</item>
+        <item>@drawable/one</item>
+        <item>@drawable/pig</item>
+        <item>@drawable/seven</item>
+        <item>@drawable/sister</item>
+        <item>@drawable/six</item>
+        <item>@drawable/stomach</item>
+        <item>@drawable/table</item>
+        <item>@drawable/television</item>
+        <item>@drawable/ten</item>
+        <item>@drawable/three</item>
+        <item>@drawable/two</item>
+        <item>@drawable/water</item>
+    </array>
+
+
+
+
+
+</resources>

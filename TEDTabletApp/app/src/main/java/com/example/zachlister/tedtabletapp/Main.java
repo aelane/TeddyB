@@ -97,6 +97,9 @@ public class Main extends AppCompatActivity {
      */
     private GoogleApiClient client;
 
+    // this is to keep track of the the track that is being played from the app
+    private int currentTrack = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -129,41 +132,34 @@ public class Main extends AppCompatActivity {
     private void addListenerOnButton() {
         final ImageView image;
         Button button;
-        final int[] tracks = new int[2];
-        //final int currentTrack = 0;
-        final MediaPlayer mediaPlayer = null;
+        final int[] tracks = new int[3];
+        tracks[0] = R.raw.seis;
+        tracks[1] = R.raw.in_english_is;
+        tracks[2] = R.raw.six;
         image = (ImageView) findViewById(R.id.imageView);
         button = (Button) findViewById(R.id.button2);
-
+        final MediaPlayer mediaPlayer;
+        mediaPlayer = MediaPlayer.create(getApplicationContext(), tracks[0]);
 
         button.setOnClickListener(new OnClickListener() {
-
             @Override
             public void onClick(View arg0) {
+                currentTrack = 1;
                 image.setImageResource(R.drawable.bear);
-                tracks[0] = R.raw.seis;
-                tracks[1] = R.raw.uno;
-                //tracks[2] = R.raw.siete;
-                final int currentTrack = 0;
-                mediaPlayer.create(getApplicationContext(), tracks[0]);
+                mediaPlayer.start();
                 mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                     @Override
                     public void onCompletion(MediaPlayer mp) {
 
                         mp.release();
                         if (currentTrack < tracks.length) {
-                            //currentTrack++;
-                            mp = MediaPlayer.create(getApplicationContext(), tracks[currentTrack + 1]);
+                            mp = MediaPlayer.create(getApplicationContext(), tracks[currentTrack]);
+                            currentTrack++;
                             mp.setOnCompletionListener(this);
                             mp.start();
                         }
                     }
                 });
-                mediaPlayer.start();
-
-                //while (mediaPlayer.isPlaying()) {
-
-                //}
             }
 
         });
