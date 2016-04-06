@@ -17,14 +17,12 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.amazonaws.auth.CognitoCachingCredentialsProvider;
-import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.PaginatedList;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.PaginatedQueryList;
 import com.amazonaws.regions.Regions;
 
 import AWS_Classes.Dynamo.Metrics.Metrics;
 import AWS_Classes.Dynamo.Metrics.MetricsResponse;
 import AWS_Classes.Dynamo.Metrics.MetricsSearch;
-import AWS_Classes.Dynamo.Settings.SettingsUpdate;
 
 public class MetricsActivity extends AppCompatActivity implements MetricsResponse{
 
@@ -124,7 +122,7 @@ public class MetricsActivity extends AppCompatActivity implements MetricsRespons
 
     public void metricsFinish(PaginatedQueryList<Metrics> result){
         for(Metrics item : result){
-            Toast toast = Toast.makeText(getApplicationContext(), item.getDate(), Toast.LENGTH_LONG);
+            Toast toast = Toast.makeText(getApplicationContext(), item.getTopic(), Toast.LENGTH_LONG);
             toast.show();
         }
 
