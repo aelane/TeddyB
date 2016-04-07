@@ -11,14 +11,15 @@ import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBTable;
 @DynamoDBTable(tableName = "Metrics")
 public class Metrics {
 
-    String BearID;
-    String Date;
-    String CorrectWord;
-    String TeachingMode;
-    String WordSaid;
-    Integer Attempt;
-    Boolean Correct;
-    String Topic;
+    private String BearID;
+    private String Date;
+    private String CorrectWord;
+    private String TeachingMode;
+    private String WordSaid;
+    private Integer Attempt;
+    private Boolean Correct;
+    private String Topic;
+    private String Language;
 
     @DynamoDBHashKey(attributeName = "BearID")
     public String getBearID() {return BearID;}
@@ -79,4 +80,13 @@ public class Metrics {
     public void setTopic(String s){
         this.Topic = s;
     }
+
+    @DynamoDBAttribute(attributeName = "Language")
+    public String getLanguage(){
+        return Language;
+    }
+    public void setLanguage(String s){
+        this.Language = s;
+    }
+
 }

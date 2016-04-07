@@ -37,7 +37,9 @@ public class MetricsSearch extends AsyncTask<String, Void, PaginatedQueryList<Me
         metricsToFind.setBearID("001");
 
         String queryString = "04";
-        String filterString = "#Mode = :ModeVal";
+        String modeString = "#Mode = :ModeVal";
+        String languageString = "#Lang = :LangVal";
+        String wordString = "#Word = :WordVal";
 
         Condition rangeKeyCondition = new Condition()
                 .withComparisonOperator(ComparisonOperator.BEGINS_WITH.toString())
@@ -45,11 +47,18 @@ public class MetricsSearch extends AsyncTask<String, Void, PaginatedQueryList<Me
 
         DynamoDBQueryExpression queryExpression = new DynamoDBQueryExpression()
                 .withHashKeyValues(metricsToFind)
-                .withRangeKeyCondition("Date", rangeKeyCondition)
-                .withFilterExpression(filterString)
-                .addExpressionAttributeNamesEntry("#Mode", "TeachingMode")
-                .addExpressionAttributeValuesEntry(":ModeVal", new AttributeValue("Repeat After Me"))
                 .withConsistentRead(false);
+
+
+        queryExpression.addExpressionAttributeNamesEntry("#Mode", "TeachingMode")
+                .withRangeKeyCondition("Date", rangeKeyCondition)
+                .addExpressionAttributeValuesEntry(":ModeVal", new AttributeValue("Repeat After Me"))
+                .addExpressionAttributeNamesEntry("#Lang", "Language")
+                .addExpressionAttributeValuesEntry(":LangVal", new AttributeValue("Spanish"))
+                .addExpressionAttributeNamesEntry("#Word", "CorrectWord")
+                .addExpressionAttributeValuesEntry(":WordVal", new AttributeValue("cake"));
+
+        queryExpression.withFilterExpression(modeString + " and " + languageString + " or " + wordString);
 
         PaginatedQueryList<Metrics> result = mapper.query(Metrics.class, queryExpression);
         return result;

@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -122,8 +123,11 @@ public class MetricsActivity extends AppCompatActivity implements MetricsRespons
 
     public void metricsFinish(PaginatedQueryList<Metrics> result){
         for(Metrics item : result){
-            Toast toast = Toast.makeText(getApplicationContext(), item.getTopic(), Toast.LENGTH_LONG);
+            Toast toast = Toast.makeText(getApplicationContext(), item.getDate(), Toast.LENGTH_LONG);
             toast.show();
+            //Do ctrl+f on logcot and search for MetricsResults to see what you got for testing, easier to see than toasts
+            Log.d("MetricsResult", "ID: " + item.getBearID() + " Date: "+ item.getDate() + " Mode: " + item.getTeachingMode() +
+                    " Language: " + item.getLanguage());
         }
 
     }
