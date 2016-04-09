@@ -12,8 +12,6 @@ import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import com.amazonaws.services.dynamodbv2.model.ComparisonOperator;
 import com.amazonaws.services.dynamodbv2.model.Condition;
 
-import AWS_Classes.Dynamo.Settings.AsyncResponse;
-
 /**
  * Created by Niko on 4/3/2016.
  */
@@ -41,6 +39,10 @@ public class MetricsSearch extends AsyncTask<String, Void, PaginatedQueryList<Me
         String languageString = "#Lang = :LangVal";
         String wordString = "#Word = :WordVal";
 
+        String teachingMode = args[0];
+        String language = args[1];
+        String word = args[2];
+
         Condition rangeKeyCondition = new Condition()
                 .withComparisonOperator(ComparisonOperator.BEGINS_WITH.toString())
                 .withAttributeValueList(new AttributeValue().withS(queryString.toString()));
@@ -52,13 +54,13 @@ public class MetricsSearch extends AsyncTask<String, Void, PaginatedQueryList<Me
 
         queryExpression.addExpressionAttributeNamesEntry("#Mode", "TeachingMode")
                 .withRangeKeyCondition("Date", rangeKeyCondition)
-                .addExpressionAttributeValuesEntry(":ModeVal", new AttributeValue("Repeat After Me"))
+                .addExpressionAttributeValuesEntry(":ModeVal", new AttributeValue(teachingMode))
                 .addExpressionAttributeNamesEntry("#Lang", "Language")
-                .addExpressionAttributeValuesEntry(":LangVal", new AttributeValue("Spanish"))
+                .addExpressionAttributeValuesEntry(":LangVal", new AttributeValue(language))
                 .addExpressionAttributeNamesEntry("#Word", "CorrectWord")
-                .addExpressionAttributeValuesEntry(":WordVal", new AttributeValue("cake"));
+                .addExpressionAttributeValuesEntry(":WordVal", new AttributeValue(word));
 
-        queryExpression.withFilterExpression(modeString + " and " + languageString + " or " + wordString);
+        queryExpression.withFilterExpression(modeString + " and " + languageString + " and " + wordString);
 
         PaginatedQueryList<Metrics> result = mapper.query(Metrics.class, queryExpression);
         return result;

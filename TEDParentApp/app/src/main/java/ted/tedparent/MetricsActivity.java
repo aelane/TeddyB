@@ -65,7 +65,7 @@ public class MetricsActivity extends AppCompatActivity implements MetricsRespons
 
             MetricsSearch myMapper = new MetricsSearch(credentialsProvider);
             myMapper.delegate = this;
-            myMapper.execute();
+            myMapper.execute("Repeat After Me", "English", "cake");
         }
     }
 
@@ -127,7 +127,7 @@ public class MetricsActivity extends AppCompatActivity implements MetricsRespons
             toast.show();
             //Do ctrl+f on logcot and search for MetricsResults to see what you got for testing, easier to see than toasts
             Log.d("MetricsResult", "ID: " + item.getBearID() + " Date: "+ item.getDate() + " Mode: " + item.getTeachingMode() +
-                    " Language: " + item.getLanguage());
+                    " Language: " + item.getLanguage() + " Attempt: " + item.getAttempt());
         }
 
     }
