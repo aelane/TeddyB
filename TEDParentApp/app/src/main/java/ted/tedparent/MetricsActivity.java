@@ -50,23 +50,7 @@ public class MetricsActivity extends AppCompatActivity implements MetricsRespons
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
 
-
-        if (isNetworkAvailable()) {
-            //Get our credentials in order to talk to our AWS database
-            CognitoCachingCredentialsProvider credentialsProvider = new CognitoCachingCredentialsProvider(
-                    getApplicationContext(),
-                    "us-east-1:b0b7a95e-1afe-41d6-9465-1f40d1494014", // Identity Pool ID
-                    Regions.US_EAST_1 // Region
-            );
-
-
-            //Credentials for specific accounts
-            //CognitoCachingCredentialsProvider credentialsProvider = mySingleton.getInstance().getCredentials()
-
-            MetricsSearch myMapper = new MetricsSearch(credentialsProvider);
-            myMapper.delegate = this;
-            myMapper.execute("Repeat After Me", "English", "cake");
-        }
+        calculateProgress();
     }
 
     private void addDrawerItems() {
@@ -138,6 +122,37 @@ public class MetricsActivity extends AppCompatActivity implements MetricsRespons
                 = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
+    public void calculateProgress() {
+
+        String[] teachingModes = {"Repeat After Me", "Foreign to English", "English to Foreign"};
+        String[] vocab = {"one", "two", "three", "four", "five", "six", "seven", "eight", "nine",
+                "ten", "apple", "banana", "bread", "cake", "carrot", "cookie", "grape", "milk",
+                "juice", "water", "bear", "bird", "cat", "dog", "elephant", "horse", "giraffe",
+                "monkey", "pig", "cow", "head", "arm", "leg", "foot", "hand", "eye", "ear", "nose",
+                "mouth", "stomach", "family", "mother", "father", "brother", "sister", "grandma",
+                "grandpa", "bed", "chair", "table", "television"};
+
+        if (isNetworkAvailable()) {
+            //Get our credentials in order to talk to our AWS database
+            CognitoCachingCredentialsProvider credentialsProvider = new CognitoCachingCredentialsProvider(
+                    getApplicationContext(),
+                    "us-east-1:b0b7a95e-1afe-41d6-9465-1f40d1494014", // Identity Pool ID
+                    Regions.US_EAST_1 // Region
+            );
+
+
+            //Credentials for specific accounts
+            //CognitoCachingCredentialsProvider credentialsProvider = mySingleton.getInstance().getCredentials()
+
+            for (String teachingMode : teachingModes) {
+                MetricsSearch myMapper = new MetricsSearch(credentialsProvider);
+                myMapper.delegate = this;
+                myMapper.execute(teachingMode, "English", "cake");
+            }
+        }
+
     }
 
     @Override
