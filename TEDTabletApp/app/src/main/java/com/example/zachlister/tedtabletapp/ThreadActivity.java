@@ -70,7 +70,7 @@ public class ThreadActivity extends Activity {
 				android.util.Log.e("TrackingFlow", "Socket accepted...");
 				is = socket.getInputStream();
 				os = new OutputStreamWriter(socket.getOutputStream());
-				new Thread(writter).start();
+				new Thread(new BluetoothWriter("skip")).start();
 
 				int bufferSize = 1024;
 				int bytesRead = -1;
@@ -176,22 +176,27 @@ public class ThreadActivity extends Activity {
 		}
 	};
 
-	private Runnable writter = new Runnable() {
+    public class BluetoothWriter implements Runnable {
+        String command;
 
-		@Override
-		public void run() {
-			int index = 0;
-			while(CONTINUE_READ_WRITE){
-				try {
-					os.write("Message From Server" + (index++) + "\n");
-					os.flush();
-					Thread.sleep(2000);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		}
-	};
+        BluetoothWriter(String s) {
+            command = s;
+        }
+        @Override
+        public void run() {
+            int index = 0;
+            while (CONTINUE_READ_WRITE) {
+                try {
+                    os.write("Message From Server" + (index++) + "\n");
+                    os.write(command + "\n");
+                    os.flush();
+                    Thread.sleep(2000);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
 
 	private void addListenerOnButton() {
 		final ImageView image;
