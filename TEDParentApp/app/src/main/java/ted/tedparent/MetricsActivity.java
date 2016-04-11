@@ -33,6 +33,10 @@ public class MetricsActivity extends AppCompatActivity implements MetricsRespons
     private ActionBarDrawerToggle mDrawerToggle;
     private DrawerLayout mDrawerLayout;
     private String mActivityTitle;
+    public int repeatAfterMe = 0;
+    public int foreignToEnglish = 0;
+    public int englishToForeign = 0;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,12 +110,52 @@ public class MetricsActivity extends AppCompatActivity implements MetricsRespons
     }
 
     public void metricsFinish(PaginatedQueryList<Metrics> result){
-        for(Metrics item : result){
+/*        for(Metrics item : result){
             Toast toast = Toast.makeText(getApplicationContext(), item.getDate(), Toast.LENGTH_LONG);
             toast.show();
             //Do ctrl+f on logcot and search for MetricsResults to see what you got for testing, easier to see than toasts
-            Log.d("MetricsResult", "ID: " + item.getBearID() + " Date: "+ item.getDate() + " Mode: " + item.getTeachingMode() +
-                    " Language: " + item.getLanguage() + " Attempt: " + item.getAttempt());
+            Log.d("MetricsResult", "ID: " + item.getBearID() + " Date: "+ item.getDate() + " Word: " + item.getCorrectWord() + " Mode: " + item.getTeachingMode() +
+                    " Language: " + item.getLanguage() + " Attempt: " + item.getAttempt() + " Length: " + result.size());
+        }*/
+
+        //int repeatAfterMe;
+        //int foreignToEnglish;
+        //int englishToForeign;
+
+        int listSize = result.size();
+        Log.d("list info: ", "size: " + String.valueOf(result.size()) + " Repeat After Me: " + String.valueOf(repeatAfterMe));
+
+        if (listSize > 1){
+            Metrics lastAttempt = result.get(listSize - 1);
+            Metrics prevAttempt = result.get(listSize - 2);
+            Log.d("here: ", "I AM IN THE FIRST IF STATEMENT!");
+            if(lastAttempt.getCorrect() == true &&
+                    prevAttempt.getCorrect() == true &&
+                    lastAttempt.getAttempt() == 1 &&
+                    prevAttempt.getAttempt() == 1) {
+                Toast toast = Toast.makeText(getApplicationContext(), "here", Toast.LENGTH_LONG);
+                Log.d("here: ", "I AM THE SECOND IF STATMENT!!!");
+                toast.show();
+                switch (lastAttempt.getTeachingMode()) {
+                    case "Repeat After Me":
+                        repeatAfterMe += 1;
+                        /*Toast toast = Toast.makeText(getApplicationContext(), String.valueOf(repeatAfterMe), Toast.LENGTH_LONG);
+                        toast.show();*/
+                        Toast toast3 = Toast.makeText(getApplicationContext(), "here", Toast.LENGTH_LONG);
+                        toast3.show();
+                        break;
+                    case "Foreign to English":
+                        foreignToEnglish += 1;
+                        Toast toast1 = Toast.makeText(getApplicationContext(), String.valueOf(foreignToEnglish), Toast.LENGTH_LONG);
+                        toast1.show();
+                        break;
+                    case "English to Foreign":
+                        englishToForeign += 1;
+                        Toast toast2 = Toast.makeText(getApplicationContext(), String.valueOf(englishToForeign), Toast.LENGTH_LONG);
+                        toast2.show();
+                        break;
+                }
+            }
         }
 
     }
@@ -147,9 +191,11 @@ public class MetricsActivity extends AppCompatActivity implements MetricsRespons
             //CognitoCachingCredentialsProvider credentialsProvider = mySingleton.getInstance().getCredentials()
 
             for (String teachingMode : teachingModes) {
-                MetricsSearch myMapper = new MetricsSearch(credentialsProvider);
-                myMapper.delegate = this;
-                myMapper.execute(teachingMode, "English", "cake");
+                for (String word : vocab) {
+                    MetricsSearch myMapper = new MetricsSearch(credentialsProvider);
+                    myMapper.delegate = this;
+                    myMapper.execute(teachingMode, "English", word);
+                }
             }
         }
 
