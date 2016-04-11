@@ -123,12 +123,16 @@ public class MetricsActivity extends AppCompatActivity implements MetricsRespons
         //int englishToForeign;
 
         int listSize = result.size();
-        Log.d("list info: ", "size: " + String.valueOf(result.size()) + " Repeat After Me: " + String.valueOf(repeatAfterMe));
+        Log.d("list info: ", " size: " + String.valueOf(result.size()) + " Repeat After Me: " + String.valueOf(repeatAfterMe));
 
         if (listSize > 1){
             Metrics lastAttempt = result.get(listSize - 1);
             Metrics prevAttempt = result.get(listSize - 2);
+
             Log.d("here: ", "I AM IN THE FIRST IF STATEMENT!");
+            Log.d("Last Attempt: ","Teaching Mode: " + lastAttempt.getTeachingMode() + " is correct: " + lastAttempt.getCorrect() + " Attempt: " + String.valueOf(lastAttempt.getAttempt()));
+            Log.d("2nd to Last Attempt: ","Teaching Mode: " + prevAttempt.getTeachingMode() + " is correct: " + prevAttempt.getCorrect() + " Attempt: " + String.valueOf(prevAttempt.getAttempt()));
+            Log.d("Word: ", "correct word: " + prevAttempt.getCorrectWord());
             if(lastAttempt.getCorrect() == true &&
                     prevAttempt.getCorrect() == true &&
                     lastAttempt.getAttempt() == 1 &&
@@ -194,7 +198,9 @@ public class MetricsActivity extends AppCompatActivity implements MetricsRespons
                 for (String word : vocab) {
                     MetricsSearch myMapper = new MetricsSearch(credentialsProvider);
                     myMapper.delegate = this;
+                    Log.d("Current Teaching Mode: ", teachingMode);
                     myMapper.execute(teachingMode, "English", word);
+
                 }
             }
         }
