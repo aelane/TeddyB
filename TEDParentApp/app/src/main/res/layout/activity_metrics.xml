@@ -26,6 +26,40 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_marginTop="39dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Repeat After Me: "
+            android:id="@+id/repeatAfterMe"
+            android:layout_below="@+id/progressBar"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="49dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Foreign to English: "
+            android:id="@+id/foreignToEnglish"
+            android:layout_marginTop="61dp"
+            android:layout_below="@+id/repeatAfterMe"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="English to Foreign: "
+            android:id="@+id/englishToForeign"
+            android:layout_below="@+id/foreignToEnglish"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="60dp" />
+
     </RelativeLayout>
 
     <!--Side Navigation Drawer UI -->

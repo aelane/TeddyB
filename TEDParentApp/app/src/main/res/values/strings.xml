@@ -21,7 +21,7 @@
     </string-array>
     <string-array name="TeachingModes">
         <item>Repeat After Me</item>
-        <item>Foreign to English Translation</item>
-        <item>English to Foreign Translation</item>
+        <item>Foreign to English</item>
+        <item>English to Foreign</item>
     </string-array>
 </resources>

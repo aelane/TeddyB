@@ -16,6 +16,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
+import android.widget.TextView;
 
 import com.amazonaws.auth.CognitoCachingCredentialsProvider;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.PaginatedQueryList;
@@ -33,9 +34,14 @@ public class MetricsActivity extends AppCompatActivity implements MetricsRespons
     private ActionBarDrawerToggle mDrawerToggle;
     private DrawerLayout mDrawerLayout;
     private String mActivityTitle;
-    public int repeatAfterMe = 0;
-    public int foreignToEnglish = 0;
-    public int englishToForeign = 0;
+
+    TextView repeatBox;
+    TextView englishToBox;
+    TextView foreignToBox;
+
+    public int repeatAfterMeVal = 0;
+    public int foreignToEnglishVal = 0;
+    public int englishToForeignVal = 0;
 
 
     @Override
@@ -54,7 +60,20 @@ public class MetricsActivity extends AppCompatActivity implements MetricsRespons
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
 
+
+        //Metrics Setup
+        repeatBox = (TextView)findViewById(R.id.repeatAfterMe);
+        foreignToBox = (TextView)findViewById(R.id.foreignToEnglish);
+        englishToBox = (TextView)findViewById(R.id.englishToForeign);
+
+        //Metrics Calculations
         calculateProgress();
+
+        //Post Calculations
+/*        repeatBox.append(String.valueOf(repeatAfterMeVal));
+        foreignToBox.append(String.valueOf(foreignToEnglishVal));
+        englishToBox.append(String.valueOf(englishToForeignVal));*/
+
     }
 
     private void addDrawerItems() {
@@ -79,8 +98,8 @@ public class MetricsActivity extends AppCompatActivity implements MetricsRespons
             case 1:
                 startActivity(new Intent(MetricsActivity.this, MetricsActivity.class));
                 break;
-//            case 4:
-//                startActivity(new Intent(MetricsActivity.this, LoginActivity.class));
+            case 3:
+                startActivity(new Intent(MetricsActivity.this, SettingsActivity.class));
             default:
                 break;
         }
@@ -110,20 +129,15 @@ public class MetricsActivity extends AppCompatActivity implements MetricsRespons
     }
 
     public void metricsFinish(PaginatedQueryList<Metrics> result){
-/*        for(Metrics item : result){
+       for(Metrics item : result){
             Toast toast = Toast.makeText(getApplicationContext(), item.getDate(), Toast.LENGTH_LONG);
             toast.show();
             //Do ctrl+f on logcot and search for MetricsResults to see what you got for testing, easier to see than toasts
             Log.d("MetricsResult", "ID: " + item.getBearID() + " Date: "+ item.getDate() + " Word: " + item.getCorrectWord() + " Mode: " + item.getTeachingMode() +
                     " Language: " + item.getLanguage() + " Attempt: " + item.getAttempt() + " Length: " + result.size());
-        }*/
-
-        //int repeatAfterMe;
-        //int foreignToEnglish;
-        //int englishToForeign;
+        }
 
         int listSize = result.size();
-        Log.d("list info: ", " size: " + String.valueOf(result.size()) + " Repeat After Me: " + String.valueOf(repeatAfterMe));
 
         if (listSize > 1){
             Metrics lastAttempt = result.get(listSize - 1);
@@ -142,26 +156,21 @@ public class MetricsActivity extends AppCompatActivity implements MetricsRespons
                 toast.show();
                 switch (lastAttempt.getTeachingMode()) {
                     case "Repeat After Me":
-                        repeatAfterMe += 1;
-                        /*Toast toast = Toast.makeText(getApplicationContext(), String.valueOf(repeatAfterMe), Toast.LENGTH_LONG);
-                        toast.show();*/
-                        Toast toast3 = Toast.makeText(getApplicationContext(), "here", Toast.LENGTH_LONG);
-                        toast3.show();
+                        repeatAfterMeVal += 1;
                         break;
                     case "Foreign to English":
-                        foreignToEnglish += 1;
-                        Toast toast1 = Toast.makeText(getApplicationContext(), String.valueOf(foreignToEnglish), Toast.LENGTH_LONG);
-                        toast1.show();
+                        foreignToEnglishVal += 1;
                         break;
                     case "English to Foreign":
-                        englishToForeign += 1;
-                        Toast toast2 = Toast.makeText(getApplicationContext(), String.valueOf(englishToForeign), Toast.LENGTH_LONG);
-                        toast2.show();
+                        englishToForeignVal += 1;
                         break;
                 }
             }
         }
-
+        //Post Calculations
+        repeatBox.append(String.valueOf(repeatAfterMeVal));
+        foreignToBox.append(String.valueOf(foreignToEnglishVal));
+        englishToBox.append(String.valueOf(englishToForeignVal));
     }
 
 
@@ -198,9 +207,7 @@ public class MetricsActivity extends AppCompatActivity implements MetricsRespons
                 for (String word : vocab) {
                     MetricsSearch myMapper = new MetricsSearch(credentialsProvider);
                     myMapper.delegate = this;
-                    Log.d("Current Teaching Mode: ", teachingMode);
                     myMapper.execute(teachingMode, "English", word);
-
                 }
             }
         }
