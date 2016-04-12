@@ -15,12 +15,15 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.amazonaws.auth.CognitoCachingCredentialsProvider;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.PaginatedQueryList;
 import com.amazonaws.regions.Regions;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import AWS_Classes.Dynamo.Metrics.Metrics;
 import AWS_Classes.Dynamo.Metrics.MetricsResponse;
@@ -39,10 +42,14 @@ public class MetricsActivity extends AppCompatActivity implements MetricsRespons
     TextView englishToBox;
     TextView foreignToBox;
 
+    public int count = 0;
     public int repeatAfterMeVal = 0;
     public int foreignToEnglishVal = 0;
     public int englishToForeignVal = 0;
 
+    public List<String> correctRepeat = new ArrayList<String>();
+    public List<String> correctForeignTo = new ArrayList<String>();
+    public List<String> correctEnglishTo = new ArrayList<String>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -129,6 +136,7 @@ public class MetricsActivity extends AppCompatActivity implements MetricsRespons
     }
 
     public void metricsFinish(PaginatedQueryList<Metrics> result){
+        count +=1;
        for(Metrics item : result){
             Toast toast = Toast.makeText(getApplicationContext(), item.getDate(), Toast.LENGTH_LONG);
             toast.show();
@@ -157,20 +165,25 @@ public class MetricsActivity extends AppCompatActivity implements MetricsRespons
                 switch (lastAttempt.getTeachingMode()) {
                     case "Repeat After Me":
                         repeatAfterMeVal += 1;
+                        correctRepeat.add(lastAttempt.getCorrectWord());
                         break;
                     case "Foreign to English":
                         foreignToEnglishVal += 1;
+                        correctForeignTo.add(lastAttempt.getCorrectWord());
                         break;
                     case "English to Foreign":
                         englishToForeignVal += 1;
+                        correctEnglishTo.add(lastAttempt.getCorrectWord());
                         break;
                 }
             }
         }
-        //Post Calculations
-        repeatBox.append(String.valueOf(repeatAfterMeVal));
-        foreignToBox.append(String.valueOf(foreignToEnglishVal));
-        englishToBox.append(String.valueOf(englishToForeignVal));
+        //Post Calculations after all 50 words have been checked for each teaching teaching mode
+        if (count == 150) {
+            repeatBox.append(String.valueOf(repeatAfterMeVal));
+            foreignToBox.append(String.valueOf(foreignToEnglishVal));
+            englishToBox.append(String.valueOf(englishToForeignVal));
+        }
     }
 
 

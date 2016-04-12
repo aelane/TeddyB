@@ -14,6 +14,7 @@ public class tedSingleton extends Application {
     private volatile static tedSingleton mInstance = null;
 
     private String testString;
+    private int testInt;
     private CognitoCachingCredentialsProvider credentials;
 
     private tedSingleton() {
@@ -31,6 +32,9 @@ public class tedSingleton extends Application {
     //Get and Set methods here
     public String getMystring(){return this.testString;}
     public CognitoCachingCredentialsProvider getCredentials() {return this.credentials;}
+
+    public int getMyTest(){return this.testInt;}
+    public void setMyTest(int s){testInt = s;}
 
     public void setMystring(String s){testString = s;}
     public void setCredentials(CognitoCachingCredentialsProvider c){credentials = c;}
