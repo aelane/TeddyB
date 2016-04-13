@@ -43,9 +43,6 @@ public class MetricsActivity extends AppCompatActivity implements MetricsRespons
     TextView foreignToBox;
 
     public int count = 0;
-    public int repeatAfterMeVal = 0;
-    public int foreignToEnglishVal = 0;
-    public int englishToForeignVal = 0;
 
     public List<String> correctRepeat = new ArrayList<String>();
     public List<String> correctForeignTo = new ArrayList<String>();
@@ -79,11 +76,6 @@ public class MetricsActivity extends AppCompatActivity implements MetricsRespons
 
         //Metrics Calculations
         calculateProgress();
-
-        //Post Calculations
-/*        repeatBox.append(String.valueOf(repeatAfterMeVal));
-        foreignToBox.append(String.valueOf(foreignToEnglishVal));
-        englishToBox.append(String.valueOf(englishToForeignVal));*/
 
     }
 
@@ -141,7 +133,7 @@ public class MetricsActivity extends AppCompatActivity implements MetricsRespons
 
     public void metricsFinish(PaginatedQueryList<Metrics> result){
         count +=1;
-       for(Metrics item : result){
+        for(Metrics item : result){
             Toast toast = Toast.makeText(getApplicationContext(), item.getDate(), Toast.LENGTH_LONG);
             toast.show();
             //Do ctrl+f on logcot and search for MetricsResults to see what you got for testing, easier to see than toasts
@@ -155,41 +147,28 @@ public class MetricsActivity extends AppCompatActivity implements MetricsRespons
             Metrics lastAttempt = result.get(listSize - 1);
             Metrics prevAttempt = result.get(listSize - 2);
 
-            Log.d("here: ", "I AM IN THE FIRST IF STATEMENT!");
-            Log.d("Last Attempt: ", "Teaching Mode: " + lastAttempt.getTeachingMode() + " is correct: " + lastAttempt.getCorrect() + " Attempt: " + String.valueOf(lastAttempt.getAttempt()));
-            Log.d("2nd to Last Attempt: ", "Teaching Mode: " + prevAttempt.getTeachingMode() + " is correct: " + prevAttempt.getCorrect() + " Attempt: " + String.valueOf(prevAttempt.getAttempt()));
-            Log.d("Word: ", "correct word: " + prevAttempt.getCorrectWord());
-
-            // Save known words
+            // Save known words in ArrayList
             if (lastAttempt.getCorrect() == true &&
                     prevAttempt.getCorrect() == true &&
                     lastAttempt.getAttempt() == 1 &&
                     prevAttempt.getAttempt() == 1) {
-                Toast toast = Toast.makeText(getApplicationContext(), "here", Toast.LENGTH_LONG);
-                Log.d("here: ", "I AM THE SECOND IF STATMENT!!!");
-                toast.show();
                 switch (lastAttempt.getTeachingMode()) {
                     case "Repeat After Me":
-                        repeatAfterMeVal += 1;
                         correctRepeat.add(lastAttempt.getCorrectWord());
                         break;
                     case "Foreign to English":
-                        foreignToEnglishVal += 1;
                         correctForeignTo.add(lastAttempt.getCorrectWord());
                         break;
                     case "English to Foreign":
-                        englishToForeignVal += 1;
                         correctEnglishTo.add(lastAttempt.getCorrectWord());
                         break;
                 }
             }
-            // Save problem words
+            // Save problem words in ArrayList
             else {
-                Log.d("THE WORD NOT KNOWN ", lastAttempt.getCorrectWord());
                 switch (lastAttempt.getTeachingMode()) {
                     case "Repeat After Me":
                         incorrectRepeat.add(lastAttempt.getCorrectWord());
-                        Log.d("BETCHES", "here");
                         break;
                     case "Foreign to English":
                         incorrectForeignTo.add(lastAttempt.getCorrectWord());
@@ -202,12 +181,9 @@ public class MetricsActivity extends AppCompatActivity implements MetricsRespons
         }
         //Post Calculations after all 50 words have been checked for each teaching teaching mode
         if (count == 150) {
-            repeatBox.append(String.valueOf(repeatAfterMeVal));
-            foreignToBox.append(String.valueOf(foreignToEnglishVal));
-            englishToBox.append(String.valueOf(englishToForeignVal));
-            for (String word : incorrectRepeat) {
-                Log.d("English to ", word);
-            }
+            repeatBox.append(String.valueOf(correctRepeat.size()));
+            foreignToBox.append(String.valueOf(correctForeignTo.size()));
+            englishToBox.append(String.valueOf(correctEnglishTo.size()));
 
         }
     }
@@ -244,7 +220,6 @@ public class MetricsActivity extends AppCompatActivity implements MetricsRespons
 
             for (String teachingMode : teachingModes) {
                 for (String word : vocab) {
-                    Log.d("Searching for", teachingMode + " " + word);
                     MetricsSearch myMapper = new MetricsSearch(credentialsProvider);
                     myMapper.delegate = this;
                     myMapper.execute(teachingMode, "English", word);
@@ -260,8 +235,7 @@ public class MetricsActivity extends AppCompatActivity implements MetricsRespons
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-
+        
         // Activate the navigation drawer toggle
         if (mDrawerToggle.onOptionsItemSelected(item)) {
             return true;
