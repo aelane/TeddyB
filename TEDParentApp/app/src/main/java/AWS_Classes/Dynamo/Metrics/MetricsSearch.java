@@ -53,7 +53,6 @@ public class MetricsSearch extends AsyncTask<String, Void, PaginatedQueryList<Me
 
 
         queryExpression.addExpressionAttributeNamesEntry("#Mode", "TeachingMode")
-                .withRangeKeyCondition("Date", rangeKeyCondition)
                 .addExpressionAttributeValuesEntry(":ModeVal", new AttributeValue(teachingMode))
                 .addExpressionAttributeNamesEntry("#Lang", "Language")
                 .addExpressionAttributeValuesEntry(":LangVal", new AttributeValue(language))
