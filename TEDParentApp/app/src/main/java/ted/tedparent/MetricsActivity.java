@@ -50,6 +50,10 @@ public class MetricsActivity extends AppCompatActivity implements MetricsRespons
     public List<String> correctRepeat = new ArrayList<String>();
     public List<String> correctForeignTo = new ArrayList<String>();
     public List<String> correctEnglishTo = new ArrayList<String>();
+    public List<String> incorrectRepeat = new ArrayList<String>();
+    public List<String> incorrectForeignTo = new ArrayList<String>();
+    public List<String> incorrectEnglishTo = new ArrayList<String>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -147,15 +151,17 @@ public class MetricsActivity extends AppCompatActivity implements MetricsRespons
 
         int listSize = result.size();
 
-        if (listSize > 1){
+        if (listSize > 1) {
             Metrics lastAttempt = result.get(listSize - 1);
             Metrics prevAttempt = result.get(listSize - 2);
 
             Log.d("here: ", "I AM IN THE FIRST IF STATEMENT!");
-            Log.d("Last Attempt: ","Teaching Mode: " + lastAttempt.getTeachingMode() + " is correct: " + lastAttempt.getCorrect() + " Attempt: " + String.valueOf(lastAttempt.getAttempt()));
-            Log.d("2nd to Last Attempt: ","Teaching Mode: " + prevAttempt.getTeachingMode() + " is correct: " + prevAttempt.getCorrect() + " Attempt: " + String.valueOf(prevAttempt.getAttempt()));
+            Log.d("Last Attempt: ", "Teaching Mode: " + lastAttempt.getTeachingMode() + " is correct: " + lastAttempt.getCorrect() + " Attempt: " + String.valueOf(lastAttempt.getAttempt()));
+            Log.d("2nd to Last Attempt: ", "Teaching Mode: " + prevAttempt.getTeachingMode() + " is correct: " + prevAttempt.getCorrect() + " Attempt: " + String.valueOf(prevAttempt.getAttempt()));
             Log.d("Word: ", "correct word: " + prevAttempt.getCorrectWord());
-            if(lastAttempt.getCorrect() == true &&
+
+            // Save known words
+            if (lastAttempt.getCorrect() == true &&
                     prevAttempt.getCorrect() == true &&
                     lastAttempt.getAttempt() == 1 &&
                     prevAttempt.getAttempt() == 1) {
@@ -177,12 +183,32 @@ public class MetricsActivity extends AppCompatActivity implements MetricsRespons
                         break;
                 }
             }
+            // Save problem words
+            else {
+                Log.d("THE WORD NOT KNOWN ", lastAttempt.getCorrectWord());
+                switch (lastAttempt.getTeachingMode()) {
+                    case "Repeat After Me":
+                        incorrectRepeat.add(lastAttempt.getCorrectWord());
+                        Log.d("BETCHES", "here");
+                        break;
+                    case "Foreign to English":
+                        incorrectForeignTo.add(lastAttempt.getCorrectWord());
+                        break;
+                    case "English to Foreign":
+                        incorrectEnglishTo.add(lastAttempt.getCorrectWord());
+                        break;
+                }
+            }
         }
         //Post Calculations after all 50 words have been checked for each teaching teaching mode
         if (count == 150) {
             repeatBox.append(String.valueOf(repeatAfterMeVal));
             foreignToBox.append(String.valueOf(foreignToEnglishVal));
             englishToBox.append(String.valueOf(englishToForeignVal));
+            for (String word : incorrectRepeat) {
+                Log.d("English to ", word);
+            }
+
         }
     }
 
@@ -218,6 +244,7 @@ public class MetricsActivity extends AppCompatActivity implements MetricsRespons
 
             for (String teachingMode : teachingModes) {
                 for (String word : vocab) {
+                    Log.d("Searching for", teachingMode + " " + word);
                     MetricsSearch myMapper = new MetricsSearch(credentialsProvider);
                     myMapper.delegate = this;
                     myMapper.execute(teachingMode, "English", word);
