@@ -41,15 +41,19 @@ public class MetricsActivity extends AppCompatActivity implements MetricsRespons
     TextView repeatBox;
     TextView englishToBox;
     TextView foreignToBox;
+    TextView allBox;
 
     public int count = 0;
 
-    public List<String> correctRepeat = new ArrayList<String>();
-    public List<String> correctForeignTo = new ArrayList<String>();
-    public List<String> correctEnglishTo = new ArrayList<String>();
-    public List<String> incorrectRepeat = new ArrayList<String>();
-    public List<String> incorrectForeignTo = new ArrayList<String>();
-    public List<String> incorrectEnglishTo = new ArrayList<String>();
+    public List<String> knownRepeat = new ArrayList<String>();
+    public List<String> knownForeignTo = new ArrayList<String>();
+    public List<String> knownEnglishTo = new ArrayList<String>();
+    public List<String> allKnownWords = new ArrayList<String>();
+    public List<String> troubleRepeat = new ArrayList<String>();
+    public List<String> troubleForeignTo = new ArrayList<String>();
+    public List<String> troubleEnglishTo = new ArrayList<String>();
+    public List<String> allTroubleWords = new ArrayList<String>();
+
 
 
     @Override
@@ -73,6 +77,7 @@ public class MetricsActivity extends AppCompatActivity implements MetricsRespons
         repeatBox = (TextView)findViewById(R.id.repeatAfterMe);
         foreignToBox = (TextView)findViewById(R.id.foreignToEnglish);
         englishToBox = (TextView)findViewById(R.id.englishToForeign);
+        allBox = (TextView) findViewById(R.id.allModes);
 
         //Metrics Calculations
         calculateProgress();
@@ -154,13 +159,13 @@ public class MetricsActivity extends AppCompatActivity implements MetricsRespons
                     prevAttempt.getAttempt() == 1) {
                 switch (lastAttempt.getTeachingMode()) {
                     case "Repeat After Me":
-                        correctRepeat.add(lastAttempt.getCorrectWord());
+                        knownRepeat.add(lastAttempt.getCorrectWord());
                         break;
                     case "Foreign to English":
-                        correctForeignTo.add(lastAttempt.getCorrectWord());
+                        knownForeignTo.add(lastAttempt.getCorrectWord());
                         break;
                     case "English to Foreign":
-                        correctEnglishTo.add(lastAttempt.getCorrectWord());
+                        knownEnglishTo.add(lastAttempt.getCorrectWord());
                         break;
                 }
             }
@@ -168,22 +173,31 @@ public class MetricsActivity extends AppCompatActivity implements MetricsRespons
             else {
                 switch (lastAttempt.getTeachingMode()) {
                     case "Repeat After Me":
-                        incorrectRepeat.add(lastAttempt.getCorrectWord());
+                        troubleRepeat.add(lastAttempt.getCorrectWord());
                         break;
                     case "Foreign to English":
-                        incorrectForeignTo.add(lastAttempt.getCorrectWord());
+                        troubleForeignTo.add(lastAttempt.getCorrectWord());
                         break;
                     case "English to Foreign":
-                        incorrectEnglishTo.add(lastAttempt.getCorrectWord());
+                        troubleEnglishTo.add(lastAttempt.getCorrectWord());
                         break;
                 }
             }
         }
         //Post Calculations after all 50 words have been checked for each teaching teaching mode
         if (count == 150) {
-            repeatBox.append(String.valueOf(correctRepeat.size()));
-            foreignToBox.append(String.valueOf(correctForeignTo.size()));
-            englishToBox.append(String.valueOf(correctEnglishTo.size()));
+            repeatBox.append(String.valueOf(knownRepeat.size()));
+            foreignToBox.append(String.valueOf(knownForeignTo.size()));
+            englishToBox.append(String.valueOf(knownEnglishTo.size()));
+
+            // Create a list of common known words (known in all three teaching modes)
+            List<String> tempKnown = intersection(knownRepeat, knownForeignTo);
+            allKnownWords = intersection(tempKnown, knownEnglishTo);
+            allBox.append(String.valueOf(allKnownWords.size()));
+
+            // Create a list of common trouble words (trouble words in all three teaching modes)
+            List<String> tempTrouble = intersection(troubleRepeat, troubleForeignTo);
+            allTroubleWords = intersection(tempTrouble, troubleEnglishTo);
 
         }
     }
@@ -229,13 +243,25 @@ public class MetricsActivity extends AppCompatActivity implements MetricsRespons
 
     }
 
+    public <T> List<T> intersection(List<T> list1, List<T> list2) {
+        List<T> list = new ArrayList<T>();
+
+        for (T t : list1) {
+            if(list2.contains(t)) {
+                list.add(t);
+            }
+        }
+
+        return list;
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        
+
         // Activate the navigation drawer toggle
         if (mDrawerToggle.onOptionsItemSelected(item)) {
             return true;
