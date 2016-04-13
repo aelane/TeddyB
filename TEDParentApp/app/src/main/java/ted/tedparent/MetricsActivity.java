@@ -14,7 +14,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,7 +32,8 @@ import AWS_Classes.Dynamo.Metrics.Metrics;
 import AWS_Classes.Dynamo.Metrics.MetricsResponse;
 import AWS_Classes.Dynamo.Metrics.MetricsSearch;
 
-public class MetricsActivity extends AppCompatActivity implements MetricsResponse{
+public class MetricsActivity extends AppCompatActivity implements MetricsResponse {
+
 
     // Navigation Drawer Variables
     private ListView mDrawerList;
@@ -38,6 +42,9 @@ public class MetricsActivity extends AppCompatActivity implements MetricsRespons
     private DrawerLayout mDrawerLayout;
     private String mActivityTitle;
 
+    private Spinner langSpinner;
+    private Button btnSubmit;
+    private ProgressBar totalProgress = null;
     TextView repeatBox;
     TextView englishToBox;
     TextView foreignToBox;
@@ -55,9 +62,9 @@ public class MetricsActivity extends AppCompatActivity implements MetricsRespons
     public List<String> allTroubleWords = new ArrayList<String>();
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_metrics);
 
@@ -72,17 +79,33 @@ public class MetricsActivity extends AppCompatActivity implements MetricsRespons
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
 
+        //Spinner Setup - Set Default value to English
+        langSpinner = (Spinner) findViewById(R.id.LangSpinner);
+        btnSubmit = (Button) findViewById(R.id.button);
 
         //Metrics Setup
         repeatBox = (TextView)findViewById(R.id.repeatAfterMe);
         foreignToBox = (TextView)findViewById(R.id.foreignToEnglish);
         englishToBox = (TextView)findViewById(R.id.englishToForeign);
         allBox = (TextView) findViewById(R.id.allModes);
+        totalProgress = (ProgressBar) findViewById(R.id.totalProgress);
 
-        //Metrics Calculations
-        calculateProgress();
+
+        btnSubmit.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                // Update metrics based on language
+                startActivity(new Intent(MetricsActivity.this, MetricsActivity.class));
+                String languageStr = langSpinner.getSelectedItem().toString();
+
+                // Calculate Metrics
+                calculateProgress(languageStr);
+            }
+        });
 
     }
+
 
     private void addDrawerItems() {
         String[] osArray = { "Home", "Metrics", "Accounts", "Settings", "Sign Out" };
@@ -195,6 +218,8 @@ public class MetricsActivity extends AppCompatActivity implements MetricsRespons
             allKnownWords = intersection(tempKnown, knownEnglishTo);
             allBox.append(String.valueOf(allKnownWords.size()));
 
+            totalProgress.setProgress(allKnownWords.size());
+
             // Create a list of common trouble words (trouble words in all three teaching modes)
             List<String> tempTrouble = intersection(troubleRepeat, troubleForeignTo);
             allTroubleWords = intersection(tempTrouble, troubleEnglishTo);
@@ -210,7 +235,7 @@ public class MetricsActivity extends AppCompatActivity implements MetricsRespons
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
-    public void calculateProgress() {
+    public void calculateProgress(String language) {
 
         String[] teachingModes = {"Repeat After Me", "Foreign to English", "English to Foreign"};
         String[] vocab = {"one", "two", "three", "four", "five", "six", "seven", "eight", "nine",
@@ -236,7 +261,7 @@ public class MetricsActivity extends AppCompatActivity implements MetricsRespons
                 for (String word : vocab) {
                     MetricsSearch myMapper = new MetricsSearch(credentialsProvider);
                     myMapper.delegate = this;
-                    myMapper.execute(teachingMode, "English", word);
+                    myMapper.execute(teachingMode, language, word);
                 }
             }
         }

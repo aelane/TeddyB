@@ -18,14 +18,16 @@
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/progressBar"
-            android:max="100"
+            android:id="@+id/totalProgress"
+            android:max="50"
             android:indeterminate="false"
             android:progress="50"
-            android:layout_alignParentTop="true"
+            android:layout_above="@+id/repeatAfterMe"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_marginTop="39dp" />
+            android:layout_marginBottom="34dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -33,10 +35,10 @@
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="Repeat After Me: "
             android:id="@+id/repeatAfterMe"
-            android:layout_below="@+id/progressBar"
+            android:layout_above="@+id/foreignToEnglish"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_marginTop="49dp" />
+            android:layout_marginBottom="53dp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -44,8 +46,7 @@
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="Foreign to English: "
             android:id="@+id/foreignToEnglish"
-            android:layout_marginTop="61dp"
-            android:layout_below="@+id/repeatAfterMe"
+            android:layout_centerVertical="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true" />
 
@@ -55,10 +56,10 @@
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="English to Foreign: "
             android:id="@+id/englishToForeign"
-            android:layout_below="@+id/foreignToEnglish"
+            android:layout_above="@+id/allModes"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_marginTop="60dp" />
+            android:layout_marginBottom="55dp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -66,10 +67,29 @@
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="All Modes:"
             android:id="@+id/allModes"
-            android:layout_below="@+id/englishToForeign"
+            android:layout_marginBottom="45dp"
+            android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_marginTop="61dp" />
+            android:layout_alignParentStart="true" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Calculate"
+            android:id="@+id/button"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+
+        <Spinner
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/LangSpinner"
+            android:spinnerMode="dropdown"
+            android:entries="@array/Languages"
+            android:layout_alignParentTop="true"
+            android:layout_alignRight="@+id/foreignToEnglish"
+            android:layout_alignEnd="@+id/foreignToEnglish" />
 
     </RelativeLayout>
 
