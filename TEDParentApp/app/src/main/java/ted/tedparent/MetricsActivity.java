@@ -31,6 +31,7 @@ import java.util.List;
 import AWS_Classes.Dynamo.Metrics.Metrics;
 import AWS_Classes.Dynamo.Metrics.MetricsResponse;
 import AWS_Classes.Dynamo.Metrics.MetricsSearch;
+import Helper_Classes.makePie;
 import Helper_Classes.tedSingleton;
 
 public class MetricsActivity extends AppCompatActivity implements MetricsResponse {
@@ -45,6 +46,9 @@ public class MetricsActivity extends AppCompatActivity implements MetricsRespons
 
     private Spinner langSpinner;
     private Button btnSubmit;
+    private Button repeatGraph;
+    private Button foreignToGraph;
+    private Button englishToGraph;
     private ProgressBar totalProgress = null;
     TextView repeatBox;
     TextView englishToBox;
@@ -99,9 +103,15 @@ public class MetricsActivity extends AppCompatActivity implements MetricsRespons
         allBox = (TextView) findViewById(R.id.allModes);
         totalProgress = (ProgressBar) findViewById(R.id.totalProgress);
 
+        repeatGraph = (Button)findViewById(R.id.repeatPie);
+        foreignToGraph = (Button)findViewById(R.id.foreignToPie);
+        englishToGraph = (Button)findViewById(R.id.englishToPie);
+
         //Calculate Metrics
         Log.d("Current Language ", currLang);
         calculateProgress();
+
+         final Context myContext = this;
 
 
         btnSubmit.setOnClickListener(new View.OnClickListener() {
@@ -114,6 +124,33 @@ public class MetricsActivity extends AppCompatActivity implements MetricsRespons
                 // Update metrics based on language
                 startActivity(new Intent(MetricsActivity.this, MetricsActivity.class));
 
+            }
+        });
+
+        repeatGraph.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v){
+                Intent achartIntent = new makePie().execute(myContext, knownRepeat, troubleRepeat);
+                startActivity(achartIntent);
+            }
+        });
+
+        foreignToGraph.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v){
+                Intent achartIntent = new makePie().execute(myContext, knownForeignTo, troubleForeignTo);
+                startActivity(achartIntent);
+            }
+        });
+
+        englishToGraph.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v){
+                Intent achartIntent = new makePie().execute(myContext, knownEnglishTo, troubleEnglishTo);
+                startActivity(achartIntent);
             }
         });
 
@@ -221,7 +258,7 @@ public class MetricsActivity extends AppCompatActivity implements MetricsRespons
             }
         }
         //Post Calculations after all 50 words have been checked for each teaching teaching mode
-        if (count == 150) {
+        if (count == 153) {
             repeatBox.append(String.valueOf(knownRepeat.size()));
             foreignToBox.append(String.valueOf(knownForeignTo.size()));
             englishToBox.append(String.valueOf(knownEnglishTo.size()));
