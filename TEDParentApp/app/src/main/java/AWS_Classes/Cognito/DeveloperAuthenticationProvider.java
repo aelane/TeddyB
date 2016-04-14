@@ -1,5 +1,7 @@
 package AWS_Classes.Cognito;
 
+import android.util.Log;
+
 import com.TED.Account.TEDAccountAPIClient;
 import com.TED.Account.model.LoginResponse;
 import com.TED.Account.model.UserData;
@@ -15,6 +17,7 @@ public class DeveloperAuthenticationProvider extends AWSAbstractCognitoDeveloper
     private static final String developerProvider = "login.TED.TEDapp";
     private UserData Data;
     private String cachedID = null;
+    private Boolean success;
 
     public DeveloperAuthenticationProvider(String accountId, String identityPoolId, Regions region, UserData newData) {
         super(accountId, identityPoolId, region);
@@ -50,15 +53,25 @@ public class DeveloperAuthenticationProvider extends AWSAbstractCognitoDeveloper
         // Invoke your parentPath1Get method.
 
         LoginResponse Response = client.loginresourcePost(Data);
-
+        //success = Response.getSuccess();
         // Call the update method with updated identityId and token to make sure
         // these are ready to be used from Credentials Provider.
+        Log.d("RESPONSE: ", Response.getID() + " " + Response.getToken() + " " + Response.getSuccess());
+        if(Response.getSuccess() != null) {
 
-
-        update(Response.getID(), Response.getToken());
-        //update(identityId, token);
-        cachedID = Response.getID();
-        return Response.getToken();
+            if (Response.getSuccess()){
+                update(Response.getID(), Response.getToken());
+                //update(identityId, token);
+                cachedID = Response.getID();
+                return Response.getToken();
+            }
+            else{
+                return null;
+            }
+        }
+        else{
+            return null;
+        }
 
     }
 

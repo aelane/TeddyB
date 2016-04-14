@@ -25,24 +25,29 @@ public class LoginTask extends AsyncTask<UserData, Void, DeveloperAuthentication
                 "us-east-1:b0b7a95e-1afe-41d6-9465-1f40d1494014",
                 Regions.US_EAST_1,
                 args[0]);
-        developerProvider.refresh();
+        if(developerProvider.refresh() != null) {
 
-        HashMap<String, String> loginsMap = new HashMap<String, String>();
-        loginsMap.put(developerProvider.getProviderName(), args[0].getUsername());
+            HashMap<String, String> loginsMap = new HashMap<String, String>();
+            loginsMap.put(developerProvider.getProviderName(), args[0].getUsername());
 
-        developerProvider.setLogins(loginsMap);
+            developerProvider.setLogins(loginsMap);
 
-        return developerProvider;
+            return developerProvider;
+        }
+        else{
+            return null;
+        }
     }
 
 
     @Override
     protected void onPostExecute(DeveloperAuthenticationProvider result) {
         if(result == null){
-            return;
+            delegate.loginFinish(null);
         }
-
-        delegate.loginFinish(result);
+        else {
+            delegate.loginFinish(result);
+        }
     }
 
 }

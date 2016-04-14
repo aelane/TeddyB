@@ -71,24 +71,30 @@ public class LoginActivity extends AppCompatActivity implements RegTaskResponse,
     public void regFinish(AccountResponse output){
 
         if(output.getSuccess()) {
-            Toast.makeText(LoginActivity.this, "It worked", Toast.LENGTH_LONG).show();
+            Toast.makeText(LoginActivity.this, "Registration was succesful", Toast.LENGTH_LONG).show();
         }
         else{
-            Toast.makeText(LoginActivity.this, "It sort of worked", Toast.LENGTH_LONG).show();
+            Toast.makeText(LoginActivity.this, "Registration failed", Toast.LENGTH_LONG).show();
         }
 
         // Toast.makeText(LoginActivity.this, "Woe is I", Toast.LENGTH_LONG).show();
     }
 
-    public void loginFinish(DeveloperAuthenticationProvider output){
+    public void loginFinish(DeveloperAuthenticationProvider output) {
 
-        CognitoCachingCredentialsProvider credentialsProvider = new CognitoCachingCredentialsProvider( getApplicationContext(),
-                output,
-                Regions.US_EAST_1);
+        if (output != null){
+            CognitoCachingCredentialsProvider credentialsProvider = new CognitoCachingCredentialsProvider(getApplicationContext(),
+                    output,
+                    Regions.US_EAST_1);
 
-        // Store credentials in mySingleton class
-        tedSingleton.getInstance().setCredentials(credentialsProvider);
-
+             // Store credentials in mySingleton class
+            tedSingleton.getInstance().setCredentials(credentialsProvider);
+            Intent i = new Intent(getApplicationContext(), HomeActivity.class);
+            startActivity(i);
+        }
+        else{
+            Toast.makeText(LoginActivity.this, "Wrong Username/Password", Toast.LENGTH_LONG).show();
+        }
     }
 
 
