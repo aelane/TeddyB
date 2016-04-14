@@ -23,7 +23,6 @@ import android.widget.Toast;
 
 import com.amazonaws.auth.CognitoCachingCredentialsProvider;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.PaginatedQueryList;
-import com.amazonaws.regions.Regions;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -158,7 +157,7 @@ public class MetricsActivity extends AppCompatActivity implements MetricsRespons
 
 
     private void addDrawerItems() {
-        String[] osArray = { "Home", "Metrics", "Accounts", "Settings", "Sign Out" };
+        String[] osArray = { "Home", "Metrics", "Settings", "Sign Out" };
         mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, osArray);
         mDrawerList.setAdapter(mAdapter);
 
@@ -179,7 +178,7 @@ public class MetricsActivity extends AppCompatActivity implements MetricsRespons
             case 1:
                 startActivity(new Intent(MetricsActivity.this, MetricsActivity.class));
                 break;
-            case 3:
+            case 2:
                 startActivity(new Intent(MetricsActivity.this, SettingsActivity.class));
             default:
                 break;
@@ -301,15 +300,17 @@ public class MetricsActivity extends AppCompatActivity implements MetricsRespons
 
         if (isNetworkAvailable()) {
             //Get our credentials in order to talk to our AWS database
+/*
             CognitoCachingCredentialsProvider credentialsProvider = new CognitoCachingCredentialsProvider(
                     getApplicationContext(),
                     "us-east-1:b0b7a95e-1afe-41d6-9465-1f40d1494014", // Identity Pool ID
                     Regions.US_EAST_1 // Region
             );
+*/
 
 
             //Credentials for specific accounts
-            //CognitoCachingCredentialsProvider credentialsProvider = mySingleton.getInstance().getCredentials()
+            CognitoCachingCredentialsProvider credentialsProvider = tedSingleton.getInstance().getCredentials();
 
             for (String teachingMode : teachingModes) {
                 for (String word : vocab) {

@@ -25,6 +25,7 @@ import AWS_Classes.Dynamo.Settings.AsyncResponse;
 import AWS_Classes.Dynamo.Settings.BearData;
 import AWS_Classes.Dynamo.Settings.BearStateUpdate;
 import AWS_Classes.Dynamo.Settings.SettingsUpdate;
+import Helper_Classes.tedSingleton;
 
 public class SettingsActivity extends AppCompatActivity implements AsyncResponse {
 
@@ -104,14 +105,14 @@ public class SettingsActivity extends AppCompatActivity implements AsyncResponse
         // Check if we are connected to wifi
         if (isNetworkAvailable()) {
             //Get our credentials in order to talk to our AWS database
-            CognitoCachingCredentialsProvider credentialsProvider = new CognitoCachingCredentialsProvider(
+/*            CognitoCachingCredentialsProvider credentialsProvider = new CognitoCachingCredentialsProvider(
                     getApplicationContext(),
                     "us-east-1:b0b7a95e-1afe-41d6-9465-1f40d1494014", // Identity Pool ID
                     Regions.US_EAST_1 // Region
-            );
+            );*/
 
             //Credentials for specific accounts
-            //CognitoCachingCredentialsProvider credentialsProvider = mySingleton.getInstance().getCredentials()
+            CognitoCachingCredentialsProvider credentialsProvider = tedSingleton.getInstance().getCredentials();
 
             BearStateUpdate myMapper = new BearStateUpdate(credentialsProvider);
             myMapper.delegate = this;
@@ -146,7 +147,7 @@ public class SettingsActivity extends AppCompatActivity implements AsyncResponse
     }
 
     private void addDrawerItems() {
-        String[] osArray = { "Home", "Metrics", "Accounts", "Settings", "Log Out" };
+        String[] osArray = { "Home", "Metrics", "Settings", "Log Out" };
         mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, osArray);
         mDrawerList.setAdapter(mAdapter);
 
@@ -167,7 +168,7 @@ public class SettingsActivity extends AppCompatActivity implements AsyncResponse
             case 1:
                 startActivity(new Intent(SettingsActivity.this, MetricsActivity.class));
                 break;
-            case 3:
+            case 2:
                 startActivity(new Intent(SettingsActivity.this, SettingsActivity.class));
                 break;
 //            case 4:
