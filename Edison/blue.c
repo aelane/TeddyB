@@ -7,9 +7,11 @@
 #include <string.h>
 #include <getopt.h>
 #include <signal.h>
+#include <pthread.h>
 #include <sys/param.h>
 #include <sys/ioctl.h>
 #include <sys/socket.h>
+
 
 #include <bluetooth/bluetooth.h>
 #include <bluetooth/hci.h>
@@ -18,14 +20,29 @@
 #include <bluetooth/sdp_lib.h>
 #include <bluetooth/rfcomm.h>
 
+#include "mraa.h"
+
 #include "Lessons.h"
 #include "AWS.h"
 #include "Sphinx.h"
 #include "aws_iot_config.h"
 #include "bear_info.h"
 
-int str2uuid( const char *uuid_str, uuid_t *uuid ) 
-{
+
+void *threadListen(void *s){
+	
+	char message_Buffer[16];
+	//Stay a while and listen
+	while(1){
+		read((int) s, message_Buffer, sizeof(message_Buffer));
+		printf("Done reading got: %s\n", message_Buffer);
+		sprintf(threadMessage, "%s", message_Buffer);
+		memset(message_Buffer, 0, sizeof(message_Buffer));
+		sleep(5);
+	}
+
+}
+int str2uuid( const char *uuid_str, uuid_t *uuid ) {
     uint32_t uuid_int[4];
     char *endptr;
 
@@ -91,19 +108,40 @@ int main(void) {
 	sdp_list_t *response_list = NULL, *search_list, *attrid_list;
 	int s, loco_channel = -1, status;
 	struct sockaddr_rc loc_addr = { 0 };
+	pthread_t blueThread;
 	
-	int continue_flag = 0, sphinx_count = 0, attempts;
-	FILE *fp_Topic, *fp_Status, *fp_Sphinx, *fp_Setting;
+	FILE *fp_Setting;
 	char message_Buffer[64];
-	char line[16], mode[16], language[16];
-	char status_chk[16] = "";
-	char sphinx_arr[64];
+	char mode[16], language[16], topic[16], topicLen[16];
 	size_t len = 16;
-	ssize_t read;
-	char **arr = NULL;
 	(void) signal(SIGINT, SIG_DFL);
 	
 	changeTopic_flag = 1;
+///////////////////////////MRAA/////////////////////////////	
+	//Initialize MRAA
+        mraa_init();
+        
+        //Initialize MRAA Pin 8 == IO8 == GP49
+        mraa_gpio_context BearButton = mraa_gpio_init(8);
+
+        //Check for successful initialization or else return
+        if (BearButton == NULL){
+                printf("Error initializing Push to Talk Pin, IO2\n");
+                return -1;
+        }
+        
+		//Set pin to an input
+		mraa_gpio_dir(BearButton, MRAA_GPIO_IN);
+		printf("Set Pin to an input\n");
+ 
+        
+        int curr_pin = mraa_gpio_get_pin(BearButton);
+        printf("The current pin number is %d\n", curr_pin);
+        int curr_raw = mraa_gpio_get_pin_raw(BearButton);
+        printf("The raw pin number is %d\n", curr_raw);
+
+        printf("Going to start reading the button via polling\n");
+	
 //////////////////////AWS///////////////////////////////////	
 	IoT_Error_t rc = NONE_ERROR;
 	char HostAddress[255] = AWS_IOT_MQTT_HOST;
@@ -201,7 +239,6 @@ int main(void) {
 	do {
 		printf("Scanning ...\n");
 		
-			//22:22:8E:FB:B2:85 <- Address of the Tablet(Add to header file later?
 			sdp_session_t *session;
 			int retries;
 			int foundit, responses;
@@ -296,8 +333,14 @@ sdpconnect:
 					perror("uh oh");
 				}
 				//////////////////////////Start of teaching stuff//////////////////////////////////////////
+				rc = pthread_create(&blueThread, NULL, threadListen, (void *)s);
+					if (rc){
+						printf("ERROR: %d\n", rc);
+						exit(1);
+					}
 				do {
 					
+				
 					if(changeTopic_flag){
 					
 						sprintf(cPayload, "{\"BearID\":\"%s\"}",BEARID);
@@ -318,12 +361,18 @@ sdpconnect:
 					fp_Setting = fopen("/Curriculum/BearSettings.txt", "r");
 					fgets(language, 16, fp_Setting);
 					fgets(mode, 16, fp_Setting);
+					fgets(topic, 16, fp_Setting);
+					fgets(topicLen, 16, fp_Setting);
 					language[strlen(language)-1] = 0;
 					mode[strlen(mode)-1] = 0;
 					fclose(fp_Setting);
 					
-					//status = english_to_other(s, language, MetricsParams);
-					status = repeat_after_me_english(s, MetricsParams);
+					while(strcmp(threadMessage, "learning")){
+						printf("Waiting for learning, got: %s\n", threadMessage);
+						sleep(1);
+					}
+					//status = english_to_other(s, language,topic, MetricsParams, BearButton);
+					status = repeat_after_me_english(s, topic, MetricsParams, BearButton);
 					
 					
 					changeTopic_flag = 1;

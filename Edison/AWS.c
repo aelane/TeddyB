@@ -22,7 +22,7 @@ int MQTTcallbackHandler(MQTTCallbackParams params) {
 			
 	jsmn_parser parser;		
 	jsmn_init(&parser);
-	jsmntok_t tokens[32];
+	jsmntok_t tokens[40];
 	
 	FILE *fp, *fp_trans, *fp_settings;
 	const char *js;
@@ -36,22 +36,22 @@ int MQTTcallbackHandler(MQTTCallbackParams params) {
 	js = params.MessageParams.pPayload;
 	r = jsmn_parse(&parser, js, strlen(js), tokens, 256);
 	
-	for(i = 1; i < 5; i++){
+	for(i = 1; i < 9; i++){
 		jsmntok_t key = tokens[i];
 		unsigned int length = key.end - key.start;
 		char keyString[length + 1];    
 		memcpy(keyString, &params.MessageParams.pPayload[key.start], length);
 		keyString[length] = '\0';
-		printf("Key: %s\n", keyString);
-		if(strcmp(keyString, "Language") && strcmp(keyString, "Setting")){
+		printf("SettingsKey: %s\n", keyString);
+		if(strcmp(keyString, "Language") && strcmp(keyString, "Setting") && strcmp(keyString, "Topic") && strcmp(keyString, "TopicLen")){
 			fprintf(fp_settings, "%s\n", keyString);
 		}
 		
 		
 	}
 	fclose(fp_settings);
-	
-	for(i; i < 32; i++){
+	printf("Closing Settings File\n");
+	for(i; i < 40; i++){
 		jsmntok_t key = tokens[i];
 		unsigned int length = key.end - key.start;
 		char keyString[length + 1];    

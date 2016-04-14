@@ -67,6 +67,7 @@ LOG_FLAGS += -DIOT_ERROR
 COMPILER_FLAGS += -g
 COMPILER_FLAGS += -w
 COMPILER_FLAGS += -lbluetooth
+COMPILER_FLAGS += -lmraa
 COMPILER_FLAGS += -DMODELDIR=\"`pkg-config --variable=modeldir pocketsphinx`\" \
     `pkg-config --cflags --libs pocketsphinx sphinxbase`
 COMPILER_FLAGS += $(LOG_FLAGS)
