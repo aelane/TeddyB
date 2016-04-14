@@ -31,7 +31,7 @@ import java.util.List;
 import AWS_Classes.Dynamo.Metrics.Metrics;
 import AWS_Classes.Dynamo.Metrics.MetricsResponse;
 import AWS_Classes.Dynamo.Metrics.MetricsSearch;
-import Helper_Classes.makePie;
+import Helper_Classes.makePieChart;
 import Helper_Classes.tedSingleton;
 
 public class MetricsActivity extends AppCompatActivity implements MetricsResponse {
@@ -131,7 +131,7 @@ public class MetricsActivity extends AppCompatActivity implements MetricsRespons
 
             @Override
             public void onClick(View v){
-                Intent achartIntent = new makePie().execute(myContext, knownRepeat, troubleRepeat);
+                Intent achartIntent = new makePieChart().execute(myContext, "Repeat After Me", knownRepeat, troubleRepeat);
                 startActivity(achartIntent);
             }
         });
@@ -140,7 +140,7 @@ public class MetricsActivity extends AppCompatActivity implements MetricsRespons
 
             @Override
             public void onClick(View v){
-                Intent achartIntent = new makePie().execute(myContext, knownForeignTo, troubleForeignTo);
+                Intent achartIntent = new makePieChart().execute(myContext, "Foreign to English", knownForeignTo, troubleForeignTo);
                 startActivity(achartIntent);
             }
         });
@@ -149,7 +149,7 @@ public class MetricsActivity extends AppCompatActivity implements MetricsRespons
 
             @Override
             public void onClick(View v){
-                Intent achartIntent = new makePie().execute(myContext, knownEnglishTo, troubleEnglishTo);
+                Intent achartIntent = new makePieChart().execute(myContext, "English to Foreign", knownEnglishTo, troubleEnglishTo);
                 startActivity(achartIntent);
             }
         });
@@ -211,13 +211,16 @@ public class MetricsActivity extends AppCompatActivity implements MetricsRespons
 
     public void metricsFinish(PaginatedQueryList<Metrics> result){
         count +=1;
-        for(Metrics item : result){
+/*        for(Metrics item : result){
             Toast toast = Toast.makeText(getApplicationContext(), item.getDate(), Toast.LENGTH_LONG);
             toast.show();
             //Do ctrl+f on logcot and search for MetricsResults to see what you got for testing, easier to see than toasts
             Log.d("MetricsResult", "ID: " + item.getBearID() + " Date: "+ item.getDate() + " Word: " + item.getCorrectWord() + " Mode: " + item.getTeachingMode() +
                     " Language: " + item.getLanguage() + " Attempt: " + item.getAttempt() + " Length: " + result.size());
-        }
+        }*/
+
+        Toast toast = Toast.makeText(getApplicationContext(), String.valueOf(count), Toast.LENGTH_SHORT);
+        //toast.show();
 
         int listSize = result.size();
 
@@ -257,16 +260,17 @@ public class MetricsActivity extends AppCompatActivity implements MetricsRespons
                 }
             }
         }
-        //Post Calculations after all 50 words have been checked for each teaching teaching mode
-        if (count == 153) {
-            repeatBox.append(String.valueOf(knownRepeat.size()));
-            foreignToBox.append(String.valueOf(knownForeignTo.size()));
-            englishToBox.append(String.valueOf(knownEnglishTo.size()));
+        //Post Calculations after all 51 words have been checked for each teaching teaching mode
+        if (count >= 153) {
+            //toast.cancel();
+            repeatBox.append(String.valueOf(knownRepeat.size()) + "/51 words");
+            foreignToBox.append(String.valueOf(knownForeignTo.size()) + "/51 words");
+            englishToBox.append(String.valueOf(knownEnglishTo.size()) + "/51 words");
 
             // Create a list of common known words (known in all three teaching modes)
             List<String> tempKnown = intersection(knownRepeat, knownForeignTo);
             allKnownWords = intersection(tempKnown, knownEnglishTo);
-            allBox.append(String.valueOf(allKnownWords.size()));
+            allBox.append(String.valueOf(allKnownWords.size()/51) + "%");
 
             totalProgress.setProgress(allKnownWords.size());
 
