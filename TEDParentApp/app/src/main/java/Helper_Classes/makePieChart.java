@@ -17,7 +17,7 @@ import java.util.List;
 public class makePieChart {
 
     public Intent execute(Context context, String title, List<String> known, List<String> trouble) {
-        int[] colors = new int[] { Color.RED, Color.YELLOW, Color.BLUE };
+        int[] colors = new int[] { Color.CYAN, Color.MAGENTA, Color.BLUE };
         DefaultRenderer renderer = buildCategoryRenderer(colors, title);
 
         CategorySeries categorySeries = new CategorySeries("Words");
