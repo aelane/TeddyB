@@ -13,14 +13,14 @@ import com.amazonaws.auth.CognitoCachingCredentialsProvider;
 public class tedSingleton extends Application {
     private volatile static tedSingleton mInstance = null;
 
-    private String testString;
+    private String language;
     private int testInt;
     private CognitoCachingCredentialsProvider credentials;
 
     private tedSingleton() {
-        testString = "TEST AUTHENTICATION"; //initialize your var here
+        language = "english";
         credentials = null;
-        //Add all the variables you need, here.
+
     }
     public static tedSingleton getInstance(){  //Singleton's core
         if(mInstance == null){
@@ -30,13 +30,11 @@ public class tedSingleton extends Application {
     }
 
     //Get and Set methods here
-    public String getMystring(){return this.testString;}
+    public String getLanguage(){return this.language;}
     public CognitoCachingCredentialsProvider getCredentials() {return this.credentials;}
 
-    public int getMyTest(){return this.testInt;}
-    public void setMyTest(int s){testInt = s;}
 
-    public void setMystring(String s){testString = s;}
+    public void setLanguage(String s){language = s;}
     public void setCredentials(CognitoCachingCredentialsProvider c){credentials = c;}
 
 

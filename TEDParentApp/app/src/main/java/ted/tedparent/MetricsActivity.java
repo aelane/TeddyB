@@ -31,6 +31,7 @@ import java.util.List;
 import AWS_Classes.Dynamo.Metrics.Metrics;
 import AWS_Classes.Dynamo.Metrics.MetricsResponse;
 import AWS_Classes.Dynamo.Metrics.MetricsSearch;
+import Helper_Classes.tedSingleton;
 
 public class MetricsActivity extends AppCompatActivity implements MetricsResponse {
 
@@ -62,8 +63,12 @@ public class MetricsActivity extends AppCompatActivity implements MetricsRespons
     public List<String> allTroubleWords = new ArrayList<String>();
 
 
+    String currLang = tedSingleton.getInstance().getLanguage();
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_metrics);
@@ -83,6 +88,10 @@ public class MetricsActivity extends AppCompatActivity implements MetricsRespons
         langSpinner = (Spinner) findViewById(R.id.LangSpinner);
         btnSubmit = (Button) findViewById(R.id.button);
 
+        ArrayAdapter langAdap = (ArrayAdapter) langSpinner.getAdapter(); //cast to an ArrayAdapter
+        int spinnerPosition = langAdap.getPosition(currLang);
+        langSpinner.setSelection(spinnerPosition);
+
         //Metrics Setup
         repeatBox = (TextView)findViewById(R.id.repeatAfterMe);
         foreignToBox = (TextView)findViewById(R.id.foreignToEnglish);
@@ -90,17 +99,21 @@ public class MetricsActivity extends AppCompatActivity implements MetricsRespons
         allBox = (TextView) findViewById(R.id.allModes);
         totalProgress = (ProgressBar) findViewById(R.id.totalProgress);
 
+        //Calculate Metrics
+        Log.d("Current Language ", currLang);
+        calculateProgress();
+
 
         btnSubmit.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
+                String languageStr = langSpinner.getSelectedItem().toString();
+                tedSingleton.getInstance().setLanguage(languageStr);
+
                 // Update metrics based on language
                 startActivity(new Intent(MetricsActivity.this, MetricsActivity.class));
-                String languageStr = langSpinner.getSelectedItem().toString();
 
-                // Calculate Metrics
-                calculateProgress(languageStr);
             }
         });
 
@@ -235,7 +248,7 @@ public class MetricsActivity extends AppCompatActivity implements MetricsRespons
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
-    public void calculateProgress(String language) {
+    public void calculateProgress() {
 
         String[] teachingModes = {"Repeat After Me", "Foreign to English", "English to Foreign"};
         String[] vocab = {"one", "two", "three", "four", "five", "six", "seven", "eight", "nine",
@@ -261,7 +274,7 @@ public class MetricsActivity extends AppCompatActivity implements MetricsRespons
                 for (String word : vocab) {
                     MetricsSearch myMapper = new MetricsSearch(credentialsProvider);
                     myMapper.delegate = this;
-                    myMapper.execute(teachingMode, language, word);
+                    myMapper.execute(teachingMode, currLang, word);
                 }
             }
         }
