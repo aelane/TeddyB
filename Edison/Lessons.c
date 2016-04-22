@@ -48,7 +48,7 @@ int foreign_to_english(int s, char* language, char* topic, MQTTPublishParams Met
 	}
 	
 SKIP:
-	while(fgets(line, 16, fp_Topic)!=NULL && fgets(line_trans, 16, fp_Trans)!=NULL){
+	while(fgets(line, sizeof(line), fp_Topic)!=NULL && fgets(line_trans, sizeof(line_trans), fp_Trans)!=NULL){
 		attempts = 0;
 		printf("Getting new word\n");
 		line[strlen(line)-1] = 0;
@@ -62,7 +62,7 @@ MENU:
 				sleep(1);
 			}
 		}
-		//repeat_underscore_me
+		
 		printf("Language setting is: %s\n", language);
 		if(strcmp(line, "English")){
 			printf ("Read %s\n", line);
@@ -127,10 +127,10 @@ WRONG:
 					fprintf(stderr, "Unable to open sphinx response file\n");
 					return -1;
 				}
-				fgets (sphinx_arr, 64, fp_Sphinx);
+				fgets (sphinx_arr, sizeof(sphinx_arr), fp_Sphinx);
 				
 				attempts++;
-				//Output of sphinx is uppdercase for persian and greek so make them lowercase
+				//Output of sphinx is uppercase for persian and greek so make them lowercase
 				if(!strcmp(language, "Persian") || !strcmp(language, "Greek")){
 					for(i = 0; i < strlen(sphinx_arr); i++){
 						if(sphinx_arr[i] != ' '){
@@ -144,6 +144,7 @@ WRONG:
 				
 				correct = 0;
 				token = strtok(sphinx_arr, " ");
+				//Look through each word sphinx outputs to see if the correct word is there
 				while (token) {
 					if(!strcmp(token, line)){
 						correct = 1;
@@ -227,7 +228,7 @@ int english_to_foreign(int s, char* language, char* topic, MQTTPublishParams Met
 	}
 	
 SKIP:
-	while(fgets(line, 16, fp_Topic)!=NULL && fgets(line_trans, 16, fp_Trans)!=NULL){
+	while(fgets(line, sizeof(line), fp_Topic)!=NULL && fgets(line_trans, sizeof(line_trans), fp_Trans)!=NULL){
 		attempts = 0;
 		printf("Getting new word\n");
 		line[strlen(line)-1] = 0;
@@ -242,7 +243,7 @@ MENU:
 				sleep(1);
 			}
 		}
-		//repeat_underscore_me
+
 		printf("Language setting is: %s\n", language);
 		if(strcmp(line, "English")){
 			printf ("Read %s\n", line);
@@ -328,10 +329,10 @@ WRONG:
 					fprintf(stderr, "Unable to open sphinx response file\n");
 					return -1;
 				}
-				fgets (sphinx_arr, 64, fp_Sphinx);
+				fgets (sphinx_arr, sizeof(sphinx_arr), fp_Sphinx);
 				
 				attempts++;
-				//Output of sphinx is uppdercase for persian and greek so make them lowercase
+				//Output of sphinx is uppercase for persian and greek so make them lowercase
 				if(!strcmp(language, "Persian") || !strcmp(language, "Greek")){
 					for(i = 0; i < strlen(sphinx_arr); i++){
 						if(sphinx_arr[i] != ' '){
@@ -345,6 +346,7 @@ WRONG:
 				
 				correct = 0;
 				token = strtok(sphinx_arr, " ");
+				//Look through each word sphinx outputs to see if the correct word is there
 				while (token) {
 					if(!strcmp(token, line_trans)){
 						correct = 1;
@@ -428,7 +430,7 @@ int repeat_after_me_foreign(int s, char* language,char* topic, MQTTPublishParams
 	}
 	
 SKIP:
-	while(fgets(line, 16, fp_Topic)!=NULL && fgets(line_trans, 16, fp_Trans)!=NULL){
+	while(fgets(line, sizeof(line), fp_Topic)!=NULL && fgets(line_trans, sizeof(line_trans), fp_Trans)!=NULL){
 		attempts = 0;
 		printf("Getting new word\n");
 		line[strlen(line)-1] = 0;
@@ -443,7 +445,7 @@ MENU:
 				sleep(1);
 			}
 		}
-		//repeat_underscore_me
+
 		printf("Language setting is: %s\n", language);
 		if(strcmp(line, "English")){
 			printf ("Read %s\n", line);
@@ -533,7 +535,7 @@ WRONG:
 				fclose(fp_Sphinx);
 				attempts++;
 
-				//Output of sphinx is uppdercase for persian and greek so make them lowercase
+				//Output of sphinx is uppercase for persian and greek so make them lowercase
 				if(!strcmp(language, "Persian") || !strcmp(language, "Greek")){
 					for(i = 0; i < strlen(sphinx_arr); i++){
 						if(sphinx_arr[i] != ' '){
@@ -546,6 +548,7 @@ WRONG:
 				
 				correct = 0;
 				token = strtok(sphinx_arr, " ");
+				//Look through each word sphinx outputs to see if the correct word is there
 				while (token) {
 					if(!strcmp(token, line_trans)){
 						correct = 1;
@@ -628,7 +631,7 @@ int repeat_after_me_english(int s,char* topic, MQTTPublishParams MetricsParams, 
 
 	
 SKIP:
-	while(fgets (line, 16, fp_Topic)!=NULL){
+	while(fgets (line, sizeof(line), fp_Topic)!=NULL){
 		attempts = 0;
 		printf("Getting new word\n");
 		line[strlen(line)-1] = 0;
@@ -642,7 +645,7 @@ MENU:
 				sleep(1);
 			}
 		}
-		//repeat_underscore_me
+
 		if(strcmp(line, "English")){
 		
 			sprintf(message_Buffer,"%s,%s,in_english_is,%s,repeat_after_me,%s",line,line,line,line);
@@ -712,6 +715,7 @@ WRONG:
 				
 				correct = 0;
 				token = strtok(sphinx_arr, " ");
+				//Look through each word sphinx outputs to see if the correct word is there
 				while (token) {
 					if(!strcmp(token, line)){
 						correct = 1;

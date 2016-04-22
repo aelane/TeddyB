@@ -28,7 +28,7 @@
 #include "aws_iot_config.h"
 #include "bear_info.h"
 
-
+//Thread so that we are constantly listening for messages from the tablet
 void *threadListen(void *s){
 	
 	char message_Buffer[16];
@@ -340,6 +340,7 @@ sdpconnect:
 						exit(1);
 					}
 				MQTTSubscribeParams subParams = MQTTSubscribeParamsDefault;
+				//Loop through trying to subscribe to AWS incase the first attempt fails, so will keep trying until the app sends the edison proper network info.
 				do{
 					INFO("Connecting...");
 					rc = aws_iot_mqtt_connect(&connectParams);
@@ -376,8 +377,6 @@ sdpconnect:
 							INFO("-->sleep");
 							sleep(1);
 						}								
-						//still need to do the reading will make loop later.
-						//system("/Curriculum/AWS/AWS_MQTT");
 						changeTopic_flag = 0;
 					}
 					
@@ -392,8 +391,8 @@ sdpconnect:
 					topic[strlen(topic)-1] = 0;
 					topicLen[strlen(topicLen)-1] = 0;
 					fclose(fp_Setting);
-					//status = write(s,language,sizeof(language));
 
+					//Wait for the tablet to tell the edison to start the lesson
 					while(strcmp(threadMessage, "learning")){
 						printf("Waiting for learning, got: %s\n", threadMessage);
 						sleep(1);
@@ -403,6 +402,8 @@ sdpconnect:
 					printf("Current Mode: %s\n", mode);
 					printf("Current Language: %s\n", language);
 					printf("Current topic: %s\n", topic);
+
+					//Call a different function depending on what teaching mode it is, also write to the tablet based on the topic info and lesson
 					if(!strcmp(mode, "Repeat After Me")){
 						sprintf(message_Buffer,"%s,1,%s",language, topicLen);
 						status = write(s,message_Buffer,sizeof(message_Buffer));

@@ -13,6 +13,7 @@
 
 int changeTopic_flag = 1;
 
+//Function for when we are reading something that was posted
 int MQTTcallbackHandler(MQTTCallbackParams params) {
 
 	INFO("Subscribe callback");
@@ -36,6 +37,7 @@ int MQTTcallbackHandler(MQTTCallbackParams params) {
 	js = params.MessageParams.pPayload;
 	r = jsmn_parse(&parser, js, strlen(js), tokens, 256);
 	
+	//Loop through the jsmn token to save the settings
 	for(i = 1; i < 9; i++){
 		jsmntok_t key = tokens[i];
 		unsigned int length = key.end - key.start;
@@ -51,6 +53,8 @@ int MQTTcallbackHandler(MQTTCallbackParams params) {
 	}
 	fclose(fp_settings);
 	printf("Closing Settings File\n");
+	
+	//Loop through the rest of the tokens for the words and their translations
 	for(i; i < 40; i++){
 		jsmntok_t key = tokens[i];
 		unsigned int length = key.end - key.start;
