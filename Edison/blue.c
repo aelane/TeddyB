@@ -32,11 +32,30 @@
 void *threadListen(void *s){
 	
 	char message_Buffer[16];
-	//Stay a while and listen
+	char network_Name[50], network_Pass[50], command[100];
+	memset(message_Buffer, 0, sizeof(message_Buffer));
+	memset(network_Name, 0, sizeof(network_Name));
+	memset(network_Pass, 0, sizeof(network_Pass));
+	printf("Stay a while and listen!\n");
 	while(1){
 		read((int) s, message_Buffer, sizeof(message_Buffer));
 		printf("Done reading got: %s\n", message_Buffer);
-		sprintf(threadMessage, "%s", message_Buffer);
+		if(!strcmp(message_Buffer, "network")){
+			//memset(message_Buffer, 0, sizeof(message_Buffer));
+
+			read((int) s, network_Name, sizeof(network_Name));
+			printf("NAME: %s\n", network_Name);				
+			read((int) s, network_Pass, sizeof(network_Pass));
+			printf("PASSWORD: %s\n", network_Pass);
+
+			sprintf(command,"wpa_passphrase %s %s >> /etc/wpa_supplicant/wpa_supplicant.conf", network_Name, network_Pass);
+			system(command);
+			system("service networking restart");
+			
+		}
+		else{
+			sprintf(threadMessage, "%s", message_Buffer);
+		}
 		memset(message_Buffer, 0, sizeof(message_Buffer));
 		sleep(5);
 	}
@@ -112,7 +131,7 @@ int main(void) {
 	
 	FILE *fp_Setting;
 	char message_Buffer[64];
-	char mode[16], language[16], topic[16], topicLen[16];
+	char mode[30], language[16], topic[16], topicLen[16];
 	size_t len = 16;
 	(void) signal(SIGINT, SIG_DFL);
 	
@@ -167,10 +186,10 @@ int main(void) {
 	
 	MQTTConnectParams connectParams = MQTTConnectParamsDefault;
 
-	connectParams.KeepAliveInterval_sec = 500;
+	connectParams.KeepAliveInterval_sec = 1000;
 	connectParams.isCleansession = true;
 	connectParams.MQTTVersion = MQTT_3_1_1;
-	connectParams.pClientID = "CSDK-test-device";
+	connectParams.pClientID = "TED";
 	connectParams.pHostURL = HostAddress;
 	connectParams.port = port;
 	connectParams.isWillMsgPresent = false;
@@ -181,25 +200,6 @@ int main(void) {
 	connectParams.tlsHandshakeTimeout_ms = 5000;
 	connectParams.isSSLHostnameVerify = true;// ensure this is set to true for production
 	connectParams.disconnectHandler = disconnectCallbackHandler;
-	
-	INFO("Connecting...");
-	rc = aws_iot_mqtt_connect(&connectParams);
-	if (NONE_ERROR != rc) {
-		ERROR("Error(%d) connecting to %s:%d", rc, connectParams.pHostURL, connectParams.port);
-	}
-	
-	MQTTSubscribeParams subParams = MQTTSubscribeParamsDefault;
-	subParams.mHandler = MQTTcallbackHandler;
-	subParams.pTopic = "Bear/Curriculum/Response";
-	subParams.qos = QOS_0;
-
-	if (NONE_ERROR == rc) {
-		INFO("Subscribing...");
-		rc = aws_iot_mqtt_subscribe(&subParams);
-		if (NONE_ERROR != rc) {
-			ERROR("Error subscribing");
-		}
-	}
 	
 	MQTTPublishParams CurriculumParams = MQTTPublishParamsDefault;
 	CurriculumParams.pTopic = "Bear/Curriculum/Request";
@@ -332,12 +332,36 @@ sdpconnect:
 				if( status < 0 ) {
 					perror("uh oh");
 				}
-				//////////////////////////Start of teaching stuff//////////////////////////////////////////
+
+				
 				rc = pthread_create(&blueThread, NULL, threadListen, (void *)s);
 					if (rc){
 						printf("ERROR: %d\n", rc);
 						exit(1);
 					}
+				MQTTSubscribeParams subParams = MQTTSubscribeParamsDefault;
+				do{
+					INFO("Connecting...");
+					rc = aws_iot_mqtt_connect(&connectParams);
+					
+					if (NONE_ERROR != rc) {
+						ERROR("Error(%d) connecting to %s:%d", rc, connectParams.pHostURL, connectParams.port);
+					}
+					
+					subParams.mHandler = MQTTcallbackHandler;
+					subParams.pTopic = "Bear/Curriculum/Response";
+					subParams.qos = QOS_0;
+
+					if (NONE_ERROR == rc) {
+						INFO("Subscribing...");
+						rc = aws_iot_mqtt_subscribe(&subParams);
+						if (NONE_ERROR != rc) {
+							ERROR("Error subscribing");
+						}
+					}
+					sleep(1);
+				}while(NONE_ERROR != rc);
+//////////////////////////Start of teaching stuff//////////////////////////////////////////
 				do {
 					
 				
@@ -359,27 +383,53 @@ sdpconnect:
 					
 					
 					fp_Setting = fopen("/Curriculum/BearSettings.txt", "r");
-					fgets(language, 16, fp_Setting);
-					fgets(mode, 16, fp_Setting);
-					fgets(topic, 16, fp_Setting);
-					fgets(topicLen, 16, fp_Setting);
+					fgets(language, sizeof(language), fp_Setting);
+					fgets(mode, sizeof(mode), fp_Setting);
+					fgets(topic, sizeof(topic), fp_Setting);
+					fgets(topicLen, sizeof(topicLen), fp_Setting);
 					language[strlen(language)-1] = 0;
 					mode[strlen(mode)-1] = 0;
+					topic[strlen(topic)-1] = 0;
+					topicLen[strlen(topicLen)-1] = 0;
 					fclose(fp_Setting);
-					
+					//status = write(s,language,sizeof(language));
+
 					while(strcmp(threadMessage, "learning")){
 						printf("Waiting for learning, got: %s\n", threadMessage);
 						sleep(1);
 					}
-					//status = english_to_other(s, language,topic, MetricsParams, BearButton);
-					status = repeat_after_me_english(s, topic, MetricsParams, BearButton);
+
+					
+					printf("Current Mode: %s\n", mode);
+					printf("Current Language: %s\n", language);
+					printf("Current topic: %s\n", topic);
+					if(!strcmp(mode, "Repeat After Me")){
+						sprintf(message_Buffer,"%s,1,%s",language, topicLen);
+						status = write(s,message_Buffer,sizeof(message_Buffer));
+						if(!strcmp(language, "English")){
+							status = repeat_after_me_english(s, topic, MetricsParams, BearButton);
+						}
+						else{
+							status = repeat_after_me_foreign(s, language, topic, MetricsParams, BearButton);
+						}
+					}
+					else if(!strcmp(mode, "English to Foreign")){
+						sprintf(message_Buffer,"%s,3,%s",language, topicLen);
+						status = write(s,message_Buffer,sizeof(message_Buffer));
+						status = english_to_foreign(s, language, topic, MetricsParams, BearButton);
+					}
+					else if(!strcmp(mode, "Foreign to English")){
+						sprintf(message_Buffer,"%s,2,%s",language, topicLen);
+						status = write(s,message_Buffer,sizeof(message_Buffer));
+						status = foreign_to_english(s, language, topic, MetricsParams, BearButton);
+					}
 					
 					
 					changeTopic_flag = 1;
 					printf("Changing Topic");
-					sleep(10);
+					sleep(5);
 				} while (status > 0);
-				printf("CHAOS REIGNS");
+				printf("\nBluetooth Disconnected\n");
 				close(s);
 				sdp_record_free( rec );
 			}

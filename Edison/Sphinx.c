@@ -1,17 +1,19 @@
 #include <pocketsphinx.h>
 
 
-int run_sphinx(char* LanguageMode, char* File_target){
-
+int run_sphinx(char* LanguageMode){
+	
 	ps_decoder_t *ps;		//pocket sphinx decoder
 	cmd_ln_t *config;		//configuration object
-	FILE *fh, *recognition,*continue_file;				//file to open
+	FILE *fh, *recognition,*continue_file,*save_file;				//file to open
 	char const *hyp;//string of recoginzed speech
-	char const *fileToOpen,*languageMode;	
+	char *hyp_lower;
+	char const *fileToOpen;	
 	int16 buf[512];		//buffer fed to decoder
 	int rv,langNum;					
 	int32 score;
-
+	int i;
+	
 	if (*LanguageMode == 'e')
 	{
 		langNum = 1;
@@ -59,27 +61,27 @@ int run_sphinx(char* LanguageMode, char* File_target){
 		// load dir
 		printf("\n\nFRENCH MODE\n\n");
                 config = cmd_ln_init(NULL, ps_args(), TRUE,
-                                "-hmm", "/sphinx/pocketsphinx-5prealpha/model/en-us/en-us/",
-                                "-lm", "/sphinx/pocketsphinx-5prealpha/model/en-us/en-us.lm.bin",
-                                "-dict", "/sphinx/cmudict-custom.dict",
+                                "-hmm", "/sphinx/languages/french_languages/cmusphinx-fr-ptm-5.2/",
+                                "-lm", "/sphinx/languages/french_language/french-small.lm",
+                                "-dict", "/sphinx/languages/french_language/french_reduced.dict",
                                 NULL);
 		break;
 	case 4:
 		// load dir
 		printf("\n\nGREEK MODE Currently unavailable\nLoading English\n\n");
                 config = cmd_ln_init(NULL, ps_args(), TRUE,
-                                "-hmm", "/sphinx/pocketsphinx-5prealpha/model/en-us/en-us/",
-                                "-lm", "/sphinx/pocketsphinx-5prealpha/model/en-us/en-us.lm.bin",
-                                "-dict", "/sphinx/cmudict-custom.dict",
+                                "-hmm", "/sphinx/languages/greek_language/greek_adaptation/",
+                                "-lm", "/sphinx/languages/greek_language/greek_language_model.lm",
+                                "-dict", "/sphinx/languages/greek_language/greek_dict.dict",
                                 NULL);
 		break;
 	case 5:
 		// load dir
 		printf("\n\nPERSIAN MODE Currently unavailable\nLoading English\n\n");
                 config = cmd_ln_init(NULL, ps_args(), TRUE,
-                                "-hmm", "/sphinx/pocketsphinx-5prealpha/model/en-us/en-us/",
-                                "-lm", "/sphinx/pocketsphinx-5prealpha/model/en-us/en-us.lm.bin",
-                                "-dict", "/sphinx/cmudict-custom.dict",
+                                "-hmm", "/sphinx/languages/persian_language/persian_adaptation/",
+                                "-lm", "/sphinx/languages/persian_language/persian_language_model.lm",
+                                "-dict", "/sphinx/languages/persian_language/persian_dict.dict",
                                 NULL);
 		break;
 	default:
@@ -107,22 +109,19 @@ int run_sphinx(char* LanguageMode, char* File_target){
 		fprintf(stderr, "Failed to create recognizer, see log for details\n");
 		return -1;
 	}
-	fileToOpen = File_target;
 	//open file to recognize
-	fh = fopen( fileToOpen, "rb");
+	fh = fopen( "/Curriculum/Bluetooth/hello.wav", "rb");
 	if (fh == NULL)
 	{
 		fprintf(stderr, "Unable to open input file\n");
 		return -1;
 	}
-	
-	recognition = fopen( "response.txt", "w+" );
-	continue_file = fopen( "/Curriculum/Bluetooth/Status.txt", "w+" );
-	if (recognition == NULL || continue_file == NULL)
-	{	
-		fprintf(stderr, "Unable to open recognition file\n");
-		return -1;
-	}
+
+
+
+	recognition = fopen( "/sphinx/response.txt", "w+" );
+	save_file = fopen( "/Curriculum/Sounds/Bucket/bucket.txt", "w+" );
+
 	//start decoding file
 	rv = ps_start_utt(ps);
 
@@ -137,12 +136,17 @@ int run_sphinx(char* LanguageMode, char* File_target){
 	rv = ps_end_utt(ps);
 	//get hypothesis of recognition and print it
 	hyp = ps_get_hyp(ps, &score);
-	fprintf(recognition, "%s",hyp);	
+
+	fprintf(recognition, "%s",hyp);
+	fprintf(save_file, "%s" ,hyp);
 	printf("Recognized: %s\n", hyp);
-	fprintf(continue_file, "Continue");
+	
 	//close audio file
+
 	fclose(fh);
+
 	fclose(recognition);
+	fclose(save_file);
 	//close pocket sphinx instance
 	ps_free(ps);
 	//clean up config
