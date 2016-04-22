@@ -53,6 +53,71 @@
         <item>@drawable/water</item>
     </array>
 
+    <array name="translations">
+        <item>one,yek,un,ena,uno</item>
+        <item>two,do,deux,dyo,dos</item>
+        <item>three,se,trois,tria,tres</item>
+            <item>four,chahar,quatre,tessera,cuatro</item>
+            <item>five,panj,cinq,pente,cinco</item>
+            <item>six,shesh,six_fr,exi,seis</item>
+            <item>seven,haft,sept,epta,siete</item>
+            <item>eight,hasht,huit,okto,ocho</item>
+            <item>nine,noh,neuf,ennea,nueve</item>
+            <item>ten,dah,dix,deka,diez</item>
+            <item>apple,sib,pomme,milo,manzana</item>
+            <item>banana,moz,banane,banana_gr,platano</item>
+            <item>bread,naan,pain,psomi,pan</item>
+            <item>cake,keik_pe,gateau,keik_gr,pastel</item>
+            <item>carrot,havij,carotte,karoto,zanahoria</item>
+            <item>cookie,shirini,biscuit,koulouraki,galleta</item>
+            <item>grape,angoor,raisins,stafylia,uva</item>
+            <item>milk,shir,lait,gala,leche</item>
+            <item>juice,aabmiveh,jus,chymos,jugo</item>
+            <item>water,aab,eau,nero,agua</item>
+            <item>bear,khers,ours,arkoudi,oso</item>
+            <item>bird,parandeh,oiseau,pouli,pajaro</item>
+            <item>cat,gorbeh,chat,gata,gato</item>
+            <item>dog,sag,chien,skylos,perro</item>
+            <item>elephant,fil,elephant_fr,elefantas,elefante</item>
+            <item>giraffe,zaraafeh,girafe,kamilopardali,jirafa</item>
+            <item>horse,asb,cheval,alogo,caballo</item>
+            <item>monkey,meimun,singe,maimou,mono</item>
+            <item>pig,khook,cochon,gourouni,cerdo</item>
+            <item>cow,gaav,vache,agelada,vaca</item>
+            <item>head,sar,tete,kefali,cabeza</item>
+            <item>arm,bazu,bras,bratso,brazo</item>
+            <item>leg,pa,jambe,podi,pierna</item>
+            <item>foot,pa,pied,podi,pie</item>
+            <item>hand,dast,main,cheri,mano</item>
+            <item>eye,cheshm,oeil,mati,ojo</item>
+            <item>ear,goosh,oreille,afti,oreja</item>
+            <item>nose,bini,nez,myti,nariz</item>
+            <item>mouth,dahan,bouche,stoma,boca</item>
+            <item>stomach,del,estomac,stomachi,estomago</item>
+            <item>family,khanevadeh,famille,oikogeneia,familia</item>
+            <item>mother,madar,maman,mama_gr,mama_sp</item>
+            <item>father,pedar,papa_fr,bambas,papa_sp</item>
+            <item>brother,baraadar,frere,adelfos,hermano</item>
+            <item>sister,khaahar,soeur,adelfi,hermana</item>
+            <item>grandmother,madarbozorg,grandmere,giagia,abuela</item>
+            <item>grandfather,pedarbozorg,grandpere,pappous,abuelo</item>
+
+            <item>bed,takht,lit,krevati,cama</item>
+            <item>chair,sandali,chaise,karékla,silla</item>
+            <item>table,miz,table_fr,trapezi,mesa</item>
+            <item>television,televizion,tele,tileorasi,television_sp</item>
+
+
+
+
+
+
+
+
+
+
+    </array>
+
 
 
 

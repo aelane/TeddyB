@@ -12,9 +12,9 @@
         android:id="@+id/fullscreen_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
+        android:gravity="center|top"
         android:keepScreenOn="true"
-        android:text="@string/dummy_content"
+        android:text="TED"
         android:textColor="#33b5e5"
         android:textSize="50sp"
         android:textStyle="bold" />
@@ -24,49 +24,37 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fitsSystemWindows="true">
-
-        <LinearLayout
-            android:id="@+id/fullscreen_content_controls"
-            style="?metaButtonBarStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|center_horizontal"
-            android:background="@color/black_overlay"
-            android:orientation="horizontal"
-            tools:ignore="UselessParent">
-
-            <Button
-                android:id="@+id/dummy_button"
-                style="?metaButtonBarButtonStyle"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/dummy_button" />
-
-        </LinearLayout>
+        android:fitsSystemWindows="true"
+        android:layout_gravity="center">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center">
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Test2"
+            android:text="Learning"
             android:id="@+id/button"
-            android:layout_gravity="left|top" />
+            android:enabled="false"
+            android:layout_gravity="center_horizontal"
+            />
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Test1"
-            android:id="@+id/button2"
-            android:layout_gravity="left|center_vertical" />
+            android:text="Setup"
+            android:id="@+id/setup"
+            android:enabled="false"
+            android:layout_below="@+id/button"/>
+
+
+    </RelativeLayout>
 
 
     </FrameLayout>
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/imageView"
-        android:layout_gravity="center"
-        android:scaleType="fitCenter"
-        />
+
+
+
+
 </FrameLayout>

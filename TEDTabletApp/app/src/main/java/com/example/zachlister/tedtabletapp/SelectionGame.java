@@ -1,6 +1,10 @@
 package com.example.zachlister.tedtabletapp;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.bluetooth.BluetoothSocket;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.media.MediaPlayer;
@@ -10,8 +14,13 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStreamWriter;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -45,7 +54,7 @@ public class SelectionGame extends AppCompatActivity {
 
             // Note that some of these constants are new as of API 16 (Jelly Bean)
             // and API 19 (KitKat). It is safe to use them, as they are inlined
-            // at compile-time and do nothing on earlier devices.
+            // at compile-time and do_pe nothing on earlier devices.
             mContentView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE
                     | View.SYSTEM_UI_FLAG_FULLSCREEN
                     | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
@@ -85,12 +94,18 @@ public class SelectionGame extends AppCompatActivity {
             return false;
         }
     };
+
+    // used for playing all of the sound bytes
     private int currentTrack = 0;
 
     // game stats
     private int guesses = 0;
     private int round = 0;
     private int correct = 0;
+
+    private String lang;
+
+    private Context mContext;
 
 
     @Override
@@ -100,7 +115,7 @@ public class SelectionGame extends AppCompatActivity {
         setContentView(R.layout.activity_selection_game);
 
         mVisible = true;
-        mControlsView = findViewById(R.id.fullscreen_content_controls);
+       // mControlsView = findViewById(R.id.fullscreen_content_controls);
         mContentView = findViewById(R.id.fullscreen_content);
 
 
@@ -115,8 +130,17 @@ public class SelectionGame extends AppCompatActivity {
         // Upon interacting with UI controls, delay any scheduled hide()
         // operations to prevent the jarring behavior of controls going away
         // while interacting with the UI.
-        findViewById(R.id.button).setOnTouchListener(mDelayHideTouchListener);
+        // findViewById(R.id.button).setOnTouchListener(mDelayHideTouchListener);
 
+        mContext = this;
+
+        // add all of the listeners on the buttons
+        addListenerOnButton();
+
+        // get the language that has been set from the bluetooth
+        lang = ((TEDTablet) getApplication()).getLang();
+
+        // This starts the game up
         startGame();
 
     }
@@ -135,7 +159,7 @@ public class SelectionGame extends AppCompatActivity {
         if (mVisible) {
             hide();
         } else {
-            show();
+            //show();
         }
     }
 
@@ -145,7 +169,7 @@ public class SelectionGame extends AppCompatActivity {
         if (actionBar != null) {
             actionBar.hide();
         }
-        mControlsView.setVisibility(View.GONE);
+        //mControlsView.setVisibility(View.GONE);
         mVisible = false;
 
         // Schedule a runnable to remove the status and navigation bar after a delay
@@ -171,10 +195,11 @@ public class SelectionGame extends AppCompatActivity {
      */
     private void delayedHide(int delayMillis) {
         mHideHandler.removeCallbacks(mHideRunnable);
-        mHideHandler.postDelayed(mHideRunnable, delayMillis);
+        mHideHandler.postDelayed(mHideRunnable, 0);
     }
 
     private void startGame() {
+
         // set up the imagebuttons first
         final ImageButton button1, button2, button3, button4, button5, button6;
         button1 = (ImageButton) findViewById(R.id.pic1);
@@ -198,6 +223,8 @@ public class SelectionGame extends AppCompatActivity {
         // these will be the randomly selected pictures to be displayed and the chosen picture
         final int[] selectedPics = new int[6];
         final int[] chosenPic = new int[1];
+
+        // assigns the pictures to the buttons and randomly chooses one of the six selected pictures
         getPics(buttons, selectedPics, chosenPic);
 
         // this is used to delay the changing on the cards once correct
@@ -217,8 +244,7 @@ public class SelectionGame extends AppCompatActivity {
                         @Override
                         public void run() {
                             if (round == 10) {                // if this is the last round show the results
-                                String results = "CONGRATULATIONS! Your score is: " + correct + " correct guesses out of " + guesses + " attempts";
-                                Toast.makeText(SelectionGame.this, results, Toast.LENGTH_LONG).show();
+                                gameCompletion();
                             } else {                          // else call the main function for getting new pictures
                                 getPics(buttons, selectedPics, chosenPic);
                             }
@@ -227,7 +253,7 @@ public class SelectionGame extends AppCompatActivity {
 
                 } else {                                      // the guess is incorrect
                     button1.setBackgroundColor(Color.RED);    // change the background red
-                    incorrect();                              // play the incorrect sound bit
+                    incorrect(chosenPic[0]);                  // play the incorrect sound bit
                 }
             }
 
@@ -246,8 +272,7 @@ public class SelectionGame extends AppCompatActivity {
                         @Override
                         public void run() {
                             if (round == 10) {
-                                String results = "CONGRATULATIONS! Your score is: " + correct + " correct guesses out of " + guesses + " attempts";
-                                Toast.makeText(SelectionGame.this, results, Toast.LENGTH_LONG).show();
+                                gameCompletion();
                             } else {
                                 getPics(buttons, selectedPics, chosenPic);
                             }
@@ -255,7 +280,7 @@ public class SelectionGame extends AppCompatActivity {
                     }, 1200);
                 } else {
                     button2.setBackgroundColor(Color.RED);
-                    incorrect();
+                    incorrect(chosenPic[0]);
                 }
 
             }
@@ -275,8 +300,7 @@ public class SelectionGame extends AppCompatActivity {
                         @Override
                         public void run() {
                             if (round == 10) {
-                                String results = "CONGRATULATIONS! Your score is: " + correct + " correct guesses out of " + guesses + " attempts";
-                                Toast.makeText(SelectionGame.this, results, Toast.LENGTH_LONG).show();
+                                gameCompletion();
                             } else {
                                 getPics(buttons, selectedPics, chosenPic);
                             }
@@ -284,7 +308,7 @@ public class SelectionGame extends AppCompatActivity {
                     }, 1200);
                 } else {
                     button3.setBackgroundColor(Color.RED);
-                    incorrect();
+                    incorrect(chosenPic[0]);
                 }
 
             }
@@ -304,8 +328,7 @@ public class SelectionGame extends AppCompatActivity {
                         @Override
                         public void run() {
                             if (round == 10) {
-                                String results = "CONGRATULATIONS! Your score is: " + correct + " correct guesses out of " + guesses + " attempts";
-                                Toast.makeText(SelectionGame.this, results, Toast.LENGTH_LONG).show();
+                                gameCompletion();
                             } else {
                                 getPics(buttons, selectedPics, chosenPic);
                             }
@@ -313,7 +336,7 @@ public class SelectionGame extends AppCompatActivity {
                     }, 1200);
                 } else {
                     button4.setBackgroundColor(Color.RED);
-                    incorrect();
+                    incorrect(chosenPic[0]);
                 }
 
             }
@@ -333,8 +356,7 @@ public class SelectionGame extends AppCompatActivity {
                         @Override
                         public void run() {
                             if (round == 10) {
-                                String results = "CONGRATULATIONS! Your score is: " + correct + " correct guesses out of " + guesses + " attempts";
-                                Toast.makeText(SelectionGame.this, results, Toast.LENGTH_LONG).show();
+                                gameCompletion();
                             } else {
                                 getPics(buttons, selectedPics, chosenPic);
                             }
@@ -342,7 +364,7 @@ public class SelectionGame extends AppCompatActivity {
                     }, 1200);
                 } else {
                     button5.setBackgroundColor(Color.RED);
-                    incorrect();
+                    incorrect(chosenPic[0]);
                 }
 
             }
@@ -362,8 +384,7 @@ public class SelectionGame extends AppCompatActivity {
                         @Override
                         public void run() {
                             if (round == 10) {
-                                String results = "CONGRATULATIONS! Your score is: " + correct + " correct guesses out of " + guesses + " attempts";
-                                Toast.makeText(SelectionGame.this, results, Toast.LENGTH_LONG).show();
+                                gameCompletion();
                             } else {
                                 getPics(buttons, selectedPics, chosenPic);
                             }
@@ -371,7 +392,7 @@ public class SelectionGame extends AppCompatActivity {
                     }, 1200);
                 } else {
                     button6.setBackgroundColor(Color.RED);
-                    incorrect();
+                    incorrect(chosenPic[0]);
                 }
 
             }
@@ -404,8 +425,11 @@ public class SelectionGame extends AppCompatActivity {
 
         chosenPic[0] = selectedPics[(int) (Math.random() * 6)];                          // randomly choose one of the pictures from the selected group
 
-        int audio1 = getResources().getIdentifier(getResources().getResourceEntryName(images.getResourceId(chosenPic[0], R.drawable.banana)),"raw",getPackageName());
+        String audioFileName = getAudioFileName(getResources().getResourceEntryName(images.getResourceId(chosenPic[0], R.drawable.banana)),lang);
+
+        int audio1 = getResources().getIdentifier(audioFileName,"raw",getPackageName());
         int audio2 = getResources().getIdentifier("in_english_is","raw",getPackageName());
+
         final int[] tracks = new int[2];                                                 // plays the word then "in english is"
         tracks[0] = audio1;
         tracks[1] = audio2;
@@ -415,7 +439,7 @@ public class SelectionGame extends AppCompatActivity {
         mediaPlayer.start();															 // play the first sound bit
         mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
-            public void onCompletion(MediaPlayer mp) {                                   // when it's done playing one sound, see if there is another sound to play
+            public void onCompletion(MediaPlayer mp) {                                     // when it's done playing one sound, see if there is another sound to play
                 mp.release();
                 if (currentTrack < tracks.length && tracks[currentTrack] != 0) {         // if it's not the end of the array plus there is an actual ID of the audio track
                     mp = MediaPlayer.create(getApplicationContext(), tracks[currentTrack]);
@@ -442,8 +466,98 @@ public class SelectionGame extends AppCompatActivity {
     }
 
     // plays the try again sound bit when it is incorrect
-    private void incorrect() {
+    private void incorrect(final int chosenPic) {
+        TypedArray images = getResources().obtainTypedArray(R.array.images);
+        final String audioFileName = getAudioFileName(getResources().getResourceEntryName(images.getResourceId(chosenPic, R.drawable.banana)),lang);
+
         MediaPlayer mp = MediaPlayer.create(getApplicationContext(), getResources().getIdentifier("try_again", "raw", getPackageName()));
         mp.start();
+        currentTrack = 1;
+        mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mp) {                                   // when it's done playing one sound, see if there is another sound to play
+                mp.release();
+                if (currentTrack <= 1) {                                      // if it's not the end of the array plus there is an actual ID of the audio track
+                    mp = MediaPlayer.create(getApplicationContext(), getResources().getIdentifier(audioFileName, "raw", getPackageName()));
+                    currentTrack++;
+                    mp.setOnCompletionListener(this);
+                    mp.start();
+                }
+            }
+        });
     }
+
+    // gets the correct sound bite in the right language
+    // translates the word from english to lang
+    private String getAudioFileName(String word, String lang) {
+        // The order of the languages: en, pe, fr, gr, sp
+        TypedArray translatedWords = getResources().obtainTypedArray(R.array.translations);
+
+        // loop through all of the words and find the correct word and return its correct translation
+        for (int i = 0; i < translatedWords.length(); i++) {
+            String[] splitWords = ((String) translatedWords.getString(i)).split(",");
+            if (splitWords[0].equals(word)) {
+                if (lang.equals("")) return splitWords[0];
+                else if (lang.equals("French")) return splitWords[2];
+                else if (lang.equals("Persian")) return splitWords[1];
+                else if (lang.equals("Greek")) return splitWords[3];
+                else return splitWords[4]; // spanish
+            }
+        }
+        return "";
+    }
+
+    // add all of the listeners on the buttons
+    private void addListenerOnButton() {
+        Button backButton = (Button) findViewById(R.id.back);
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                finish();
+            }
+
+        });
+
+        Button restartButton = (Button) findViewById(R.id.restart);
+        restartButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                // reset all scores
+                guesses = 0;
+                round = 0;
+                correct = 0;
+                startGame();
+            }
+
+        });
+
+    }
+
+    // displays a popup asking if the user is done with the game or if they want to play again
+    private void gameCompletion() {
+        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which){
+                    case DialogInterface.BUTTON_POSITIVE:
+                        //Start over button clicked
+                        guesses = 0;
+                        round = 0;
+                        correct = 0;
+                        startGame();
+                        break;
+
+                    case DialogInterface.BUTTON_NEGATIVE:
+                        //Back to learning button clicked
+                        finish();
+                        break;
+                }
+            }
+        };
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        builder.setMessage("Congratulations! You just finished the game! Your score is " + correct + " correct out of " + guesses + " guesses!").setPositiveButton("Start over", dialogClickListener)
+                .setNegativeButton("Back to Learning", dialogClickListener).show();
+    }
+
 }
