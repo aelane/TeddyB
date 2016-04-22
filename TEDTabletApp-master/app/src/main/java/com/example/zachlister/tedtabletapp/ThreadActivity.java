@@ -33,19 +33,25 @@ public class ThreadActivity extends Activity {
 
 	// this is to keep track of the the track that is being played from the app
 	private int currentTrack = 0;
+
 	private int currentAudioFile;
 	private	int currentImageFile;
+
+	// keeps track of the progress through the lesson
 	private int progress;
+
 	private int teachingMode;
 	private int numWordsInLesson;
 	private String lang;
 
+	// all of the items in the view
 	private ImageView image;
 	private ProgressBar bar;
 	private Button repeatButton;
 	private Button skipButton;
 	private Button gameButton;
 
+	// used to make sure the word "learning" is only sent once to the edison
 	private boolean	ONCREATE = true;
 
 	private Context mContext;
@@ -63,6 +69,7 @@ public class ThreadActivity extends Activity {
 			currentImageFile = savedInstanceState.getInt("image");
 			currentAudioFile = savedInstanceState.getInt("audio");
 		} else {
+			// set up all of the items in the view
 			setContentView(R.layout.activity_thread);
 			image = (ImageView) findViewById(R.id.imageView);
 			bar = (ProgressBar) findViewById(R.id.pBar);
@@ -70,13 +77,11 @@ public class ThreadActivity extends Activity {
 			skipButton = (Button) findViewById(R.id.skip);
 			gameButton = (Button) findViewById(R.id.game);
 			progress = 0;
-		/*
-		//Always make sure that Bluetooth server is discoverable during listening...
-		Intent discoverableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
-		discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 0);
-		startActivityForResult(discoverableIntent, DISCOVERABLE_REQUEST_CODE);
-		*/
+
+			// start the Bluetooth loop
 			new Thread(reader).start();
+
+			// add all of the listeners
 			addListenerOnButton();
 		}
 	}
@@ -96,7 +101,6 @@ public class ThreadActivity extends Activity {
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		android.util.Log.e("TrackingFlow", "Creating thread to start listening...");
-		//new Thread(reader).start();
 	}
 	@Override
 	protected void onDestroy() {
@@ -116,17 +120,17 @@ public class ThreadActivity extends Activity {
 	private OutputStreamWriter os;
 	private Runnable reader = new Runnable() {
 		public void run() {
-			//BluetoothAdapter adapter = BluetoothAdapter.getDefaultAdapter();
-			//UUID uuid = UUID.fromString("4e5d48e0-75df-11e3-981f-0800200c9a66");
+
 			try {
-				//BluetoothServerSocket serverSocket = adapter.listenUsingRfcommWithServiceRecord("BLTServer", uuid);
-				//android.util.Log.e("TrackingFlow", "Listening...");
-				//socket = serverSocket.accept();
-				//android.util.Log.e("TrackingFlow", "Socket accepted...");
+				// get the socket from the application class that was saved from the main screen
 				socket = ((TEDTablet) getApplication()).getSocket();
+
+				// set up the input and output streams
 				is = socket.getInputStream();
 				os = new OutputStreamWriter(socket.getOutputStream());
-				new Thread(new BluetoothWriter("learning")).start(); // Tell the edison to send data
+
+				// Tell the edison to send data
+				new Thread(new BluetoothWriter("learning")).start();
 
 				int bufferSize = 1024;
 				int bytesRead = -1;
@@ -153,10 +157,11 @@ public class ThreadActivity extends Activity {
 						public void run() {
 							android.util.Log.e("InsideRun", "Read: " + sb.toString());
 
+							// while there is sound playing, disable the buttons
 							disableButtons();
 
+							// all of these are used to read the buffer
 							int sectionCount = 0;
-
 							String mDrawableName = "";
 							String mRawAudioName1 = "";
 							String mRawAudioName2 = "";
@@ -167,17 +172,16 @@ public class ThreadActivity extends Activity {
 
 							// to account for a fixed byte length message being sent over bluetooth
 							// the message will be comma separated for the image and audio files
-							//android.util.Log.e("InsideThread", "Made it here1");
 							for (int i = 0; i < 128; i++) {
 								if (readInData.charAt(i) == ',') {				// move to the next section
 									sectionCount++;
 								} else if (readInData.charAt(i) != 0) {			// if the char isn't null and not a comma
 									if (sectionCount == 0) {
-										mDrawableName += readInData.charAt(i);
+										mDrawableName += readInData.charAt(i);  // first word is the pic name
 									} else if (sectionCount == 1) {
-										mRawAudioName1 += readInData.charAt(i);
+										mRawAudioName1 += readInData.charAt(i); // second word is the first audio file name
 									} else if (sectionCount == 2) {
-										mRawAudioName2 += readInData.charAt(i);
+										mRawAudioName2 += readInData.charAt(i); // more audio file names
 									} else if (sectionCount == 3) {
 										mRawAudioName3 += readInData.charAt(i);
 									} else if (sectionCount == 4) {
@@ -193,36 +197,52 @@ public class ThreadActivity extends Activity {
 							// This is to process the first time to set the data for the lesson
 							if (mRawAudioName1.equals("1") || mRawAudioName1.equals("2") || mRawAudioName1.equals("3")) {
 
+								// save the language
 								((TEDTablet) getApplication()).setLang(mDrawableName);
 								lang = mDrawableName;
-								progress = 0;
+
+								// save the teaching mode and number of words in the lesson
 								teachingMode = Integer.parseInt(mRawAudioName1);
 								numWordsInLesson = Integer.parseInt(mRawAudioName2);
+
+								// set up the progress bar
 								bar.setMax(numWordsInLesson - 1);
 								bar.setProgress(0);
+								progress = 0;
 
 							// This is sent when the user gets three incorrect guesses
 							} else if (mDrawableName.equals("wrong")) {
 
+								// moving on to the next word
 								progress++;
 								bar.incrementProgressBy(1);
+
+								// if the end of the lesson has been reached
 								if (progress == numWordsInLesson) nextLesson();
 
 							// This is to process every other lesson part
 							} else {
 
-								// update the progress bar
-								//ProgressBar bar = (ProgressBar) findViewById(R.id.pBar);
-								//bar.setMax(Integer.parseInt(mNumWords)-1);
+								// if the guess was correct, increment the bar
 								if (mRawAudioName1.equals("good_job")) {
 									bar.incrementProgressBy(1);
 									progress++;
 								}
 
+								// get the image from drawable
 								int imageID = getResources().getIdentifier(mDrawableName, "drawable", getPackageName());
+
+								// save the file name except the xmark pic
 								if (!(mDrawableName.equals("xmark"))) currentImageFile = imageID;
 
-
+								// teachingMode 1 == "Repeat after me"
+								// teachingMode 2 == "Foreign to English"
+								// teachingMode 3 == "English to Foreign"
+								// this if statement makes sure that the correct audio file is played because they may have
+								// a language label at the end to differentiate words that are spelled the same in two
+								// different languages
+								//
+								// the teaching mode depends on which sound byte is the word that is in a foreign language
 								if (teachingMode == 1 ) {
 									if (hasLabel(mRawAudioName3)) {
 										currentAudioFile = getResources().getIdentifier(mRawAudioName3+getLabel(), "raw", getPackageName());
@@ -237,6 +257,7 @@ public class ThreadActivity extends Activity {
 									}
 								}
 
+								// initialize all of the audioIDs
 								int audioID1 = getResources().getIdentifier(mRawAudioName1, "raw", getPackageName());
 								int audioID2 = 0;
 								int audioID3 = 0;
@@ -245,6 +266,7 @@ public class ThreadActivity extends Activity {
 
 								// if there are a second, third, fourth, and fifth audio clip, retrieve them
 								if (mRawAudioName2 != null)
+									// same as above, making sure that the right audio file is played
 									if (teachingMode == 2 || teachingMode == 3 ) audioID2 = currentAudioFile;
 									else audioID2 = getResources().getIdentifier(mRawAudioName2, "raw", getPackageName());
 								if (mRawAudioName3 != null)
@@ -281,12 +303,13 @@ public class ThreadActivity extends Activity {
 											mp.setOnCompletionListener(this);
 											mp.start();
 										} else {
+											// this enables the buttons once the sounds are done playing
 											enableButtons();
 										}
 									}
 								});
 
-
+								// this is to redisplay the image associated with the word after an incorrect guess
 								if (mDrawableName.equals("xmark")) {
 
 									new Handler().postDelayed(new Runnable() {
@@ -305,6 +328,7 @@ public class ThreadActivity extends Activity {
 		}
 	};
 
+	// This is used to write data to the Edison over Bluetooth
     public class BluetoothWriter implements Runnable {
         String command;
 
@@ -313,14 +337,11 @@ public class ThreadActivity extends Activity {
         }
         @Override
         public void run() {
-            int index = 0;
             while (CONTINUE_READ_WRITE) {
                 try {
-                    //os.write("Message From Server" + (index++) + "\n");
                     os.write(command);
                     os.flush();
 					android.util.Log.e("TrackingFlow", "Sending: " + command);
-                    //Thread.sleep(10000);
 					return;
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -336,13 +357,12 @@ public class ThreadActivity extends Activity {
 			@Override
 			public void onClick(View arg0) {
 				Intent i = new Intent(mContext, SelectionGame.class);
-				new Thread(new BluetoothWriter("menu")).start();
+				new Thread(new BluetoothWriter("menu")).start();   // tell the edison that the user has gone into the game
 				startActivity(i);
 			}
 
 		});
 
-		//Button repeatButton = (Button) findViewById(R.id.repeat);
 		repeatButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -352,16 +372,14 @@ public class ThreadActivity extends Activity {
 			}
 		});
 
-		//final Button skipButton = (Button) findViewById(R.id.skip);
 		skipButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				if (SystemClock.elapsedRealtime() - mLastClickTime < 2000) {
-					return;
-				}
 
-				mLastClickTime = SystemClock.currentThreadTimeMillis();
-				new Thread(new BluetoothWriter("skip")).start(); // Tell the edison to skip this word
+				// Tell the edison to skip this word
+				new Thread(new BluetoothWriter("skip")).start();
+
+				// disable the buttons so multiple skips cannot be played
 				disableButtons();
 
 				// update the progress bar
@@ -369,11 +387,13 @@ public class ThreadActivity extends Activity {
 				bar.incrementProgressBy(1);
 				progress++;
 
+				// if that was the last word in the lesson
 				if (progress == numWordsInLesson) nextLesson();
 			}
 		});
 	}
 
+	// creates a dialogue that tells the user that they have completed their lesson and if they want to continue
 	private void nextLesson() {
 		DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
 			@Override
@@ -381,7 +401,7 @@ public class ThreadActivity extends Activity {
 				switch (which){
 					case DialogInterface.BUTTON_POSITIVE:
 						//Yes button clicked
-						new Thread(new BluetoothWriter("learning")).start();
+						new Thread(new BluetoothWriter("learning")).start();  // tell the Edison that the user wants to continue
 						break;
 
 					case DialogInterface.BUTTON_NEGATIVE:
@@ -397,6 +417,7 @@ public class ThreadActivity extends Activity {
 				.setNegativeButton("No", dialogClickListener).show();
 	}
 
+	// checks to see if the word has a language label on it
 	private boolean hasLabel(String audioFile) {
 		String[] wordsWithLabels = {"banana","do","elephant","keik","mama","papa","six","table","television"};
 		for (int i = 0; i < wordsWithLabels.length; i++) {
@@ -405,6 +426,7 @@ public class ThreadActivity extends Activity {
 		return false;
 	}
 
+	// returns the label based on the language that is being set for the system
 	private String getLabel() {
 		if (lang.equals("French")) return "_fr";
 		else if (lang.equals("Greek")) return "_gr";
@@ -413,12 +435,14 @@ public class ThreadActivity extends Activity {
 		else return "";
 	}
 
+	// disables all buttons
 	private void disableButtons() {
 		gameButton.setEnabled(false);
 		repeatButton.setEnabled(false);
 		skipButton.setEnabled(false);
 	}
 
+	// enable all buttons
 	private void enableButtons() {
 		gameButton.setEnabled(true);
 		repeatButton.setEnabled(true);

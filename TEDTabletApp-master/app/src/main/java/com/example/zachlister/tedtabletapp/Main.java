@@ -150,6 +150,7 @@ public class Main extends AppCompatActivity {
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
 
+        // Makes the buttons all clickable with the correct onClick functions
         addListenersOnButtons();
 
         //Always make sure that Bluetooth server is discoverable during listening...
@@ -253,10 +254,10 @@ public class Main extends AppCompatActivity {
     }
 
     public void addListenersOnButtons() {
+
+        // learning button
         Button button;
-
         button = (Button) findViewById(R.id.button);
-
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
@@ -266,15 +267,14 @@ public class Main extends AppCompatActivity {
 
         });
 
+        // setup button
         Button setupButton = (Button) findViewById(R.id.setup);
         setupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(m_context);
                 builder.setTitle("Enter Network Information");
-                // I'm using fragment here so I'm using getView() to provide ViewGroup
-                // but you can provide here any other instance of ViewGroup from your Fragment / Activity
-                //View viewInflated = LayoutInflater.from(m_context).inflate(R.layout.network_input,(ViewGroup) getCurrentFocus(), false);
+
                 // Set up the input
                 final LinearLayout layout = new LinearLayout(m_context);
                 layout.setOrientation(LinearLayout.VERTICAL);
@@ -289,9 +289,6 @@ public class Main extends AppCompatActivity {
                 layout.addView(networkNameInput);
                 layout.addView(networkPasswordInput);
 
-
-                //viewInflated.addView(networkNameInput);
-                //final EditText passwordInput = (EditText) viewInflated.findViewById(R.id.password);
                 // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
                 builder.setView(layout);
 
@@ -302,6 +299,8 @@ public class Main extends AppCompatActivity {
 
                         networkName = networkNameInput.getText().toString();
                         password = networkPasswordInput.getText().toString();
+
+                        // This is passing the network name and password to the Edison over bluetooth
                         new Thread(new BluetoothWriter("network")).start();
                         new Thread(new BluetoothWriter(networkName)).start();
                         new Thread(new BluetoothWriter(password)).start();
@@ -343,9 +342,14 @@ public class Main extends AppCompatActivity {
         }
     }
 
+    /*
+        Sets up the Bluetooth for communication
+     */
     private BluetoothSocket socket;
     private InputStream is;
     private OutputStreamWriter os;
+
+    // This runnable sets up the connection
     private Runnable reader = new Runnable() {
         public void run() {
             BluetoothAdapter adapter = BluetoothAdapter.getDefaultAdapter();
@@ -353,66 +357,27 @@ public class Main extends AppCompatActivity {
             try {
                 BluetoothServerSocket serverSocket = adapter.listenUsingRfcommWithServiceRecord("BLTServer", uuid);
                 android.util.Log.e("TrackingFlow", "Listening...");
+
+                // Connection accepted and opening
                 socket = serverSocket.accept();
                 android.util.Log.e("TrackingFlow", "Socket accepted...");
 
+                // Setup input and output streams
                 is = socket.getInputStream();
                 os = new OutputStreamWriter(socket.getOutputStream());
-               // new Thread(new BluetoothWriter("1")).start(); // send skip over bluetooth
 
+                // Enable the setup and learning buttons now
                 runOnUiThread(enableButtons);
 
-                ((TEDTablet) getApplication()).setSocket(socket); // store the socket for future use
-                /*
-                int bufferSize = 1024;
-                int bytesRead = -1;
-                byte[] buffer = new byte[bufferSize];
-
-                //Keep reading the messages while connection is open...
-                while(CONTINUE_READ_WRITE) {
-                    final StringBuilder sb = new StringBuilder();
-                    bytesRead = is.read(buffer);
-                    if (bytesRead != -1) {
-                        String result = "";
-                        while ((bytesRead == bufferSize) && (buffer[bufferSize - 1] != 0)) {
-                            result = result + new String(buffer, 0, bytesRead - 1);
-                            bytesRead = is.read(buffer);
-                        }
-                        result = result + new String(buffer, 0, bytesRead - 1);
-                        sb.append(result);
-                    }
-                    android.util.Log.e("TrackingFlow", "Read: " + sb.toString());
-                    //Show message on UIThread
-                    /*
-                    new Thread (new Runnable() {
-                        @Override
-                        public void run() {
-                            android.util.Log.e("InsideRun", "Read: " + sb.toString());
-
-                            String lang = "";
-
-                            String readInData = sb.toString();
-
-                            // to account for a fixed byte length message being sent over bluetooth
-                            // the message will be comma separated for the image and audio files
-                            for (int i = 0; i < 128; i++) {
-                                if (readInData.charAt(i) != 0) {                // move to the next section
-                                    lang += readInData.charAt(i);
-                                } else {                                        // char is null, message has ended
-                                    break;
-                                }
-                            }
-                            ((TEDTablet) getApplication()).setLang(lang);
-                            Thread.currentThread().interrupt();
-
-                        }*/
-                    //}).run();
-               // }
+                // Store the socket for future use
+                ((TEDTablet) getApplication()).setSocket(socket);
 
             } catch (IOException e) {e.printStackTrace();}
         }
     };
 
+
+    // This class is used to write data to the Edison over Bluetooth
     public class BluetoothWriter implements Runnable {
         String command;
 
@@ -421,13 +386,10 @@ public class Main extends AppCompatActivity {
         }
         @Override
         public void run() {
-            int index = 0;
             while (CONTINUE_READ_WRITE) {
                 try {
-                    //os.write("Message From Server" + (index++) + "\n");
                     os.write(command);
                     os.flush();
-                    //Thread.sleep(10000);
                     return;
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -436,7 +398,7 @@ public class Main extends AppCompatActivity {
         }
     }
 
-
+    // Makes the buttons clickable to start the setup or learning modes of the app
     private Runnable enableButtons = new Runnable() {
         @Override
         public void run() {

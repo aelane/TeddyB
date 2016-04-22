@@ -94,6 +94,8 @@ public class SelectionGame extends AppCompatActivity {
             return false;
         }
     };
+
+    // used for playing all of the sound bytes
     private int currentTrack = 0;
 
     // game stats
@@ -132,10 +134,13 @@ public class SelectionGame extends AppCompatActivity {
 
         mContext = this;
 
+        // add all of the listeners on the buttons
         addListenerOnButton();
 
+        // get the language that has been set from the bluetooth
         lang = ((TEDTablet) getApplication()).getLang();
 
+        // This starts the game up
         startGame();
 
     }
@@ -218,6 +223,8 @@ public class SelectionGame extends AppCompatActivity {
         // these will be the randomly selected pictures to be displayed and the chosen picture
         final int[] selectedPics = new int[6];
         final int[] chosenPic = new int[1];
+
+        // assigns the pictures to the buttons and randomly chooses one of the six selected pictures
         getPics(buttons, selectedPics, chosenPic);
 
         // this is used to delay the changing on the cards once correct
@@ -421,8 +428,8 @@ public class SelectionGame extends AppCompatActivity {
         String audioFileName = getAudioFileName(getResources().getResourceEntryName(images.getResourceId(chosenPic[0], R.drawable.banana)),lang);
 
         int audio1 = getResources().getIdentifier(audioFileName,"raw",getPackageName());
-        //int audio1 = getResources().getIdentifier(getResources().getResourceEntryName(images.getResourceId(chosenPic[0], R.drawable.banana)),"raw",getPackageName());
         int audio2 = getResources().getIdentifier("in_english_is","raw",getPackageName());
+
         final int[] tracks = new int[2];                                                 // plays the word then "in english is"
         tracks[0] = audio1;
         tracks[1] = audio2;
@@ -432,7 +439,7 @@ public class SelectionGame extends AppCompatActivity {
         mediaPlayer.start();															 // play the first sound bit
         mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
-            public void onCompletion(MediaPlayer mp) {                                   // when it's done playing one sound, see if there is another sound to play
+            public void onCompletion(MediaPlayer mp) {                                     // when it's done playing one sound, see if there is another sound to play
                 mp.release();
                 if (currentTrack < tracks.length && tracks[currentTrack] != 0) {         // if it's not the end of the array plus there is an actual ID of the audio track
                     mp = MediaPlayer.create(getApplicationContext(), tracks[currentTrack]);
@@ -470,7 +477,7 @@ public class SelectionGame extends AppCompatActivity {
             @Override
             public void onCompletion(MediaPlayer mp) {                                   // when it's done playing one sound, see if there is another sound to play
                 mp.release();
-                if (currentTrack <= 1) {         // if it's not the end of the array plus there is an actual ID of the audio track
+                if (currentTrack <= 1) {                                      // if it's not the end of the array plus there is an actual ID of the audio track
                     mp = MediaPlayer.create(getApplicationContext(), getResources().getIdentifier(audioFileName, "raw", getPackageName()));
                     currentTrack++;
                     mp.setOnCompletionListener(this);
@@ -480,14 +487,15 @@ public class SelectionGame extends AppCompatActivity {
         });
     }
 
+    // gets the correct sound bite in the right language
+    // translates the word from english to lang
     private String getAudioFileName(String word, String lang) {
         // The order of the languages: en, pe, fr, gr, sp
         TypedArray translatedWords = getResources().obtainTypedArray(R.array.translations);
 
-
+        // loop through all of the words and find the correct word and return its correct translation
         for (int i = 0; i < translatedWords.length(); i++) {
             String[] splitWords = ((String) translatedWords.getString(i)).split(",");
-            //android.util.Log.e("TrackingFlow", "first word of split " + splitWords[0]);
             if (splitWords[0].equals(word)) {
                 if (lang.equals("")) return splitWords[0];
                 else if (lang.equals("French")) return splitWords[2];
@@ -514,6 +522,7 @@ public class SelectionGame extends AppCompatActivity {
         restartButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
+                // reset all scores
                 guesses = 0;
                 round = 0;
                 correct = 0;
@@ -524,6 +533,7 @@ public class SelectionGame extends AppCompatActivity {
 
     }
 
+    // displays a popup asking if the user is done with the game or if they want to play again
     private void gameCompletion() {
         DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
             @Override
