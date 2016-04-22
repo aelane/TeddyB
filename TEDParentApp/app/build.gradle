@@ -30,7 +30,7 @@ dependencies {
     compile 'com.android.support:design:23.1.0'
     compile files('lib/aws-android-sdk-apigateway-core-2.2.13.jar')
     compile files('lib/gson-2.2.4.jar')
-    compile files('lib/TED-ParentAPP-1.0.0.jar')
+    compile files('lib/TED-ParentAPP-1.0.1.jar')
     compile files('lib/GraphView-4.0.1.jar')
     compile 'com.android.support:support-v4:23.1.0'
     compile 'com.amazonaws:aws-android-sdk-mobileanalytics:2.+'

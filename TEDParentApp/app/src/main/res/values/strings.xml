@@ -24,4 +24,5 @@
         <item>Foreign to English</item>
         <item>English to Foreign</item>
     </string-array>
+    <string name="title_activity_bear_reg">BearRegActivity</string>
 </resources>

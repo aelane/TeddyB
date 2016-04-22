@@ -14,7 +14,8 @@ public class tedSingleton extends Application {
     private volatile static tedSingleton mInstance = null;
 
     private String language;
-    private int testInt;
+    private String BearID;
+    private String Username;
     private CognitoCachingCredentialsProvider credentials;
 
     private tedSingleton() {
@@ -30,12 +31,18 @@ public class tedSingleton extends Application {
     }
 
     //Get and Set methods here
-    public String getLanguage(){return this.language;}
-    public CognitoCachingCredentialsProvider getCredentials() {return this.credentials;}
 
 
     public void setLanguage(String s){language = s;}
-    public void setCredentials(CognitoCachingCredentialsProvider c){credentials = c;}
+    public String getLanguage(){return this.language;}
 
+    public void setBearID(String s){BearID = s;}
+    public String getBearID(){return this.BearID;}
+
+    public void setUsername(String s){Username = s;}
+    public String getUsername(){return this.Username;}
+
+    public void setCredentials(CognitoCachingCredentialsProvider c){credentials = c;}
+    public CognitoCachingCredentialsProvider getCredentials() {return this.credentials;}
 
 }

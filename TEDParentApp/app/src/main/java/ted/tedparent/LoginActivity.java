@@ -45,9 +45,8 @@ public class LoginActivity extends AppCompatActivity implements RegTaskResponse,
             data.setPassword(passTxt.getText().toString());
 
             register.execute(data);
-        } else {
-            //transBox.setText("N/A");
         }
+
     }
     public void loginClick(View v){
 
@@ -61,11 +60,6 @@ public class LoginActivity extends AppCompatActivity implements RegTaskResponse,
         login.execute(data);
 
 
-    }
-
-    public void gotoMain(View v){
-        Intent i = new Intent(getApplicationContext(), HomeActivity.class);
-        startActivity(i);
     }
 
     public void regFinish(AccountResponse output){
@@ -89,8 +83,14 @@ public class LoginActivity extends AppCompatActivity implements RegTaskResponse,
 
              // Store credentials in mySingleton class
             tedSingleton.getInstance().setCredentials(credentialsProvider);
-            Intent i = new Intent(getApplicationContext(), HomeActivity.class);
-            startActivity(i);
+            if(tedSingleton.getInstance().getBearID().equals("Blank")) {
+                Intent i = new Intent(getApplicationContext(), BearRegActivity.class);
+                startActivity(i);
+            }
+            else{
+                Intent i = new Intent(getApplicationContext(), HomeActivity.class);
+                startActivity(i);
+            }
         }
         else{
             Toast.makeText(LoginActivity.this, "Wrong Username/Password", Toast.LENGTH_LONG).show();

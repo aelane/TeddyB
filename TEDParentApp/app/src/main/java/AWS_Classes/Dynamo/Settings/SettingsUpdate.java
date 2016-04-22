@@ -6,6 +6,7 @@ import com.amazonaws.auth.CognitoCachingCredentialsProvider;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
+import Helper_Classes.tedSingleton;
 
 
 /**
@@ -29,7 +30,7 @@ public class SettingsUpdate extends AsyncTask<String, Void, BearData> {
         AmazonDynamoDB ddbClient = new AmazonDynamoDBClient(credentialsProvider);
         DynamoDBMapper mapper = new DynamoDBMapper(ddbClient);
 
-        BearData userData = mapper.load(BearData.class, "001");
+        BearData userData = mapper.load(BearData.class, tedSingleton.getInstance().getBearID());
         userData.Language = args[0];
         userData.Topic = args[1];
         userData.TeachingMode = args[2];

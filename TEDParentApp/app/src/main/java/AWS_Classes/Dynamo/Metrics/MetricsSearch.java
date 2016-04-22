@@ -11,6 +11,7 @@ import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import com.amazonaws.services.dynamodbv2.model.ComparisonOperator;
 import com.amazonaws.services.dynamodbv2.model.Condition;
+import Helper_Classes.tedSingleton;
 
 /**
  * Created by Niko on 4/3/2016.
@@ -32,7 +33,7 @@ public class MetricsSearch extends AsyncTask<String, Void, PaginatedQueryList<Me
         DynamoDBMapper mapper = new DynamoDBMapper(ddbClient);
 
         Metrics metricsToFind = new Metrics();
-        metricsToFind.setBearID("001");
+        metricsToFind.setBearID(tedSingleton.getInstance().getBearID());
 
         String queryString = "04";
         String modeString = "#Mode = :ModeVal";

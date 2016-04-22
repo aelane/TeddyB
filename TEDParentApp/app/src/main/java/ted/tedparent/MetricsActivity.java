@@ -210,14 +210,13 @@ public class MetricsActivity extends AppCompatActivity implements MetricsRespons
 
     public void metricsFinish(PaginatedQueryList<Metrics> result){
         count +=1;
-/*        for(Metrics item : result){
-            Toast toast = Toast.makeText(getApplicationContext(), item.getDate(), Toast.LENGTH_LONG);
-            toast.show();
+        /*
+        for(Metrics item : result){
             //Do ctrl+f on logcot and search for MetricsResults to see what you got for testing, easier to see than toasts
             Log.d("MetricsResult", "ID: " + item.getBearID() + " Date: "+ item.getDate() + " Word: " + item.getCorrectWord() + " Mode: " + item.getTeachingMode() +
                     " Language: " + item.getLanguage() + " Attempt: " + item.getAttempt() + " Length: " + result.size());
-        }*/
-
+        }
+        */
         Toast toast = Toast.makeText(getApplicationContext(), String.valueOf(count), Toast.LENGTH_SHORT);
         //toast.show();
 
@@ -300,14 +299,6 @@ public class MetricsActivity extends AppCompatActivity implements MetricsRespons
 
         if (isNetworkAvailable()) {
             //Get our credentials in order to talk to our AWS database
-/*
-            CognitoCachingCredentialsProvider credentialsProvider = new CognitoCachingCredentialsProvider(
-                    getApplicationContext(),
-                    "us-east-1:b0b7a95e-1afe-41d6-9465-1f40d1494014", // Identity Pool ID
-                    Regions.US_EAST_1 // Region
-            );
-*/
-
 
             //Credentials for specific accounts
             CognitoCachingCredentialsProvider credentialsProvider = tedSingleton.getInstance().getCredentials();
@@ -319,6 +310,9 @@ public class MetricsActivity extends AppCompatActivity implements MetricsRespons
                     myMapper.execute(teachingMode, currLang, word);
                 }
             }
+        }
+        else{
+            Log.d("Network: ", "Not Connected");
         }
 
     }

@@ -9,6 +9,8 @@ import com.amazonaws.auth.AWSAbstractCognitoDeveloperIdentityProvider;
 import com.amazonaws.mobileconnectors.apigateway.ApiClientFactory;
 import com.amazonaws.regions.Regions;
 
+import Helper_Classes.tedSingleton;
+
 /**
  * Created by Niko on 1/10/2016.
  */
@@ -61,8 +63,10 @@ public class DeveloperAuthenticationProvider extends AWSAbstractCognitoDeveloper
 
             if (Response.getSuccess()){
                 update(Response.getID(), Response.getToken());
+                tedSingleton.getInstance().setBearID(Response.getBearID());
                 //update(identityId, token);
                 cachedID = Response.getID();
+                tedSingleton.getInstance().setUsername(Data.getUsername());
                 return Response.getToken();
             }
             else{
