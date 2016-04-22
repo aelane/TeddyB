@@ -30,7 +30,9 @@ int foreign_to_english(int s, char* language, char* topic, MQTTPublishParams Met
 	int new_reading, old_reading;
 	FILE *fp_Topic, *fp_Trans, *fp_Status, *fp_Sphinx;
 	char message_Buffer[128], line[16], line_trans[16], status_chk[16] = "", sphinx_arr[64];
-	
+	int correct = 0;
+	char* token;
+
 	MQTTMessageParams Msg = MQTTMessageParamsDefault;
 	Msg.qos = QOS_0;
 	char cPayload[200];
@@ -65,7 +67,7 @@ MENU:
 		if(strcmp(line, "English")){
 			printf ("Read %s\n", line);
 			
-			sprintf(message_Buffer,",thinking,how_do_you_say,%s,in_english_question_mark",line_trans);
+			sprintf(message_Buffer,"thinking,how_do_you_say,%s,in_english_question_mark",line_trans);
 			
 			printf("The Buffer is:%s\n",message_Buffer);
 			status = write(s,message_Buffer,sizeof(message_Buffer));
@@ -140,7 +142,18 @@ WRONG:
 				printf("Sphinx result: %s\n", sphinx_arr);
 				
 				
-				if(!strcmp(sphinx_arr, line) ){
+				correct = 0;
+				token = strtok(sphinx_arr, " ");
+				while (token) {
+					if(!strcmp(token, line)){
+						correct = 1;
+						break;
+					}
+					
+				    printf("token: %s\n", token);
+				    token = strtok(NULL, " ");
+				}
+				if(correct){
 					sprintf(message_Buffer,"check,good_job");
 					status = write(s,message_Buffer,sizeof(message_Buffer));
 					if(status < 0){
@@ -152,7 +165,7 @@ WRONG:
 					MetricsParams.MessageParams = Msg;
 					aws_iot_mqtt_publish(&MetricsParams);
 				}
-				else if(attempts < 4){
+				else if(attempts < 3){
 					sprintf(message_Buffer,"xmark,try_again,%s", line_trans);
 					status = write(s,message_Buffer,sizeof(message_Buffer));
 					fclose(fp_Sphinx);
@@ -167,6 +180,13 @@ WRONG:
 					goto WRONG;
 				}
 				else{
+					sprintf(message_Buffer,"wrong");
+					printf("Message sent was: %s\n",message_Buffer);
+					status = write(s,message_Buffer,sizeof(message_Buffer));
+					if(status < 0){
+						printf("Diconnected");
+						return status;
+					}
 					attempts = 0;
 				}
 				
@@ -189,7 +209,9 @@ int english_to_foreign(int s, char* language, char* topic, MQTTPublishParams Met
 	int new_reading, old_reading;
 	FILE *fp_Topic, *fp_Trans, *fp_Status, *fp_Sphinx;
 	char message_Buffer[128], line[16], line_trans[16], status_chk[16] = "", sphinx_arr[64];
-	
+	int correct = 0;
+	char* token;
+
 	MQTTMessageParams Msg = MQTTMessageParamsDefault;
 	Msg.qos = QOS_0;
 	char cPayload[200];
@@ -321,7 +343,18 @@ WRONG:
 				printf("Sphinx result: %s\n", sphinx_arr);
 				
 				
-				if(!strcmp(sphinx_arr, line_trans)){
+				correct = 0;
+				token = strtok(sphinx_arr, " ");
+				while (token) {
+					if(!strcmp(token, line_trans)){
+						correct = 1;
+						break;
+					}
+					
+				    printf("token: %s\n", token);
+				    token = strtok(NULL, " ");
+				}
+				if(correct){
 					sprintf(message_Buffer,"check,good_job");
 					status = write(s,message_Buffer,sizeof(message_Buffer));
 					if(status < 0){
@@ -333,7 +366,7 @@ WRONG:
 					MetricsParams.MessageParams = Msg;
 					aws_iot_mqtt_publish(&MetricsParams);
 				}
-				else if(attempts < 4){					
+				else if(attempts < 3){					
 					sprintf(message_Buffer,"xmark,try_again,%s", line);
 					status = write(s,message_Buffer,sizeof(message_Buffer));
 					fclose(fp_Sphinx);
@@ -348,6 +381,13 @@ WRONG:
 					goto WRONG;
 				}
 				else{
+					sprintf(message_Buffer,"wrong");
+					printf("Message sent was: %s\n",message_Buffer);
+					status = write(s,message_Buffer,sizeof(message_Buffer));
+					if(status < 0){
+						printf("Diconnected");
+						return status;
+					}
 					attempts = 0;
 				}
 				
@@ -370,7 +410,9 @@ int repeat_after_me_foreign(int s, char* language,char* topic, MQTTPublishParams
 	int new_reading, old_reading;
 	FILE *fp_Topic, *fp_Trans, *fp_Status, *fp_Sphinx;
 	char message_Buffer[128], line[16], line_trans[16], status_chk[16] = "", sphinx_arr[64];
-	
+	int correct = 0;
+	char* token;
+
 	MQTTMessageParams Msg = MQTTMessageParamsDefault;
 	Msg.qos = QOS_0;
 	char cPayload[200];
@@ -480,7 +522,6 @@ WRONG:
 				
 				/////////////////////////Read in what sphinx has done///////////////////
 				
-				sphinx_count = 0;
 				
 				fp_Sphinx = fopen("/sphinx/response.txt","r");
 				if (fp_Sphinx == NULL){	
@@ -503,8 +544,18 @@ WRONG:
 				printf("Target word: %s\n", line_trans);
 				printf("Sphinx result: %s\n", sphinx_arr);
 				
-				
-				if(!strcmp(sphinx_arr, line_trans)){
+				correct = 0;
+				token = strtok(sphinx_arr, " ");
+				while (token) {
+					if(!strcmp(token, line_trans)){
+						correct = 1;
+						break;
+					}
+					
+				    printf("token: %s\n", token);
+				    token = strtok(NULL, " ");
+				}
+				if(correct){
 					sprintf(message_Buffer,"check,good_job");
 					printf("Message sent was: %s\n",message_Buffer);
 					status = write(s,message_Buffer,sizeof(message_Buffer));
@@ -517,7 +568,7 @@ WRONG:
 					MetricsParams.MessageParams = Msg;
 					aws_iot_mqtt_publish(&MetricsParams);
 				}
-				else if(attempts < 4){
+				else if(attempts < 3){
 					sprintf(message_Buffer,"xmark,try_again,%s", line_trans);
 					printf("Message sent was: %s\n",message_Buffer);
 					status = write(s,message_Buffer,sizeof(message_Buffer));
@@ -532,6 +583,13 @@ WRONG:
 					goto WRONG;
 				}
 				else{
+					sprintf(message_Buffer,"wrong");
+					printf("Message sent was: %s\n",message_Buffer);
+					status = write(s,message_Buffer,sizeof(message_Buffer));
+					if(status < 0){
+						printf("Diconnected");
+						return status;
+					}
 					attempts = 0;
 				}
 				
@@ -553,7 +611,9 @@ int repeat_after_me_english(int s,char* topic, MQTTPublishParams MetricsParams, 
 	int new_reading, old_reading;
 	FILE *fp_Topic, *fp_Status, *fp_Sphinx;
 	char message_Buffer[128], line[16], status_chk[16] = "", sphinx_arr[64];
-	
+	int correct = 0;
+	char* token;
+
 	MQTTMessageParams Msg = MQTTMessageParamsDefault;
 	Msg.qos = QOS_0;
 	char cPayload[200];
@@ -650,7 +710,18 @@ WRONG:
 				printf("Target word: %s\n", line);
 				printf("Sphinx result: %s\n", sphinx_arr);
 				
-				if(!strcmp(sphinx_arr, line)){					
+				correct = 0;
+				token = strtok(sphinx_arr, " ");
+				while (token) {
+					if(!strcmp(token, line)){
+						correct = 1;
+						break;
+					}
+					
+				    printf("token: %s\n", token);
+				    token = strtok(NULL, " ");
+				}
+				if(correct){					
 					sprintf(message_Buffer,"check,good_job");
 					printf("Message sent was: %s\n",message_Buffer);
 					status = write(s,message_Buffer,sizeof(message_Buffer));
@@ -664,7 +735,7 @@ WRONG:
 					MetricsParams.MessageParams = Msg;
 					aws_iot_mqtt_publish(&MetricsParams);
 				}
-				else if(attempts < 4){
+				else if(attempts < 3){
 					sprintf(message_Buffer,"xmark,try_again,%s", line);
 					printf("Message sent was: %s\n",message_Buffer);
 					status = write(s,message_Buffer,sizeof(message_Buffer));
@@ -679,6 +750,13 @@ WRONG:
 					goto WRONG;
 				}
 				else{
+					sprintf(message_Buffer,"wrong");
+					printf("Message sent was: %s\n",message_Buffer);
+					status = write(s,message_Buffer,sizeof(message_Buffer));
+					if(status < 0){
+						printf("Diconnected");
+						return status;
+					}
 					attempts = 0;
 				}
 				

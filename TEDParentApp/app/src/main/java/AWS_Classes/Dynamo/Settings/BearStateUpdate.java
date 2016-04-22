@@ -24,7 +24,7 @@ public class BearStateUpdate extends AsyncTask<String, Void, BearData> {
     protected BearData doInBackground(String... args) {
         //Set up our credentials and pass it to our db client.
 
-        AmazonDynamoDB ddbClient = new AmazonDynamoDBClient(credentialsProvider);
+        AmazonDynamoDB ddbClient = new AmazonDynamoDBClient(tedSingleton.getInstance().getCredentials());
         DynamoDBMapper mapper = new DynamoDBMapper(ddbClient);
 
         BearData userData = mapper.load(BearData.class, tedSingleton.getInstance().getBearID());
