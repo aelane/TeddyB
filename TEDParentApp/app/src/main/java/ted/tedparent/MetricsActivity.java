@@ -290,12 +290,43 @@ public class MetricsActivity extends AppCompatActivity implements MetricsRespons
     public void calculateProgress() {
 
         String[] teachingModes = {"Repeat After Me", "Foreign to English", "English to Foreign"};
-        String[] vocab = {"one", "two", "three", "four", "five", "six", "seven", "eight", "nine",
+        String[] vocab;
+        String[] englishVocab = {"one", "two", "three", "four", "five", "six", "seven", "eight", "nine",
                 "ten", "apple", "banana", "bread", "cake", "carrot", "cookie", "grape", "milk",
                 "juice", "water", "bear", "bird", "cat", "dog", "elephant", "horse", "giraffe",
                 "monkey", "pig", "cow", "head", "arm", "leg", "foot", "hand", "eye", "ear", "nose",
                 "mouth", "stomach", "family", "mother", "father", "brother", "sister", "grandma",
                 "grandpa", "bed", "chair", "table", "television"};
+
+        String[] persianVocab = {"yek", "do", "se", "chahar", "panj", "shesh", "haft", "hasht", "noh",
+                "dah", "sib", "moz", "naan", "keik", "havij", "shirini", "angoor", "shir", "aabmiveh",
+                "aab", "khers", "parandeh", "gorbeh", "sag", "fil", "zaraafeh", "asb", "meimun", "khook",
+                "gaav", "sar", "bazu", "pa", "dast", "cheshm", "goosh", "bini", "dahan", "del", "khanevadeh",
+                "madar", "pedar", "baraadar", "khaahar", "madarbozorg", "pedarbozorg", "takht", "sandali",
+                "miz", "televizion"};
+
+        String[] frenchVocab = {"un", "deux", "trois", "quatre", "cinq", "six", "sept", "huit", "neuf",
+                "dix", "pomme", "banane", "pain", "gateau", "carotte", "biscuit", "raisins", "lait",
+                "jus", "eau", "ours", "oiseau", "chat", "chien", "elephant", "girafe", "cheval", "singe",
+                "cochon", "vache", "tete", "bras", "jambe", "pied", "main", "oeil", "oreille", "nez",
+                "bouche", "estomac", "famille", "maman", "papa", "frere", "soeur", "grandmere", "grandpere",
+                "lit", "chaise", "table", "tele"};
+
+        String[] greekVocab = {"ena", "dyo", "tria", "tessera", "pente", "exi", "epta", "okto", "ennea",
+                "deka", "milo", "banana", "psomi", "keik", "karoto", "koulouraki", "stafylia", "gala",
+                "chymos", "nero", "arkoudi", "pouli", "gata", "skylos", "elefantas", "kamilopardali",
+                "alogo", "maimou", "gourouni", "agelada", "kefali", "bratso", "podi", "cheri", "mati",
+                "afti", "myti", "stoma", "stomachi", "oikogeneia", "mama", "bambas", "adelfos", "adelfi",
+                "giagia", "pappous", "krevati", "karekla", "trapezi", "tileorasi"};
+
+        String[] spanishVocab = {"uno", "dos", "tres", "cuatro", "cinco", "seis", "siete", "ocho", "neuve",
+                "diez", "manzana", "platano", "pan", "pastel", "zanahoria", "galleta", "uva", "leche",
+                "jugo", "agua", "oso", "pajaro", "gato", "perro", "elefante", "jirafa", "caballo", "mono",
+                "cerdo", "vaca", "cabeza", "brazo", "pierna", "pie", "mano", "ojo", "oreja", "nariz",
+                "baco", "estomago", "familia", "mama", "papa", "hermano", "hermana", "abuela", "abuelo",
+                "cama", "silla", "mesa", "television"};
+
+
 
         if (isNetworkAvailable()) {
             //Get our credentials in order to talk to our AWS database
@@ -304,6 +335,27 @@ public class MetricsActivity extends AppCompatActivity implements MetricsRespons
             CognitoCachingCredentialsProvider credentialsProvider = tedSingleton.getInstance().getCredentials();
 
             for (String teachingMode : teachingModes) {
+                switch (currLang){
+                    case "English":
+                        vocab = englishVocab;
+                        break;
+                    case "Persian":
+                        vocab = persianVocab;
+                        break;
+                    case "Greek":
+                        vocab = greekVocab;
+                        break;
+                    case "French":
+                        vocab = frenchVocab;
+                        break;
+                    case "Spanish":
+                        vocab = spanishVocab;
+                        break;
+                    default:
+                        vocab = englishVocab;
+                        break;
+                }
+
                 for (String word : vocab) {
                     MetricsSearch myMapper = new MetricsSearch(credentialsProvider);
                     myMapper.delegate = this;
