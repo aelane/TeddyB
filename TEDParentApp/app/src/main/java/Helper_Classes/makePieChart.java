@@ -33,10 +33,13 @@ public class makePieChart {
     protected DefaultRenderer buildCategoryRenderer(int[] colors, String title) {
         DefaultRenderer renderer = new DefaultRenderer();
 
-        renderer.setLabelsColor(Color.BLACK);
+        //renderer.setLabelsColor(Color.BLACK);
         renderer.setChartTitle(title);
         renderer.setChartTitleTextSize(80);
         renderer.setLegendTextSize(40);
+        //renderer.setLabelsTextSize(30);
+        renderer.setShowLabels(false);
+        renderer.setZoomButtonsVisible(false);
 
         for (int color : colors) {
             SimpleSeriesRenderer r = new SimpleSeriesRenderer();

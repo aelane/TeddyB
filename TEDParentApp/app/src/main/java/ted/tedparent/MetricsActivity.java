@@ -49,6 +49,7 @@ public class MetricsActivity extends AppCompatActivity implements MetricsRespons
     private Button foreignToGraph;
     private Button englishToGraph;
     private ProgressBar totalProgress = null;
+    private ProgressBar loading = null;
     TextView repeatBox;
     TextView englishToBox;
     TextView foreignToBox;
@@ -101,6 +102,7 @@ public class MetricsActivity extends AppCompatActivity implements MetricsRespons
         englishToBox = (TextView)findViewById(R.id.englishToForeign);
         allBox = (TextView) findViewById(R.id.allModes);
         totalProgress = (ProgressBar) findViewById(R.id.totalProgress);
+        loading = (ProgressBar) findViewById(R.id.calculating);
 
         repeatGraph = (Button)findViewById(R.id.repeatPie);
         foreignToGraph = (Button)findViewById(R.id.foreignToPie);
@@ -210,6 +212,7 @@ public class MetricsActivity extends AppCompatActivity implements MetricsRespons
 
     public void metricsFinish(PaginatedQueryList<Metrics> result){
         count +=1;
+        //loading.setProgress(count);
         /*
         for(Metrics item : result){
             //Do ctrl+f on logcot and search for MetricsResults to see what you got for testing, easier to see than toasts
@@ -276,6 +279,8 @@ public class MetricsActivity extends AppCompatActivity implements MetricsRespons
             List<String> tempTrouble = intersection(troubleRepeat, troubleForeignTo);
             allTroubleWords = intersection(tempTrouble, troubleEnglishTo);
 
+            loading.setVisibility(View.INVISIBLE);
+
         }
     }
 
@@ -325,6 +330,10 @@ public class MetricsActivity extends AppCompatActivity implements MetricsRespons
                 "cerdo", "vaca", "cabeza", "brazo", "pierna", "pie", "mano", "ojo", "oreja", "nariz",
                 "baco", "estomago", "familia", "mama", "papa", "hermano", "hermana", "abuela", "abuelo",
                 "cama", "silla", "mesa", "television"};
+
+        Log.d("Lengths", "english: " +  String.valueOf(englishVocab.length) + " persian: " + String.valueOf(persianVocab.length) +
+                " greek: " + String.valueOf(greekVocab.length) + " french: " + String.valueOf(frenchVocab.length) + " spanish: " + String.valueOf(spanishVocab.length));
+
 
 
 

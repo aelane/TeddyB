@@ -116,6 +116,14 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true" />
 
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/calculating"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:indeterminate="false" />
+
     </RelativeLayout>
 
     <!--Side Navigation Drawer UI -->
