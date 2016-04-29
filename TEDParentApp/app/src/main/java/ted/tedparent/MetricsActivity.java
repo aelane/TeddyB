@@ -30,6 +30,7 @@ import java.util.List;
 import AWS_Classes.Dynamo.Metrics.Metrics;
 import AWS_Classes.Dynamo.Metrics.MetricsResponse;
 import AWS_Classes.Dynamo.Metrics.MetricsSearch;
+import Helper_Classes.listWords;
 import Helper_Classes.makePieChart;
 import Helper_Classes.tedSingleton;
 
@@ -48,8 +49,11 @@ public class MetricsActivity extends AppCompatActivity implements MetricsRespons
     private Button repeatGraph;
     private Button foreignToGraph;
     private Button englishToGraph;
+    private Button knownWordsRepeat;
+    private Button troubleWordsRepeat;
     private ProgressBar totalProgress = null;
     private ProgressBar loading = null;
+    TextView words;
     TextView repeatBox;
     TextView englishToBox;
     TextView foreignToBox;
@@ -101,12 +105,17 @@ public class MetricsActivity extends AppCompatActivity implements MetricsRespons
         foreignToBox = (TextView)findViewById(R.id.foreignToEnglish);
         englishToBox = (TextView)findViewById(R.id.englishToForeign);
         allBox = (TextView) findViewById(R.id.allModes);
+        words = (TextView) findViewById(R.id.words);
         totalProgress = (ProgressBar) findViewById(R.id.totalProgress);
         loading = (ProgressBar) findViewById(R.id.calculating);
 
         repeatGraph = (Button)findViewById(R.id.repeatPie);
         foreignToGraph = (Button)findViewById(R.id.foreignToPie);
         englishToGraph = (Button)findViewById(R.id.englishToPie);
+
+        knownWordsRepeat = (Button) findViewById(R.id.knownRepeat);
+        troubleWordsRepeat = (Button) findViewById(R.id.troubleRepeat);
+
 
         //Calculate Metrics
         Log.d("Current Language ", currLang);
@@ -155,8 +164,26 @@ public class MetricsActivity extends AppCompatActivity implements MetricsRespons
             }
         });
 
-    }
+        // MAKE ANOTHER CLASS - pass String List
+        knownWordsRepeat.setOnClickListener(new View.OnClickListener() {
 
+            @Override
+            public void onClick(View v) {
+                words.setText(listWords.displayWords(knownRepeat));
+            }
+        });
+
+        troubleWordsRepeat.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                words.setText(listWords.displayWords(troubleRepeat));
+            }
+        });
+
+
+
+    }
 
     private void addDrawerItems() {
         String[] osArray = { "Home", "Metrics", "Settings", "Sign Out" };
