@@ -30,7 +30,6 @@ import java.util.List;
 import AWS_Classes.Dynamo.Metrics.Metrics;
 import AWS_Classes.Dynamo.Metrics.MetricsResponse;
 import AWS_Classes.Dynamo.Metrics.MetricsSearch;
-import Helper_Classes.listWords;
 import Helper_Classes.makePieChart;
 import Helper_Classes.tedSingleton;
 
@@ -49,8 +48,7 @@ public class MetricsActivity extends AppCompatActivity implements MetricsRespons
     private Button repeatGraph;
     private Button foreignToGraph;
     private Button englishToGraph;
-    private Button knownWordsRepeat;
-    private Button troubleWordsRepeat;
+    private Button detailsRepeat;
     private ProgressBar totalProgress = null;
     private ProgressBar loading = null;
     TextView words;
@@ -105,7 +103,6 @@ public class MetricsActivity extends AppCompatActivity implements MetricsRespons
         foreignToBox = (TextView)findViewById(R.id.foreignToEnglish);
         englishToBox = (TextView)findViewById(R.id.englishToForeign);
         allBox = (TextView) findViewById(R.id.allModes);
-        words = (TextView) findViewById(R.id.words);
         totalProgress = (ProgressBar) findViewById(R.id.totalProgress);
         loading = (ProgressBar) findViewById(R.id.calculating);
 
@@ -113,8 +110,7 @@ public class MetricsActivity extends AppCompatActivity implements MetricsRespons
         foreignToGraph = (Button)findViewById(R.id.foreignToPie);
         englishToGraph = (Button)findViewById(R.id.englishToPie);
 
-        knownWordsRepeat = (Button) findViewById(R.id.knownRepeat);
-        troubleWordsRepeat = (Button) findViewById(R.id.troubleRepeat);
+        detailsRepeat = (Button) findViewById(R.id.detailsRepeat);
 
 
         //Calculate Metrics
@@ -165,23 +161,15 @@ public class MetricsActivity extends AppCompatActivity implements MetricsRespons
         });
 
         // MAKE ANOTHER CLASS - pass String List
-        knownWordsRepeat.setOnClickListener(new View.OnClickListener() {
+        detailsRepeat.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                words.setText(listWords.displayWords(knownRepeat));
+                tedSingleton.getInstance().setKnown(knownRepeat);
+                tedSingleton.getInstance().setTrouble(troubleRepeat);
+                startActivity(new Intent(MetricsActivity.this, metricsDisplayActivity.class));
             }
         });
-
-        troubleWordsRepeat.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                words.setText(listWords.displayWords(troubleRepeat));
-            }
-        });
-
-
 
     }
 

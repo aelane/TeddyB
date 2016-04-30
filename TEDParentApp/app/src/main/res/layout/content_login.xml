@@ -37,7 +37,7 @@
         android:text="Register"
         android:onClick="registerClick"
         android:id="@+id/registerButton"
-        android:layout_centerVertical="true"
+        android:layout_below="@+id/loginButton"
         android:layout_centerHorizontal="true" />
 
     <EditText
@@ -69,11 +69,8 @@
         android:text="Login"
         android:onClick="loginClick"
         android:id="@+id/loginButton"
-        android:layout_below="@+id/registerButton"
+        android:layout_centerVertical="true"
         android:layout_alignLeft="@+id/registerButton"
-        android:layout_alignStart="@+id/registerButton"
-        android:layout_marginTop="24dp"
-        android:layout_alignRight="@+id/registerButton"
-        android:layout_alignEnd="@+id/registerButton" />
+        android:layout_alignStart="@+id/registerButton" />
 
 </RelativeLayout>

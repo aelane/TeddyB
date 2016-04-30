@@ -4,6 +4,8 @@ import android.app.Application;
 
 import com.amazonaws.auth.CognitoCachingCredentialsProvider;
 
+import java.util.List;
+
 /**
  * Created by pwdarby on 3/30/16.
  *
@@ -17,6 +19,8 @@ public class tedSingleton extends Application {
     private String BearID;
     private String Username;
     private CognitoCachingCredentialsProvider credentials;
+    private List<String> known;
+    private List<String> trouble;
 
     private tedSingleton() {
         language = "english";
@@ -32,6 +36,11 @@ public class tedSingleton extends Application {
 
     //Get and Set methods here
 
+    public void setKnown(List<String> s){known = s;}
+    public List<String> getKnown(){return this.known;}
+
+    public void setTrouble(List<String> s){trouble = s;}
+    public List<String> getTrouble(){return this.trouble;}
 
     public void setLanguage(String s){language = s;}
     public String getLanguage(){return this.language;}
