@@ -44,7 +44,7 @@ int run_sphinx(char* LanguageMode){
 		printf("\n\nENGLISH MODE\n\n");
 		config = cmd_ln_init(NULL, ps_args(), TRUE, 
 				"-hmm", "/sphinx/pocketsphinx-5prealpha/model/en-us/en-us/",
-				"-lm", "/sphinx/pocketsphinx-5prealpha/model/en-us/en-us.lm.bin",
+				"-lm", "/sphinx/pocketsphinx-5prealpha/model/en-us/english.lm",
 				"-dict", "/sphinx/cmudict-custom.dict",
 				NULL);
 		break;
@@ -52,23 +52,23 @@ int run_sphinx(char* LanguageMode){
 		// load dir
 		printf("\n\nSPANISH MODE\n\n");
 		config = cmd_ln_init(NULL, ps_args(), TRUE, 
-				"-hmm", "/sphinx/voxforge-es-0.2/model_parameters/voxforge_es_sphinx.cd_ptm_3000/",
-				"-lm", "/sphinx/voxforge-es-0.2/etc/voxforge_es_sphinx.transcription.test.lm",
-				"-dict", "/sphinx/voxforge-es-0.2/etc/spanish_dictionary.dic",
+				"-hmm", "/sphinx/languages/spanish_language/spanish_adapted/",
+				"-lm", "/sphinx/languages/spanish_language/spanish.lm",
+				"-dict", "/sphinx/languages/spanish_language/spanish_dictionary.dic",
 				NULL);
 		break;
 	case 3:
 		// load dir
 		printf("\n\nFRENCH MODE\n\n");
                 config = cmd_ln_init(NULL, ps_args(), TRUE,
-                                "-hmm", "/sphinx/languages/french_languages/cmusphinx-fr-ptm-5.2/",
-                                "-lm", "/sphinx/languages/french_language/french-small.lm",
-                                "-dict", "/sphinx/languages/french_language/french_reduced.dict",
+                                "-hmm", "/sphinx/languages/french_language/french-corpus/french-corpus/en-us/",
+                                "-lm", "/sphinx/languages/french_language/french-corpus/french-corpus/french.lm",
+                                "-dict", "/sphinx/languages/french_language/french-corpus/french-corpus/french.dic",
                                 NULL);
 		break;
 	case 4:
 		// load dir
-		printf("\n\nGREEK MODE Currently unavailable\nLoading English\n\n");
+		printf("\n\nGREEK MODE\n\n");
                 config = cmd_ln_init(NULL, ps_args(), TRUE,
                                 "-hmm", "/sphinx/languages/greek_language/greek_adaptation/",
                                 "-lm", "/sphinx/languages/greek_language/greek_language_model.lm",
@@ -77,7 +77,7 @@ int run_sphinx(char* LanguageMode){
 		break;
 	case 5:
 		// load dir
-		printf("\n\nPERSIAN MODE Currently unavailable\nLoading English\n\n");
+		printf("\n\nPERSIAN MODE\n\n");
                 config = cmd_ln_init(NULL, ps_args(), TRUE,
                                 "-hmm", "/sphinx/languages/persian_language/persian_adaptation/",
                                 "-lm", "/sphinx/languages/persian_language/persian_language_model.lm",

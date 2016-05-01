@@ -28,6 +28,7 @@
 #include "aws_iot_config.h"
 #include "bear_info.h"
 
+int aws_flag;
 //Thread so that we are constantly listening for messages from the tablet
 void *threadListen(void *s){
 	
@@ -48,10 +49,19 @@ void *threadListen(void *s){
 			read((int) s, network_Pass, sizeof(network_Pass));
 			printf("PASSWORD: %s\n", network_Pass);
 
-			sprintf(command,"wpa_passphrase %s %s >> /etc/wpa_supplicant/wpa_supplicant.conf", network_Name, network_Pass);
-			system(command);
-			system("service networking restart");
+			if(aws_flag == 0){
+				sprintf(command,"wpa_passphrase %s %s >> /etc/wpa_supplicant/wpa_supplicant.conf", network_Name, network_Pass);
+				system(command);
+				system("service networking restart");
+			}
+			memset(network_Name, 0, sizeof(network_Name));
+			memset(network_Pass, 0, sizeof(network_Pass));
+
 			
+		}
+		else if (!strcmp(message_Buffer, "")){
+			printf("APP CRASHED YO %s\n");
+			sprintf(threadMessage, "crash");
 		}
 		else{
 			sprintf(threadMessage, "%s", message_Buffer);
@@ -161,7 +171,8 @@ int main(void) {
 
         printf("Going to start reading the button via polling\n");
 	
-//////////////////////AWS///////////////////////////////////	
+//////////////////////AWS///////////////////////////////////
+	aws_flag = 0;	
 	IoT_Error_t rc = NONE_ERROR;
 	char HostAddress[255] = AWS_IOT_MQTT_HOST;
 	char certDirectory[PATH_MAX + 1] = "/AWS/SDK/certs/";
@@ -362,6 +373,7 @@ sdpconnect:
 					}
 					sleep(1);
 				}while(NONE_ERROR != rc);
+				aws_flag = 1;
 //////////////////////////Start of teaching stuff//////////////////////////////////////////
 				do {
 					
@@ -395,6 +407,11 @@ sdpconnect:
 					//Wait for the tablet to tell the edison to start the lesson
 					while(strcmp(threadMessage, "learning")){
 						printf("Waiting for learning, got: %s\n", threadMessage);
+						if(!strcmp(threadMessage, "crash")){
+							memset(threadMessage, 0, sizeof(threadMessage));
+							goto CRASHED;
+						}
+						memset(threadMessage, 0, sizeof(threadMessage));
 						sleep(1);
 					}
 
@@ -430,6 +447,7 @@ sdpconnect:
 					printf("Changing Topic");
 					sleep(5);
 				} while (status > 0);
+CRASHED:
 				printf("\nBluetooth Disconnected\n");
 				close(s);
 				sdp_record_free( rec );

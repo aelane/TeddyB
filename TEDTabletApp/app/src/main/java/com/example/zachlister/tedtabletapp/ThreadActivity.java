@@ -250,7 +250,7 @@ public class ThreadActivity extends Activity {
 										currentAudioFile = getResources().getIdentifier(mRawAudioName3, "raw", getPackageName());
 									}
 								} else {
-									if (hasLabel(mRawAudioName2)) {
+									if (hasLabel(mRawAudioName2) && teachingMode == 2) {
 										currentAudioFile = getResources().getIdentifier(mRawAudioName2+getLabel(), "raw", getPackageName());
 									} else {
 										currentAudioFile = getResources().getIdentifier(mRawAudioName2, "raw", getPackageName());
@@ -406,7 +406,9 @@ public class ThreadActivity extends Activity {
 
 					case DialogInterface.BUTTON_NEGATIVE:
 						//No button clicked
-						finish();
+						Intent i = new Intent(mContext, SelectionGame.class);
+						new Thread(new BluetoothWriter("menu")).start();   // tell the edison that the user has gone into the game
+						startActivity(i);
 						break;
 				}
 			}

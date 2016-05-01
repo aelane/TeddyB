@@ -59,6 +59,7 @@ SKIP:
 MENU:				
 			while(strcmp(threadMessage, "learning")){
 				printf("Waiting for learning, got: %s\n", threadMessage);
+				memset(threadMessage, 0, sizeof(threadMessage));
 				sleep(1);
 			}
 		}
@@ -76,7 +77,7 @@ MENU:
 				return status;
 			}
 			printf ("Wrote %d bytes\n", status);
-			sleep(7);
+			sleep(5);
 		
 			if(status > 0){
 				/////////////////Wait for sphinx to do its thing////////////////////////
@@ -91,29 +92,39 @@ WRONG:
 					memset(threadMessage, 0, sizeof(threadMessage));
 					goto MENU;
 				}
+				else if(!strcmp(threadMessage, "crash")){
+					memset(threadMessage, 0, sizeof(threadMessage));
+					return -1;
+				}
 				
 				new_reading = mraa_gpio_read(BearButton);
 				//Print the pin value
-				printf("switch %d \n", new_reading);
 				//Check the old button value against the new
 				if (new_reading == 1 && old_reading == 1) {
-					printf("Keep waiting for a button press\n");
+					//printf("Keep waiting for a button press\n");
 				}
 				if (new_reading == 0 && old_reading == 0) {
-					printf("Keep waiting for a button press\n");
-				}
-				if (new_reading == 1 && old_reading == 0) {
-					printf("start recording\n");
+					//printf("Keep waiting for a button press\n");
 				}
 				if (new_reading == 0 && old_reading == 1) {
-					printf("Stop the recording\n");
+					printf("Button Pressed\n");
+				}
+				if (new_reading == 1 && old_reading == 0) {
+					printf("Button Released\n");
+					sprintf(message_Buffer,"thinking,boop");
+					printf("Message sent was: %s\n",message_Buffer);
+					status = write(s,message_Buffer,sizeof(message_Buffer));
+					if(status < 0){
+						printf("Diconnected");
+						return status;
+					}
 					system("arecord -f S16_LE -r 16000 -d 3 /Curriculum/Bluetooth/hello.wav");
 					run_sphinx("e");
 					continue_flag = 1;
 					printf("\nSphinx exit success\n");
 				}
 				//Sleep for n microseconds, so then, we're reading each second
-				usleep(500000);
+				usleep(200000);
 				old_reading = new_reading;
 				
 				}while(continue_flag != 1);
@@ -201,8 +212,8 @@ WRONG:
 	printf("About to exit teaching");
 	fclose(fp_Topic);
 	return status;
-}
 
+}
 int english_to_foreign(int s, char* language, char* topic, MQTTPublishParams MetricsParams, mraa_gpio_context BearButton){
 
 	int continue_flag = 0,changeTopic_flag = 1, sphinx_count = 0, attempts;
@@ -238,8 +249,8 @@ SKIP:
 		if(0){
 MENU:				
 			while(strcmp(threadMessage, "learning")){
-
 				printf("Waiting for learning, got: %s\n", threadMessage);
+				memset(threadMessage, 0, sizeof(threadMessage));
 				sleep(1);
 			}
 		}
@@ -269,7 +280,7 @@ MENU:
 				return status;
 			}
 			printf ("Wrote %d bytes\n", status);
-			sleep(7);
+			sleep(5);
 		
 			if(status > 0){
 				/////////////////Wait for sphinx to do its thing////////////////////////
@@ -284,22 +295,33 @@ WRONG:
 					memset(threadMessage, 0, sizeof(threadMessage));
 					goto MENU;
 				}
+				else if(!strcmp(threadMessage, "crash")){
+					memset(threadMessage, 0, sizeof(threadMessage));
+					return -1;
+				}
 				
 				new_reading = mraa_gpio_read(BearButton);
 				//Print the pin value
-				printf("switch %d \n", new_reading);
+				//printf("switch %d \n", new_reading);
 				//Check the old button value against the new
 				if (new_reading == 1 && old_reading == 1) {
-					printf("Keep waiting for a button press\n");
+					//printf("Keep waiting for a button press\n");
 				}
 				if (new_reading == 0 && old_reading == 0) {
-					printf("Keep waiting for a button press\n");
-				}
-				if (new_reading == 1 && old_reading == 0) {
-					printf("start recording\n");
+					//printf("Keep waiting for a button press\n");
 				}
 				if (new_reading == 0 && old_reading == 1) {
-					printf("Stop the recording\n");
+					printf("Button Pressed\n");
+				}
+				if (new_reading == 1 && old_reading == 0) {
+					printf("Button Released\n");
+					sprintf(message_Buffer,"%s,boop",line);
+					printf("Message sent was: %s\n",message_Buffer);
+					status = write(s,message_Buffer,sizeof(message_Buffer));
+					if(status < 0){
+						printf("Diconnected");
+						return status;
+					}
 					system("arecord -f S16_LE -r 16000 -d 3 /Curriculum/Bluetooth/hello.wav");
 					if(!strcmp(language, "Spanish")){
 						run_sphinx("s");
@@ -316,7 +338,7 @@ WRONG:
 					continue_flag = 1;
 				}
 				//Sleep for n microseconds, so then, we're reading each second
-				usleep(500000);
+				usleep(200000);
 				old_reading = new_reading;
 				
 				}while(continue_flag != 1);
@@ -440,8 +462,8 @@ SKIP:
 		if(0){
 MENU:				
 			while(strcmp(threadMessage, "learning")){
-
 				printf("Waiting for learning, got: %s\n", threadMessage);
+				memset(threadMessage, 0, sizeof(threadMessage));
 				sleep(1);
 			}
 		}
@@ -457,7 +479,7 @@ MENU:
 				sprintf(message_Buffer,"%s,%s,in_french_is,%s,repeat_after_me,%s",line,line,line_trans,line_trans);
 			}
 			else if(!strcmp(language, "Persian")){
-				sprintf(message_Buffer,"%s,%s,in_Persian_is,%s,repeat_after_me,%s",line,line,line_trans,line_trans);
+				sprintf(message_Buffer,"%s,%s,in_persian_is,%s,repeat_after_me,%s",line,line,line_trans,line_trans);
 			}
 			else if(!strcmp(language, "Greek")){
 				sprintf(message_Buffer,"%s,%s,in_greek_is,%s,repeat_after_me,%s",line,line,line_trans,line_trans);
@@ -467,7 +489,11 @@ MENU:
 			printf("The Buffer is:%s\n",message_Buffer);
 			status = write(s,message_Buffer,sizeof(message_Buffer));
 			printf ("Wrote %d bytes\n", status);
-			sleep(7);
+			if(status < 0){
+				printf("Diconnected");
+				return status;
+			}
+			sleep(5);
 		
 			if(status > 0){
 				/////////////////Wait for sphinx to do its thing////////////////////////
@@ -482,23 +508,34 @@ WRONG:
 					memset(threadMessage, 0, sizeof(threadMessage));
 					goto MENU;
 				}
+				else if(!strcmp(threadMessage, "crash")){
+					memset(threadMessage, 0, sizeof(threadMessage));
+					return -1;
+				}
 				
 				new_reading = mraa_gpio_read(BearButton);
 				//Print the pin value
-				printf("switch %d \n", new_reading);
+				//printf("switch %d \n", new_reading);
 				//Check the old button value against the new
 
 				if (new_reading == 1 && old_reading == 1) {
-					printf("Keep waiting for a button press\n");
+					//printf("Keep waiting for a button press\n");
 				}
 				if (new_reading == 0 && old_reading == 0) {
-					printf("Keep waiting for a button press\n");
-				}
-				if (new_reading == 1 && old_reading == 0) {
-					printf("start recording\n");
+					//printf("Keep waiting for a button press\n");
 				}
 				if (new_reading == 0 && old_reading == 1) {
-					printf("Stop the recording\n");
+					printf("Button Pressed\n");
+				}
+				if (new_reading == 1 && old_reading == 0) {
+					printf("Button Released\n");
+					sprintf(message_Buffer,"%s,boop",line);
+					printf("Message sent was: %s\n",message_Buffer);
+					status = write(s,message_Buffer,sizeof(message_Buffer));
+					if(status < 0){
+						printf("Diconnected");
+						return status;
+					}
 					system("arecord -f S16_LE -r 16000 -d 3 /Curriculum/Bluetooth/hello.wav");
 					if(!strcmp(language, "Spanish")){
 						run_sphinx("s");
@@ -515,7 +552,7 @@ WRONG:
 					continue_flag = 1;
 				}
 				//Sleep for n microseconds, so then, we're reading each second
-				usleep(500000);
+				usleep(200000);
 				old_reading = new_reading;
 				
 		
@@ -640,8 +677,8 @@ SKIP:
 		if(0){
 MENU:				
 			while(strcmp(threadMessage, "learning")){
-
 				printf("Waiting for learning, got: %s\n", threadMessage);
+				memset(threadMessage, 0, sizeof(threadMessage));
 				sleep(1);
 			}
 		}
@@ -651,8 +688,12 @@ MENU:
 			sprintf(message_Buffer,"%s,%s,in_english_is,%s,repeat_after_me,%s",line,line,line,line);
 			printf("Message sent was: %s\n",message_Buffer);
 			status = write(s,message_Buffer,sizeof(message_Buffer));
+			if(status < 0){
+				printf("Diconnected");
+				return status;
+			}
 			printf ("Wrote %d bytes\n", status);
-			sleep(7);
+			sleep(5);
 		
 			if(status > 0){ 
 				/////////////////Wait for sphinx to do its thing////////////////////////
@@ -667,31 +708,41 @@ WRONG:
 					memset(threadMessage, 0, sizeof(threadMessage));
 					goto MENU;
 				}
+				else if(!strcmp(threadMessage, "crash")){
+					memset(threadMessage, 0, sizeof(threadMessage));
+					return -1;
+				}
 	
 				continue_flag = 0;
 				
 				//Read the pin
 				new_reading = mraa_gpio_read(BearButton);
 				//Print the pin value
-				printf("switch %d \n", new_reading);
 				//Check the old button value against the new
 				if (new_reading == 1 && old_reading == 1) {
-					printf("Keep waiting for a button press\n");
+					//printf("Keep waiting for a button press\n");
 				}
 				if (new_reading == 0 && old_reading == 0) {
-					printf("Keep waiting for a button press\n");
-				}
-				if (new_reading == 1 && old_reading == 0) {
-					printf("start recording\n");
+					//printf("Keep waiting for a button press\n");
 				}
 				if (new_reading == 0 && old_reading == 1) {
-					printf("Stop the recording\n");
+					printf("Button Pressed\n");
+				}
+				if (new_reading == 1 && old_reading == 0) {
+					printf("Button Released\n");
+					sprintf(message_Buffer,"%s,boop",line);
+					printf("Message sent was: %s\n",message_Buffer);
+					status = write(s,message_Buffer,sizeof(message_Buffer));
+					if(status < 0){
+						printf("Diconnected");
+						return status;
+					}
 					system("arecord -f S16_LE -r 16000 -d 3 /Curriculum/Bluetooth/hello.wav");
 					run_sphinx("e");
 					continue_flag = 1;
 				}
 				//Sleep for n microseconds, so then, we're reading each second
-				usleep(500000);
+				usleep(200000);
 				old_reading = new_reading;
 				
 				}while(continue_flag != 1);

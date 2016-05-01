@@ -88,7 +88,6 @@ function updateTopic(BearID, currTopic, fn){
             return fn(err);
         }
         else {
-            //Tell the app registration was a success
             return fn(null);
         }
     });

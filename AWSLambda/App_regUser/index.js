@@ -29,36 +29,6 @@ function createHash(password, salt, fn) {
 	
 }
 
-function sendVerificationEmail(email, token, fn) {
-    
-	var verificationLink = "meh" + '?email=' + encodeURIComponent(email) + '&verify=' + token;
-	ses.sendEmail({
-		Source: "teddyec463@gmail.com",
-		Destination: {
-			ToAddresses: [
-				email
-			]
-		},
-		Message: {
-			Subject: {
-				Data: "Verification Email for TED"
-			},
-			Body: {
-				Html: {
-					Data: '<html><head>'
-					+ '<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />'
-					+ '<title>' + "TED Verification Email" + '</title>'
-					+ '</head><body>'
-					+ 'Please <a href="' + verificationLink + '">click here to verify your email address</a> or copy & paste the following link in a browser:'
-					+ '<br><br>'
-					+ '<a href="' + verificationLink + '">' + verificationLink + '</a>'
-					+ '</body></html>'
-				}
-			}
-		}
-	}, fn);
-}
-
 exports.handler = function(event, context) {
     //console.log('Received event:', JSON.stringify(event, null, 2));
 
