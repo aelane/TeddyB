@@ -28,8 +28,8 @@ public class metricsDisplayActivity extends AppCompatActivity {
         teachingMode = (TextView) findViewById(R.id.teachingMode);
         back = (Button) findViewById(R.id.backButton);
 
-        known.setText("Known Words: \n" + listWords.displayWords(tedSingleton.getInstance().getKnown()));
-        trouble.setText("Trouble Words: \n" + listWords.displayWords(tedSingleton.getInstance().getTrouble()));
+        known.setText(listWords.displayWords(tedSingleton.getInstance().getKnown()));
+        trouble.setText(listWords.displayWords(tedSingleton.getInstance().getTrouble()));
         teachingMode.setText(tedSingleton.getInstance().getTeachingMode());
 
         back.setOnClickListener(new View.OnClickListener() {
