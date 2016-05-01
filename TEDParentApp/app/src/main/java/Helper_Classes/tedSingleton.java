@@ -21,6 +21,7 @@ public class tedSingleton extends Application {
     private CognitoCachingCredentialsProvider credentials;
     private List<String> known;
     private List<String> trouble;
+    private String teachingMode = "";
 
     private tedSingleton() {
         language = "english";
@@ -35,6 +36,9 @@ public class tedSingleton extends Application {
     }
 
     //Get and Set methods here
+
+    public void setTeachingMode(String s){teachingMode = s;}
+    public String getTeachingMode(){return this.teachingMode;}
 
     public void setKnown(List<String> s){known = s;}
     public List<String> getKnown(){return this.known;}

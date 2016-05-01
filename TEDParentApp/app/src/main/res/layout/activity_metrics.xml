@@ -133,6 +133,24 @@
             android:layout_toRightOf="@+id/repeatPie"
             android:layout_toEndOf="@+id/repeatPie" />
 
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Details"
+            android:id="@+id/detailsForeignTo"
+            android:layout_below="@+id/foreignToEnglish"
+            android:layout_toRightOf="@+id/foreignToPie"
+            android:layout_toEndOf="@+id/foreignToPie" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Details"
+            android:id="@+id/detailsEnglishTo"
+            android:layout_below="@+id/englishToForeign"
+            android:layout_toRightOf="@+id/englishToPie"
+            android:layout_toEndOf="@+id/englishToPie" />
+
     </RelativeLayout>
 
     <!--Side Navigation Drawer UI -->

@@ -122,7 +122,8 @@ public class HomeActivity extends AppCompatActivity implements AsyncResponse {
             case 1:
                 startActivity(new Intent(HomeActivity.this, MetricsActivity.class));
                 break;
-            case 2:
+            case 2
+                    :
                 startActivity(new Intent(HomeActivity.this, SettingsActivity.class));
                 break;
 //            case 4:

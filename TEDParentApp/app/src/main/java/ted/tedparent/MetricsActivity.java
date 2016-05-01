@@ -49,9 +49,10 @@ public class MetricsActivity extends AppCompatActivity implements MetricsRespons
     private Button foreignToGraph;
     private Button englishToGraph;
     private Button detailsRepeat;
+    private Button detailsForeignTo;
+    private Button detailsEnglishTo;
     private ProgressBar totalProgress = null;
     private ProgressBar loading = null;
-    TextView words;
     TextView repeatBox;
     TextView englishToBox;
     TextView foreignToBox;
@@ -70,6 +71,7 @@ public class MetricsActivity extends AppCompatActivity implements MetricsRespons
 
 
     String currLang = tedSingleton.getInstance().getLanguage();
+
 
 
     @Override
@@ -111,6 +113,8 @@ public class MetricsActivity extends AppCompatActivity implements MetricsRespons
         englishToGraph = (Button)findViewById(R.id.englishToPie);
 
         detailsRepeat = (Button) findViewById(R.id.detailsRepeat);
+        detailsForeignTo = (Button) findViewById(R.id.detailsForeignTo);
+        detailsEnglishTo = (Button) findViewById(R.id.detailsEnglishTo);
 
 
         //Calculate Metrics
@@ -160,16 +164,39 @@ public class MetricsActivity extends AppCompatActivity implements MetricsRespons
             }
         });
 
-        // MAKE ANOTHER CLASS - pass String List
         detailsRepeat.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
                 tedSingleton.getInstance().setKnown(knownRepeat);
                 tedSingleton.getInstance().setTrouble(troubleRepeat);
+                tedSingleton.getInstance().setTeachingMode("Repeat After Me");
                 startActivity(new Intent(MetricsActivity.this, metricsDisplayActivity.class));
             }
         });
+
+        detailsForeignTo.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                tedSingleton.getInstance().setKnown(knownForeignTo);
+                tedSingleton.getInstance().setTrouble(troubleForeignTo);
+                tedSingleton.getInstance().setTeachingMode("Foreign To English");
+                startActivity(new Intent(MetricsActivity.this, metricsDisplayActivity.class));
+            }
+        });
+
+        detailsEnglishTo.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                tedSingleton.getInstance().setKnown(knownEnglishTo);
+                tedSingleton.getInstance().setTrouble(troubleEnglishTo);
+                tedSingleton.getInstance().setTeachingMode("English To Foreign");
+                startActivity(new Intent(MetricsActivity.this, metricsDisplayActivity.class));
+            }
+        });
+
 
     }
 
