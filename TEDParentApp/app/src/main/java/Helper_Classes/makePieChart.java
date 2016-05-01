@@ -17,7 +17,7 @@ import java.util.List;
 public class makePieChart {
 
     public Intent execute(Context context, String title, List<String> known, List<String> trouble) {
-        int[] colors = new int[] { Color.CYAN, Color.MAGENTA, Color.BLUE };
+        int[] colors = new int[] { Color.rgb(113,124,252), Color.rgb(113,252,201), Color.rgb(236,113,252)};
         DefaultRenderer renderer = buildCategoryRenderer(colors, title);
 
         CategorySeries categorySeries = new CategorySeries("Words");
@@ -32,6 +32,9 @@ public class makePieChart {
 
     protected DefaultRenderer buildCategoryRenderer(int[] colors, String title) {
         DefaultRenderer renderer = new DefaultRenderer();
+
+        renderer.setApplyBackgroundColor(true);
+        renderer.setBackgroundColor(Color.rgb(210,235,253));
 
         //renderer.setLabelsColor(Color.BLACK);
         renderer.setChartTitle(title);
