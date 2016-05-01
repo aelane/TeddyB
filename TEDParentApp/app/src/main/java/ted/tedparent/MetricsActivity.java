@@ -201,7 +201,7 @@ public class MetricsActivity extends AppCompatActivity implements MetricsRespons
     }
 
     private void addDrawerItems() {
-        String[] osArray = { "Home", "Metrics", "Settings", "Sign Out" };
+        String[] osArray = { "Home", "Metrics", "Settings", "Log Out" };
         mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, osArray);
         mDrawerList.setAdapter(mAdapter);
 
@@ -224,6 +224,10 @@ public class MetricsActivity extends AppCompatActivity implements MetricsRespons
                 break;
             case 2:
                 startActivity(new Intent(MetricsActivity.this, SettingsActivity.class));
+                break;
+            case 3:
+                startActivity(new Intent(MetricsActivity.this, LoginActivity.class));
+                break;
             default:
                 break;
         }

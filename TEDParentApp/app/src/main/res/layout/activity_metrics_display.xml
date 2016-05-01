@@ -10,23 +10,19 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Known Words:"
         android:id="@+id/known"
-        android:layout_alignParentTop="true"
+        android:layout_below="@+id/teachingMode"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="42dp" />
+        android:layout_marginTop="55dp" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Trouble Words: "
         android:id="@+id/trouble"
         android:layout_alignTop="@+id/known"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginRight="53dp"
-        android:layout_marginEnd="53dp" />
+        android:layout_toRightOf="@+id/backButton"
+        android:layout_toEndOf="@+id/backButton" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -43,4 +39,24 @@
         android:id="@+id/backButton"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Known Words:"
+        android:id="@+id/textView7"
+        android:layout_above="@+id/trouble"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Trouble Words:"
+        android:id="@+id/textView8"
+        android:layout_alignTop="@+id/textView7"
+        android:layout_toRightOf="@+id/backButton"
+        android:layout_toEndOf="@+id/backButton" />
 </RelativeLayout>

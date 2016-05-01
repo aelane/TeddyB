@@ -21,7 +21,7 @@
             android:id="@+id/LangSpinner"
             android:spinnerMode="dropdown"
             android:entries="@array/Languages"
-            android:layout_below="@+id/textView4"
+            android:layout_above="@+id/textView5"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true" />
 
@@ -31,7 +31,7 @@
             android:id="@+id/TopicSpinner"
             android:spinnerMode="dropdown"
             android:entries="@array/Topics"
-            android:layout_below="@+id/textView5"
+            android:layout_above="@+id/textView6"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true" />
 
@@ -40,8 +40,9 @@
             android:layout_height="wrap_content"
             android:text="Update Settings"
             android:id="@+id/SettingsButton"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true" />
+            android:layout_below="@+id/TeachingModeSpinner"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="45dp" />
 
         <Spinner
             android:layout_width="wrap_content"
@@ -59,8 +60,9 @@
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="Language"
             android:id="@+id/textView4"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true" />
+            android:layout_above="@+id/LangSpinner"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -68,8 +70,9 @@
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="Topic"
             android:id="@+id/textView5"
-            android:layout_below="@+id/LangSpinner"
-            android:layout_centerHorizontal="true" />
+            android:layout_above="@+id/TopicSpinner"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -77,9 +80,18 @@
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="Teaching Mode"
             android:id="@+id/textView6"
-            android:layout_below="@+id/TopicSpinner"
-            android:layout_alignRight="@+id/SettingsButton"
-            android:layout_alignEnd="@+id/SettingsButton" />
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Settings"
+            android:id="@+id/textView"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true" />
 
     </RelativeLayout>
 
