@@ -425,10 +425,11 @@ public class SelectionGame extends AppCompatActivity {
 
         chosenPic[0] = selectedPics[(int) (Math.random() * 6)];                          // randomly choose one of the pictures from the selected group
 
-        String audioFileName = getAudioFileName(getResources().getResourceEntryName(images.getResourceId(chosenPic[0], R.drawable.banana)),lang);
+        String audioFileName = getAudioFileName(getResources().getResourceEntryName(images.getResourceId(chosenPic[0], R.drawable.banana)), lang);
 
-        int audio1 = getResources().getIdentifier(audioFileName,"raw",getPackageName());
-        int audio2 = getResources().getIdentifier("in_english_is","raw",getPackageName());
+        int audio1 = getResources().getIdentifier("please_select_the","raw",getPackageName());
+        int audio2 = getResources().getIdentifier(audioFileName,"raw",getPackageName());
+
 
         final int[] tracks = new int[2];                                                 // plays the word then "in english is"
         tracks[0] = audio1;
