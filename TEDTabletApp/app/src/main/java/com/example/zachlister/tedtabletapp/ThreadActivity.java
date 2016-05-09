@@ -50,6 +50,7 @@ public class ThreadActivity extends Activity {
 	private Button repeatButton;
 	private Button skipButton;
 	private Button gameButton;
+	private Button nextLessonButton;
 
 	// used to make sure the word "learning" is only sent once to the edison
 	private boolean	ONCREATE = true;
@@ -76,6 +77,7 @@ public class ThreadActivity extends Activity {
 			repeatButton = (Button) findViewById(R.id.repeat);
 			skipButton = (Button) findViewById(R.id.skip);
 			gameButton = (Button) findViewById(R.id.game);
+			nextLessonButton = (Button) findViewById(R.id.nextlesson);
 			progress = 0;
 
 			// start the Bluetooth loop
@@ -391,6 +393,18 @@ public class ThreadActivity extends Activity {
 				if (progress == numWordsInLesson) nextLesson();
 			}
 		});
+
+		nextLessonButton.setOnClickListener(new View.OnClickListener(){
+			@Override
+			public void onClick(View v) {
+				// Tell the edison to skip this word
+				new Thread(new BluetoothWriter("next")).start();
+
+				// disable the buttons so multiple skips cannot be played
+				disableButtons();
+				nextLesson();
+			}
+		});
 	}
 
 	// creates a dialogue that tells the user that they have completed their lesson and if they want to continue
@@ -442,6 +456,7 @@ public class ThreadActivity extends Activity {
 		gameButton.setEnabled(false);
 		repeatButton.setEnabled(false);
 		skipButton.setEnabled(false);
+		nextLessonButton.setEnabled(false);
 	}
 
 	// enable all buttons
@@ -449,6 +464,8 @@ public class ThreadActivity extends Activity {
 		gameButton.setEnabled(true);
 		repeatButton.setEnabled(true);
 		skipButton.setEnabled(true);
+		nextLessonButton.setEnabled(true);
 	}
+
 
 }

@@ -59,6 +59,10 @@ SKIP:
 MENU:				
 			while(strcmp(threadMessage, "learning")){
 				printf("Waiting for learning, got: %s\n", threadMessage);
+				if(!strcmp(threadMessage, "crash")){
+					memset(threadMessage, 0, sizeof(threadMessage));
+					return -1;
+				}
 				memset(threadMessage, 0, sizeof(threadMessage));
 				sleep(1);
 			}
@@ -95,6 +99,10 @@ WRONG:
 				else if(!strcmp(threadMessage, "crash")){
 					memset(threadMessage, 0, sizeof(threadMessage));
 					return -1;
+				}
+				else if(!strcmp(threadMessage, "next")){
+					memset(threadMessage, 0, sizeof(threadMessage)); 
+					goto NEXT;
 				}
 				
 				new_reading = mraa_gpio_read(BearButton);
@@ -209,8 +217,10 @@ WRONG:
 			}
 		}
 	}
+NEXT:
 	printf("About to exit teaching");
 	fclose(fp_Topic);
+	fclose(fp_Trans);
 	return status;
 
 }
@@ -250,6 +260,10 @@ SKIP:
 MENU:				
 			while(strcmp(threadMessage, "learning")){
 				printf("Waiting for learning, got: %s\n", threadMessage);
+				if(!strcmp(threadMessage, "crash")){
+					memset(threadMessage, 0, sizeof(threadMessage));
+					return -1;
+				}
 				memset(threadMessage, 0, sizeof(threadMessage));
 				sleep(1);
 			}
@@ -298,6 +312,10 @@ WRONG:
 				else if(!strcmp(threadMessage, "crash")){
 					memset(threadMessage, 0, sizeof(threadMessage));
 					return -1;
+				}
+				else if(!strcmp(threadMessage, "next")){
+					memset(threadMessage, 0, sizeof(threadMessage)); 
+					goto NEXT;
 				}
 				
 				new_reading = mraa_gpio_read(BearButton);
@@ -422,8 +440,10 @@ WRONG:
 			}
 		}
 	}
+NEXT:
 	printf("About to exit teaching");
 	fclose(fp_Topic);
+	fclose(fp_Trans);
 	return status;
 }
 
@@ -463,6 +483,10 @@ SKIP:
 MENU:				
 			while(strcmp(threadMessage, "learning")){
 				printf("Waiting for learning, got: %s\n", threadMessage);
+				if(!strcmp(threadMessage, "crash")){
+					memset(threadMessage, 0, sizeof(threadMessage));
+					return -1;
+				}
 				memset(threadMessage, 0, sizeof(threadMessage));
 				sleep(1);
 			}
@@ -511,6 +535,10 @@ WRONG:
 				else if(!strcmp(threadMessage, "crash")){
 					memset(threadMessage, 0, sizeof(threadMessage));
 					return -1;
+				}
+				else if(!strcmp(threadMessage, "next")){
+					memset(threadMessage, 0, sizeof(threadMessage)); 
+					goto NEXT;
 				}
 				
 				new_reading = mraa_gpio_read(BearButton);
@@ -639,8 +667,10 @@ WRONG:
 			}
 		}
 	}
+NEXT:
 	printf("About to exit teaching");
 	fclose(fp_Topic);
+	fclose(fp_Trans);
 	return status;
 }
 
@@ -678,6 +708,10 @@ SKIP:
 MENU:				
 			while(strcmp(threadMessage, "learning")){
 				printf("Waiting for learning, got: %s\n", threadMessage);
+				if(!strcmp(threadMessage, "crash")){
+					memset(threadMessage, 0, sizeof(threadMessage));
+					return -1;
+				}
 				memset(threadMessage, 0, sizeof(threadMessage));
 				sleep(1);
 			}
@@ -711,6 +745,10 @@ WRONG:
 				else if(!strcmp(threadMessage, "crash")){
 					memset(threadMessage, 0, sizeof(threadMessage));
 					return -1;
+				}
+				else if(!strcmp(threadMessage, "next")){
+					memset(threadMessage, 0, sizeof(threadMessage)); 
+					goto NEXT;
 				}
 	
 				continue_flag = 0;
@@ -822,7 +860,7 @@ WRONG:
 		}
 		
 	}
-	
+NEXT:
 	printf("About to exit teaching");
 	fclose(fp_Topic);
 	return status;

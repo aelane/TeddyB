@@ -197,7 +197,7 @@ int main(void) {
 	
 	MQTTConnectParams connectParams = MQTTConnectParamsDefault;
 
-	connectParams.KeepAliveInterval_sec = 1000;
+	connectParams.KeepAliveInterval_sec = 14000;
 	connectParams.isCleansession = true;
 	connectParams.MQTTVersion = MQTT_3_1_1;
 	connectParams.pClientID = "TED";

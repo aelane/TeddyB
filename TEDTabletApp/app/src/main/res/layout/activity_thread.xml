@@ -52,6 +52,13 @@
             android:paddingTop="12dp"
             android:paddingLeft="4dp"
             />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Next Lesson"
+            android:id="@+id/nextlesson"
+            android:layout_toRightOf="@+id/pBar"
+            />
     </RelativeLayout>
 
 </RelativeLayout>
